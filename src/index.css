@@ -9,12 +9,12 @@
 
 body {
   margin: 0;
-  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic Pro', 'Yu Gothic UI', system-ui, sans-serif;
+  font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', system-ui, sans-serif;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.85;
-  background: #fdf6ee;
-  color: #3b1f0e;
+  background: #faf8f4;
+  color: #2d2318;
 }
 
 #root {
@@ -28,5 +28,5 @@ body {
 }
 
 .serif {
-  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic Pro', system-ui, sans-serif;
+  font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
 }
