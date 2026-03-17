@@ -502,19 +502,19 @@ export default function TalentKeeperLandingPage() {
             どのタイミングの離職・定着に課題があるのかを伺いながら、活用イメージを一緒に整理します。
           </p>
           <div className="mt-12 flex flex-wrap justify-center gap-5">
-            <button
+            <a href="mailto:kiban@robottte.com"
               className="inline-flex items-center gap-3 rounded-full px-10 py-5 text-lg font-black text-white shadow-xl transition hover:opacity-80"
               style={{ background: C.accent }}>
               お問い合わせする
               <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
-            </button>
-            <button
+            </a>
+            <a href="mailto:kiban@robottte.com?subject=資料請求"
               className="rounded-full border-2 px-10 py-5 text-lg font-black transition hover:opacity-80"
               style={{ borderColor: "#2a4a5e", color: "#b8c8d4" }}>
               資料請求
-            </button>
+            </a>
           </div>
           <p className="mt-7 text-base font-bold" style={{ color: "#5a6878" }}>
             ご返信は通常1〜2営業日以内 ／ トライアル・段階的導入もお気軽にご相談ください
@@ -538,6 +538,8 @@ export default function TalentKeeperLandingPage() {
               {[["SERVICE", "#service"], ["HOW IT WORKS", "#how"], ["PRICING", "#pricing"]].map(([label, href]) => (
                 <a key={label} href={href} className="text-xs font-bold tracking-[0.1em]" style={{ color: "#5a6878" }}>{label}</a>
               ))}
+              <a href="https://www.robottte.com/" target="_blank" rel="noopener noreferrer"
+                className="text-xs font-bold tracking-[0.1em]" style={{ color: "#5a6878" }}>運営会社</a>
             </div>
             <p className="text-sm font-bold" style={{ color: "#4a6878" }}>© 2025 TalentKeeper.</p>
           </div>
