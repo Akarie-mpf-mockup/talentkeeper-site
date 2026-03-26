@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 function IllustChatbot() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#1e293b" />
+      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
       <rect x="32" y="46" width="56" height="42" rx="14" fill="#f97316" />
       <rect x="38" y="24" width="44" height="30" rx="12" fill="#fdba74" />
       <line x1="60" y1="24" x2="60" y2="14" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
@@ -31,7 +31,7 @@ function IllustChatbot() {
 function IllustMonitor() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#1e293b" />
+      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
       <circle cx="60" cy="30" r="14" fill="#fbbf24" />
       <path d="M46 28 Q50 16 60 18 Q70 16 74 28" fill="#92400e" />
       <circle cx="54" cy="29" r="2.5" fill="#3b1f0e" />
@@ -49,7 +49,7 @@ function IllustMonitor() {
 function IllustCounselor() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#1e293b" />
+      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
       <circle cx="36" cy="32" r="12" fill="#fbbf24" />
       <path d="M24 58 Q24 48 36 46 Q48 48 48 58 L50 76 H22 Z" fill="#f59e0b" />
       <circle cx="32" cy="31" r="2" fill="#3b1f0e" />
@@ -80,6 +80,11 @@ function IntroScreen({ onDone }) {
 
   const text1 = '今日も、誰かが辞めようとしています。';
   const text2 = 'あなたは気づけていますか？';
+
+  const handleSkip = () => {
+    setFading(true);
+    setTimeout(onDone, 400);
+  };
 
   useEffect(() => {
     let i = 0;
@@ -123,6 +128,19 @@ function IntroScreen({ onDone }) {
       opacity: fading ? 0 : 1,
       pointerEvents: fading ? 'none' : 'all',
     }}>
+      {/* スキップボタン */}
+      <button onClick={handleSkip} style={{
+        position: 'absolute', top: '24px', right: '28px',
+        background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)',
+        color: 'rgba(255,255,255,0.45)', borderRadius: '999px',
+        padding: '6px 16px', fontSize: '12px', fontWeight: 700,
+        cursor: 'pointer', letterSpacing: '0.08em', transition: 'opacity 0.2s',
+      }}
+        onMouseOver={e => e.currentTarget.style.opacity = '0.7'}
+        onMouseOut={e => e.currentTarget.style.opacity = '1'}>
+        SKIP →
+      </button>
+
       {/* 装飾ライン */}
       <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(245,158,11,0.15), transparent)', transform: 'translateY(-80px)' }} />
       <div style={{ textAlign: 'center', padding: '2rem', maxWidth: '720px' }}>
@@ -373,11 +391,14 @@ export default function TalentKeeperLandingPage() {
             <div className="grid items-center gap-16 lg:grid-cols-2">
               <div>
                 <Reveal>
-                  <div className="mb-6 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold"
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold"
                     style={{ background: "rgba(245,158,11,0.12)", color: C.accent, border: `1px solid rgba(245,158,11,0.25)` }}>
                     <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: C.accent }} />
                     新入社員の定着支援サービス
                   </div>
+                  <p className="mb-5 text-sm font-bold" style={{ color: C.textDim }}>
+                    月5〜20名採用している中小・中堅企業の人事担当者・経営者へ
+                  </p>
                 </Reveal>
                 <Reveal delay={0.1}>
                   <h1 className="serif text-5xl font-black leading-snug text-white sm:text-6xl lg:text-[3.6rem]">
@@ -392,7 +413,7 @@ export default function TalentKeeperLandingPage() {
                     辞める人は、必ず一度だけ助けを求めています。
                   </p>
                   <p className="mt-4 max-w-lg text-lg leading-9" style={{ color: C.textDim }}>
-                    新入社員の60.6%が1年後も不安を抱え続ける現実。三層サポート体制と24時間対応で、離職リスクを初期段階で察知します。
+                    新入社員の60.6%が1年後も不安を抱え続ける現実<span className="text-xs align-super" style={{ color: C.textDim }}>※1</span>。三層サポート体制と24時間対応で、離職リスクを初期段階で察知します。
                   </p>
                 </Reveal>
                 <Reveal delay={0.3}>
@@ -400,7 +421,7 @@ export default function TalentKeeperLandingPage() {
                     <a href="#contact"
                       className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:opacity-80"
                       style={{ background: C.accent }}>
-                      無料でご相談する
+                      無料デモを予約する
                       <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                       </svg>
@@ -414,7 +435,7 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
                 <Reveal delay={0.4}>
                   <div className="mt-12 flex flex-wrap gap-8 border-t pt-8" style={{ borderColor: C.border }}>
-                    {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"]].map(([v, l]) => (
+                    {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"], ["30×", "ROI試算"]].map(([v, l]) => (
                       <div key={l}>
                         <div className="serif text-3xl font-black" style={{ color: C.highlight }}>{v}</div>
                         <div className="mt-0.5 text-sm font-bold" style={{ color: C.textDim }}>{l}</div>
@@ -531,6 +552,7 @@ export default function TalentKeeperLandingPage() {
               {[
                 {
                   id: "CASE 01", company: "G社", industry: "介護施設（複数拠点）",
+                  meta: "従業員 約80名 ／ 導入3ヶ月目",
                   before: "新人が早期退職し採用コストが重荷に。離職の兆候が見えず、事後対応のみ。「平気そうに見えて実は不安はある」という本音が言えない環境。",
                   action: "チャット相談（約20分）で気軽に相談できる環境を提供。体力的負担や人間関係の違和感を早期キャッチ。",
                   result: "初年度離職率 3%改善",
@@ -539,6 +561,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   id: "CASE 02", company: "N社", industry: "小売業（店舗複数）",
+                  meta: "従業員 約150名 ／ 導入2ヶ月目",
                   before: "事業所内で退職まで完結し、本音が見えない。「退職希望」が実は「異動希望」だったことに気づけない状態。",
                   action: "第三者窓口による本音の収集。短期・中期・長期の段階的アクション計画を策定。",
                   result: "退職を未然に回避",
@@ -547,6 +570,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   id: "CASE 03", company: "K社", industry: "医療・介護施設",
+                  meta: "従業員 約120名 ／ 導入4ヶ月目",
                   before: "現場の声が経営層に届かず判断が遅れる。ルール違反の常態化が不満の温床に。愚痴と重要な意見の区別がつかない。",
                   action: "正直な意見の収集と適切な取捨選択。現場運用のグレーゾーンを可視化し、ルール統一を実現。",
                   result: "機会ロス大幅減少",
@@ -555,6 +579,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   id: "CASE 04", company: "S社", industry: "スタートアップ",
+                  meta: "従業員 約30名 ／ 導入1ヶ月目",
                   before: "限られた人員で新人フォローが困難。月20時間以上の残業が常態化し、「家族との時間を確保したい」という本音が言えない。",
                   action: "事業所外の相談窓口を設置。ハラスメント疑いを本社へエスカレーション。段階的な対応を実施。",
                   result: "「もっと頑張りたい」",
@@ -571,6 +596,7 @@ export default function TalentKeeperLandingPage() {
                         <span className="text-xs font-black tracking-[0.2em]" style={{ color: C.ltDim }}>{c.id}</span>
                         <h3 className="serif mt-1 text-2xl font-black" style={{ color: C.lt }}>{c.company}</h3>
                         <span className="text-sm font-bold" style={{ color: C.ltMuted }}>{c.industry}</span>
+                        <span className="block mt-1 text-xs font-bold" style={{ color: C.ltDim }}>{c.meta}</span>
                       </div>
                       <div className="rounded-full px-4 py-1.5 text-xs font-black shrink-0"
                         style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}40` }}>
@@ -780,6 +806,57 @@ export default function TalentKeeperLandingPage() {
           </div>
         </section>
 
+        {/* ─── FAQ ─── */}
+        <section style={{ background: C.bg }} className="py-24">
+          <div className="mx-auto max-w-4xl px-6 lg:px-12">
+            <Reveal>
+              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>FAQ</p>
+              <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>よくある質問</h2>
+            </Reveal>
+            <div className="mt-12 space-y-4">
+              {[
+                {
+                  q: "既存のSlack・社内チャットや面談制度と何が違いますか？",
+                  a: "社内ツールや上司との面談では「言いにくい本音」が残ります。TalentKeeperは外部の中立的な第三者窓口として機能するため、従業員が社内では言えない不満・不安を吐き出せる環境をつくります。AIが24時間受け付け、専門スタッフがフォローする仕組みが差別化点です。",
+                },
+                {
+                  q: "契約はいつでも解約できますか？",
+                  a: "最低契約期間はありません。月次契約のため、いつでも解約いただけます。初月無料トライアルからお試しいただき、効果を見てご判断ください。",
+                },
+                {
+                  q: "従業員の相談内容は会社に筒抜けになりますか？",
+                  a: "なりません。個人を特定できる情報は厳しく管理し、会社には集計・傾向レポートのみを共有します。「会社に知られるかも」という恐怖があると従業員が使わなくなるため、中立性と守秘義務の担保を最優先にしています。",
+                },
+                {
+                  q: "導入までどれくらいかかりますか？",
+                  a: "最短3週間で稼働できます。初回ヒアリング → 設定 → 従業員向け案内 → 運用開始のステップで進めます。ITシステムの大規模導入は不要で、スモールスタートが可能です。",
+                },
+                {
+                  q: "効果が出なかった場合はどうなりますか？",
+                  a: "効果が見込みにくい場合は、デモの段階で率直にお伝えしています。導入後も定期レポートで状況を共有し、活用が進んでいない場合は改善提案を行います。成果が出ない場合のリスクを最小化できるよう、トライアル期間を設けています。",
+                },
+              ].map((item, i) => (
+                <Reveal key={i} delay={i * 0.05}>
+                  <details className="group rounded-2xl overflow-hidden"
+                    style={{ border: `1px solid ${C.ltBorder}`, background: C.card }}>
+                    <summary className="flex items-center justify-between gap-4 px-7 py-5 cursor-pointer list-none font-black text-base"
+                      style={{ color: C.lt }}>
+                      <span>Q. {item.q}</span>
+                      <svg className="shrink-0 transition-transform group-open:rotate-45" width="20" height="20"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                    </summary>
+                    <div className="px-7 pb-6 text-base leading-8" style={{ color: C.ltMuted }}>
+                      {item.a}
+                    </div>
+                  </details>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ─── Contact ─── */}
         <section id="contact" style={{ background: C.nav, position: 'relative', overflow: 'hidden' }} className="py-24">
           <div className="hero-orb hero-orb-contact" />
@@ -790,7 +867,7 @@ export default function TalentKeeperLandingPage() {
               <Reveal>
                 <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>06 — CONTACT</p>
                 <h2 className="serif mt-5 text-4xl font-black text-white lg:text-5xl">
-                  まずは、<br />無料でご相談を
+                  まずは、<br />無料デモを予約する
                 </h2>
                 <p className="mt-6 text-lg leading-9" style={{ color: C.textMuted }}>
                   どのタイミングの離職・定着に課題があるのかを伺いながら、活用イメージを一緒に整理します。
@@ -818,12 +895,20 @@ export default function TalentKeeperLandingPage() {
                   {formStatus === 'sent' ? (
                     <div className="text-center py-10">
                       <div className="text-5xl mb-4">✅</div>
-                      <h3 className="serif text-2xl font-black text-white">送信しました！</h3>
+                      <h3 className="serif text-2xl font-black" style={{ color: C.lt }}>送信しました！</h3>
                       <p className="mt-3 text-base" style={{ color: C.textMuted }}>
                         1〜2営業日以内にご連絡いたします。
                       </p>
                     </div>
                   ) : (
+                    <>
+                    <div className="mb-5 flex items-center justify-between">
+                      <p className="text-base font-black" style={{ color: C.lt }}>お問い合わせフォーム</p>
+                      <span className="text-xs font-bold rounded-full px-3 py-1"
+                        style={{ background: "rgba(217,119,6,0.1)", color: C.accent }}>
+                        ⏱ 約30秒で入力完了
+                      </span>
+                    </div>
                     <form onSubmit={handleFormSubmit} className="space-y-5">
                       <div className="grid gap-5 sm:grid-cols-2">
                         {/* 会社名 */}
@@ -906,13 +991,14 @@ export default function TalentKeeperLandingPage() {
                       <button type="submit" disabled={formStatus === 'sending'}
                         className="w-full rounded-full py-4 text-lg font-black text-white transition hover:opacity-80 disabled:opacity-50"
                         style={{ background: C.accent }}>
-                        {formStatus === 'sending' ? '送信中...' : '無料で相談する →'}
+                        {formStatus === 'sending' ? '送信中...' : '無料デモを予約する →'}
                       </button>
 
                       <p className="text-center text-xs font-bold" style={{ color: C.textDim }}>
                         送信後、1〜2営業日以内にご返信します
                       </p>
                     </form>
+                    </>
                   )}
                 </div>
               </Reveal>
@@ -940,6 +1026,11 @@ export default function TalentKeeperLandingPage() {
                   className="text-xs font-bold tracking-[0.1em]" style={{ color: C.textDim }}>運営会社</a>
               </div>
               <p className="text-sm font-bold" style={{ color: C.textDim }}>© 2025 TalentKeeper.</p>
+            </div>
+            <div className="mt-8 border-t pt-6" style={{ borderColor: C.border }}>
+              <p className="text-xs leading-6" style={{ color: C.textDim }}>
+                ※1 パーソル総合研究所「新入社員の定着実態調査」より。各社事例は守秘義務のため社名を匿名化しています。
+              </p>
             </div>
           </div>
         </footer>
