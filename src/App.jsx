@@ -553,26 +553,187 @@ export default function TalentKeeperLandingPage() {
         </section>
 
         {/* ─── KPI ─── */}
+        {/* ─── KPI ─── */}
         <section style={{ background: C.bg }} className="py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
-              <h2 className="serif mb-12 text-center text-3xl font-black" style={{ color: C.text }}>効果測定で組織の健康状態を可視化</h2>
+              <h2 className="serif mb-12 text-center text-3xl font-black" style={{ color: C.text }}>数字で見る導入効果</h2>
             </Reveal>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { icon: "💬", value: "85%+", label: "エンゲージメント率",   color: "#0ea5e9" },
-                { icon: "🔄", value: "90%+", label: "継続利用率",           color: "#a78bfa" },
-                { icon: "📉", value: "30%↓", label: "早期離職率の改善",     color: C.accentRed },
-                { icon: "⚡", value: "24h",   label: "サポート対応時間",     color: C.accent },
+                { value: "90%+",    label: "継続利用率",              sub: "導入企業の実績値",          color: "#a78bfa" },
+                { value: "40〜70%", label: "チャットボット利用率",     sub: "一般的なチャットは数%",     color: "#0ea5e9" },
+                { value: "100万円+", label: "1名退職による損失額",     sub: "採用・教育・機会損失の合計", color: C.accentRed },
+                { value: "86.8%",   label: "入社1ヶ月以内に不安を感じる", sub: "最大のクリティカル期間",  color: C.accent },
               ].map((k, i) => (
                 <Reveal key={k.label} delay={i * 0.1}>
-                  <div className="rounded-2xl p-8 text-center" style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                    <div className="text-5xl">{k.icon}</div>
-                    <div className="serif mt-4 text-4xl font-black" style={{ color: k.color }}>{k.value}</div>
-                    <div className="mt-2 text-base font-bold" style={{ color: C.textMuted }}>{k.label}</div>
+                  <div className="rounded-2xl p-8 text-center flex flex-col gap-2" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                    <div className="serif text-4xl font-black" style={{ color: k.color }}>{k.value}</div>
+                    <div className="text-base font-black" style={{ color: C.text }}>{k.label}</div>
+                    <div className="text-xs font-bold" style={{ color: C.textDim }}>{k.sub}</div>
                   </div>
                 </Reveal>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Case Studies ─── */}
+        <section style={{ background: C.bgAlt }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>CASE STUDIES</p>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.text }}>
+                  早期離職を防いだ<br />4社の選択
+                </h2>
+                <p className="max-w-sm text-base sm:text-right" style={{ color: C.textMuted }}>
+                  実際の導入企業における、課題・取り組み・成果
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-14 grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  id: "CASE 01", company: "G社", industry: "介護施設（複数拠点）",
+                  before: "新人が早期退職し採用コストが重荷に。離職の兆候が見えず、事後対応のみ。「平気そうに見えて実は不安はある」という本音が言えない環境。",
+                  action: "チャット相談（約20分）で気軽に相談できる環境を提供。体力的負担や人間関係の違和感を早期キャッチ。",
+                  result: "初年度離職率 3%改善",
+                  resultSub: "1名あたり30万円のコスト削減",
+                  color: "#34d399",
+                },
+                {
+                  id: "CASE 02", company: "N社", industry: "小売業（店舗複数）",
+                  before: "事業所内で退職まで完結し、本音が見えない。「退職希望」が実は「異動希望」だったことに気づけない状態。",
+                  action: "第三者窓口による本音の収集。短期・中期・長期の段階的アクション計画を策定。",
+                  result: "退職を未然に回避",
+                  resultSub: "前向きな異動希望を実現",
+                  color: "#60a5fa",
+                },
+                {
+                  id: "CASE 03", company: "K社", industry: "医療・介護施設",
+                  before: "現場の声が経営層に届かず判断が遅れる。ルール違反の常態化が不満の温床に。愚痴と重要な意見の区別がつかない。",
+                  action: "正直な意見の収集と適切な取捨選択。現場運用のグレーゾーンを可視化し、ルール統一を実現。",
+                  result: "機会ロス大幅減少",
+                  resultSub: "経営判断のスピードが向上",
+                  color: "#f59e0b",
+                },
+                {
+                  id: "CASE 04", company: "S社", industry: "スタートアップ",
+                  before: "限られた人員で新人フォローが困難。月20時間以上の残業が常態化し、「家族との時間を確保したい」という本音が言えない。",
+                  action: "事業所外の相談窓口を設置。ハラスメント疑いを本社へエスカレーション。段階的な対応を実施。",
+                  result: "「もっと頑張りたい」",
+                  resultSub: "モチベーション向上・定着実現",
+                  color: "#f472b6",
+                },
+              ].map((c, i) => (
+                <Reveal key={c.id} delay={i * 0.1}>
+                  <div className="rounded-3xl p-8 h-full flex flex-col gap-5"
+                    style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                    {/* ヘッダー */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <span className="text-xs font-black tracking-[0.2em]" style={{ color: C.textDim }}>{c.id}</span>
+                        <h3 className="serif mt-1 text-2xl font-black" style={{ color: C.text }}>{c.company}</h3>
+                        <span className="text-sm font-bold" style={{ color: C.textMuted }}>{c.industry}</span>
+                      </div>
+                      <div className="rounded-full px-4 py-1.5 text-xs font-black shrink-0"
+                        style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}40` }}>
+                        導入事例
+                      </div>
+                    </div>
+
+                    {/* Before */}
+                    <div className="rounded-xl p-4" style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)" }}>
+                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#f87171" }}>BEFORE — 導入前の課題</p>
+                      <p className="text-sm leading-7" style={{ color: C.textMuted }}>{c.before}</p>
+                    </div>
+
+                    {/* Action */}
+                    <div className="rounded-xl p-4" style={{ background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)" }}>
+                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#818cf8" }}>ACTION — 取り組み</p>
+                      <p className="text-sm leading-7" style={{ color: C.textMuted }}>{c.action}</p>
+                    </div>
+
+                    {/* Result */}
+                    <div className="mt-auto rounded-xl p-5 text-center"
+                      style={{ background: `${c.color}12`, border: `1px solid ${c.color}30` }}>
+                      <p className="serif text-2xl font-black" style={{ color: c.color }}>{c.result}</p>
+                      <p className="mt-1 text-sm font-bold" style={{ color: C.textMuted }}>{c.resultSub}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Testimonials ─── */}
+        <section style={{ background: C.bg }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>VOICE</p>
+              <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>
+                導入した人たちの<br />リアルな声
+              </h2>
+            </Reveal>
+
+            {/* 従業員の声 */}
+            <div className="mt-14">
+              <Reveal>
+                <p className="text-sm font-black tracking-[0.15em] mb-6" style={{ color: C.textDim }}>
+                  ── 従業員から
+                </p>
+              </Reveal>
+              <div className="grid gap-5 md:grid-cols-3">
+                {[
+                  { text: "めっちゃこれいいです。チャットの形で話ができるので。自然と話せます", role: "IT カスタマーサクセス職" },
+                  { text: "社内の人か、社外の人が選べるのがいいです。自分が悪いのか、環境が悪いのか、第三者に判断してもらいたい時があります", role: "不動産 営業職" },
+                  { text: "このようなシステムを導入している、というだけで、会社が従業員を大切にしている思いを感じます。早期に辞めてしまった会社にも入れてほしかった…", role: "元 介護職" },
+                ].map((v, i) => (
+                  <Reveal key={i} delay={i * 0.1}>
+                    <div className="rounded-2xl p-7 h-full flex flex-col gap-4"
+                      style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                      <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
+                        <path d="M0 20V12.5C0 5.5 4 1.5 12 0L13.5 2.5C9.5 3.5 7.5 6 7.5 9.5H12V20H0ZM16 20V12.5C16 5.5 20 1.5 28 0L29.5 2.5C25.5 3.5 23.5 6 23.5 9.5H28V20H16Z"
+                          fill={`${C.accent}40`} />
+                      </svg>
+                      <p className="text-base leading-8 flex-1" style={{ color: C.text }}>「{v.text}」</p>
+                      <p className="text-sm font-black" style={{ color: C.textDim }}>— {v.role}</p>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+
+            {/* 法人担当者の声 */}
+            <div className="mt-14">
+              <Reveal>
+                <p className="text-sm font-black tracking-[0.15em] mb-6" style={{ color: C.textDim }}>
+                  ── 導入企業 HR・経営担当から
+                </p>
+              </Reveal>
+              <div className="grid gap-5 md:grid-cols-2">
+                {[
+                  { company: "G社", text: "1名の離職を防ぐだけでも採用コストは平均30万円ほどかかるため、大きな成果につながります。初年度には離職率を3%改善することができました。" },
+                  { company: "K社", text: "正直な意見の中には愚痴のようなものも含まれますが、それらを適切に取捨選択しています。早期に判断できるようになり、機会ロスが大幅に減少しました。" },
+                  { company: "N社", text: "これまで事業所内で完結してしまい、拾いきれていなかった従業員の生の声を収集できるようになりました。前向きな異動希望を叶えることも可能になりました。" },
+                  { company: "S社", text: "面談したスタッフから『事業所以外で相談できる場があることで、もっと頑張りたい』との声があり、効果を実感しました。未来につながる仕組みの重要性を感じています。" },
+                ].map((v, i) => (
+                  <Reveal key={i} delay={i * 0.1}>
+                    <div className="flex gap-5 rounded-2xl p-7"
+                      style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
+                        style={{ background: C.accent }}>{v.company}</div>
+                      <div>
+                        <p className="text-base leading-8" style={{ color: C.textMuted }}>「{v.text}」</p>
+                        <p className="mt-3 text-sm font-black" style={{ color: C.textDim }}>— {v.company} HR・経営担当</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </div>
         </section>
