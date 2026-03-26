@@ -78,8 +78,8 @@ function IntroScreen({ onDone }) {
   const [showCursor2, setShowCursor2] = useState(false);
   const [fading, setFading] = useState(false);
 
-  const text1 = '今日も、誰かが辞めようとしています。';
-  const text2 = 'あなたは気づけていますか？';
+  const text1 = '"大丈夫です"の裏で、転職サイトを開いていた。';
+  const text2 = 'その声を、拾える仕組みがありますか？';
 
   useEffect(() => {
     let i = 0;
@@ -371,13 +371,13 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
                 <Reveal delay={0.1}>
                   <h1 className="serif text-5xl font-black leading-snug text-white sm:text-6xl lg:text-[3.6rem]">
-                    気づいたときには、<br />
-                    <span style={{ color: C.highlight }}>もう遅い。</span>
+                    <span style={{ color: C.highlight }}>"大丈夫です"</span>の裏で、<br />
+                    転職サイトを開いていた。
                   </h1>
                 </Reveal>
                 <Reveal delay={0.2}>
                   <p className="mt-5 text-xl font-bold" style={{ color: C.textMuted }}>
-                    離職のサインは、必ず出ています。
+                    辞める人は、必ず一度だけ助けを求めています。
                   </p>
                   <p className="mt-4 max-w-lg text-lg leading-9" style={{ color: C.textDim }}>
                     新入社員の60.6%が1年後も不安を抱え続ける現実。三層サポート体制と24時間対応で、離職リスクを初期段階で察知します。
