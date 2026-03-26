@@ -190,7 +190,6 @@ function Reveal({ children, delay = 0, from = 'bottom' }) {
 /* ── メインコンポーネント ── */
 export default function TalentKeeperLandingPage() {
   const [introDone, setIntroDone] = useState(false);
-  const [billing, setBilling] = useState('monthly');
 
   const C = {
     bg:        "#111827",
@@ -228,35 +227,31 @@ export default function TalentKeeperLandingPage() {
 
   const plans = [
     {
-      name: "スタンダード", nameEn: "Standard",
-      monthly: "50,000", annual: "500,000", annualMonthly: "41,667",
-      note: "30名まで対応",
+      name: "スタンダード", nameEn: "BASIC",
+      price: "50,000",
+      maxFollow: "30名まで",
+      guideline: "毎月5名入社 × 6ヶ月フォロー",
+      slots: "月最大 5枠",
+      target: "中小企業・成長期スタートアップ",
     },
     {
-      name: "プレミアム", nameEn: "Premium",
-      monthly: "100,000", annual: "1,000,000", annualMonthly: "83,333",
-      note: "60名まで対応",
+      name: "プレミアム", nameEn: "PREMIUM",
+      price: "100,000",
+      maxFollow: "60名まで",
+      guideline: "毎月10名入社 × 6ヶ月フォロー",
+      slots: "月最大 10枠",
+      target: "中堅企業・大規模採用企業",
       recommended: true,
-    },
-    {
-      name: "エンタープライズ", nameEn: "Enterprise",
-      monthly: null, annual: null, annualMonthly: null,
-      note: "200名以上",
     },
   ];
 
   const featureMatrix = [
-    { label: "AIチャットボット（24h対応）",    std: true,      pre: true,       ent: true       },
-    { label: "事務局モニタリング",              std: true,      pre: true,       ent: true       },
-    { label: "月次レポート",                    std: true,      pre: true,       ent: true       },
-    { label: "メールサポート",                  std: true,      pre: true,       ent: true       },
-    { label: "専門家相談",                      std: false,     pre: "月2回",    ent: "無制限"   },
-    { label: "週次レポート＋ダッシュボード",    std: false,     pre: true,       ent: true       },
-    { label: "カスタマイズ対応",                std: false,     pre: true,       ent: true       },
-    { label: "優先サポート",                    std: false,     pre: true,       ent: true       },
-    { label: "API・システム連携",               std: false,     pre: false,      ent: true       },
-    { label: "職種別・部門別カスタマイズ",      std: false,     pre: false,      ent: true       },
-    { label: "専任担当者アサイン",              std: false,     pre: false,      ent: true       },
+    { label: "AIチャットボット（24h対応）",  basic: true,       premium: true       },
+    { label: "事務局モニタリング",            basic: true,       premium: true       },
+    { label: "月次レポート",                  basic: true,       premium: true       },
+    { label: "最大同時フォロー人数",          basic: "30名",     premium: "60名"     },
+    { label: "お悩み面談 相談枠",            basic: "月5枠",    premium: "月10枠"   },
+    { label: "推奨企業規模",                  basic: "中小企業", premium: "中堅企業" },
   ];
 
   return (
@@ -609,102 +604,93 @@ export default function TalentKeeperLandingPage() {
                 <div>
                   <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>05 — PRICING</p>
                   <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>料金プラン</h2>
-                </div>
-                {/* 月払い / 年払い トグル */}
-                <div className="flex items-center gap-1 rounded-full p-1" style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                  {[['monthly', '月払い'], ['annual', '年払い']].map(([key, label]) => (
-                    <button key={key} onClick={() => setBilling(key)}
-                      className="relative rounded-full px-5 py-2 text-sm font-black transition-all"
-                      style={{
-                        background: billing === key ? C.accent : 'transparent',
-                        color: billing === key ? 'white' : C.textDim,
-                      }}>
-                      {label}
-                      {key === 'annual' && (
-                        <span className="ml-1.5 rounded-full px-2 py-0.5 text-xs font-black"
-                          style={{ background: billing === 'annual' ? 'rgba(0,0,0,0.2)' : 'rgba(245,158,11,0.15)', color: billing === 'annual' ? 'white' : C.accent }}>
-                          2ヶ月分お得
-                        </span>
-                      )}
-                    </button>
-                  ))}
+                  <p className="mt-3 text-base" style={{ color: C.textMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
                 </div>
               </div>
             </Reveal>
 
-            {/* プランカード 3枚 */}
-            <div className="grid gap-6 md:grid-cols-3 mb-10">
-              {plans.map((plan, i) => {
-                const price = billing === 'annual' ? plan.annualMonthly : plan.monthly;
-                return (
-                  <Reveal key={plan.name} delay={i * 0.1}>
-                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
-                      style={{
-                        background: plan.recommended ? C.accent : C.card,
-                        border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.border}`,
-                        boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
-                      }}>
-                      {plan.recommended && (
-                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-5 py-1 text-xs font-black text-white"
-                          style={{ background: "#d97706" }}>
-                          ★ いちばん選ばれています
-                        </div>
-                      )}
-                      <div className="text-xs font-black tracking-[0.2em] uppercase mb-2"
-                        style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>
-                        {plan.nameEn}
+            {/* プランカード 2枚 + カスタム誘導 */}
+            <div className="grid gap-6 lg:grid-cols-[1fr_1fr_auto] items-start mb-10">
+              {/* 2プランカード */}
+              {plans.map((plan, i) => (
+                <Reveal key={plan.name} delay={i * 0.1}>
+                  <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                    style={{
+                      background: plan.recommended ? C.accent : C.card,
+                      border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.border}`,
+                      boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
+                    }}>
+                    {plan.recommended && (
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-5 py-1 text-xs font-black text-white"
+                        style={{ background: "#d97706" }}>
+                        ★ いちばん選ばれています
                       </div>
-                      <h3 className="serif text-2xl font-black"
-                        style={{ color: "white" }}>
-                        {plan.name}
-                      </h3>
-                      <div className="mt-1 text-sm font-bold mb-5"
-                        style={{ color: plan.recommended ? "rgba(255,255,255,0.7)" : C.textDim }}>
-                        {plan.note}
-                      </div>
-
-                      {price ? (
-                        <>
-                          <div className="flex items-end gap-1">
-                            <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>月額</span>
-                            <span className="serif text-4xl font-black" style={{ color: "white" }}>¥{price}</span>
-                          </div>
-                          {billing === 'annual' && (
-                            <p className="mt-1 text-xs font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.textDim }}>
-                              年間 ¥{plan.annual}（税別）
-                            </p>
-                          )}
-                        </>
-                      ) : (
-                        <div className="serif text-3xl font-black text-white">お問い合わせ</div>
-                      )}
-
-                      <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.border }} />
-
-                      <a href="#contact"
-                        className="mt-auto flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
-                        style={{
-                          background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent,
-                          color: "white",
-                        }}>
-                        {plan.monthly ? "無料デモを予約する" : "詳細を相談する"}
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                      </a>
+                    )}
+                    <div className="text-xs font-black tracking-[0.2em] mb-2"
+                      style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>
+                      {plan.nameEn}
                     </div>
-                  </Reveal>
-                );
-              })}
+                    <h3 className="serif text-2xl font-black text-white">{plan.name}</h3>
+
+                    <div className="mt-5 flex items-end gap-1">
+                      <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>月額</span>
+                      <span className="serif text-4xl font-black text-white">¥{plan.price}</span>
+                      <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>（税別）</span>
+                    </div>
+
+                    <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.border }} />
+
+                    <ul className="space-y-3 flex-1">
+                      {[
+                        ["最大同時フォロー", plan.maxFollow],
+                        ["月の目安", plan.guideline],
+                        ["お悩み面談", plan.slots],
+                        ["推奨規模", plan.target],
+                      ].map(([k, v]) => (
+                        <li key={k} className="flex flex-col gap-0.5">
+                          <span className="text-xs font-black tracking-wide"
+                            style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.textDim }}>{k}</span>
+                          <span className="text-sm font-bold"
+                            style={{ color: plan.recommended ? "white" : C.text }}>{v}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <a href="#contact"
+                      className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
+                      style={{ background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent, color: "white" }}>
+                      無料デモを予約する
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </Reveal>
+              ))}
+
+              {/* カスタムプラン — カードにしない */}
+              <Reveal delay={0.2}>
+                <div className="rounded-3xl p-8 flex flex-col gap-4 lg:w-64"
+                  style={{ border: `1px dashed ${C.border}`, background: "transparent" }}>
+                  <p className="text-xs font-black tracking-[0.2em]" style={{ color: C.textDim }}>CUSTOM</p>
+                  <p className="serif text-xl font-black" style={{ color: C.textMuted }}>規模・ニーズに<br />合わせて設計</p>
+                  <p className="text-sm leading-7" style={{ color: C.textDim }}>
+                    フォロー期間・対象人数・オプション構成など、実態に合わせてお見積りします。
+                  </p>
+                  <a href="#contact" className="text-sm font-black transition hover:opacity-70"
+                    style={{ color: C.accent }}>
+                    カスタムプランを相談する →
+                  </a>
+                </div>
+              </Reveal>
             </div>
 
-            {/* 機能比較テーブル */}
+            {/* 機能比較テーブル（2プランのみ） */}
             <Reveal>
               <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.border}` }}>
-                {/* テーブルヘッダー */}
-                <div className="grid grid-cols-4 text-sm font-black tracking-wide"
+                <div className="grid grid-cols-3 text-sm font-black tracking-wide"
                   style={{ background: C.card }}>
-                  <div className="p-4" style={{ color: C.textDim }}>機能</div>
+                  <div className="p-4" style={{ color: C.textDim }}>プラン比較</div>
                   {plans.map((p) => (
                     <div key={p.nameEn} className="p-4 text-center"
                       style={{ color: p.recommended ? C.accent : C.textMuted }}>
@@ -712,12 +698,11 @@ export default function TalentKeeperLandingPage() {
                     </div>
                   ))}
                 </div>
-                {/* テーブル行 */}
                 {featureMatrix.map((row, i) => (
-                  <div key={row.label} className="grid grid-cols-4 text-sm"
+                  <div key={row.label} className="grid grid-cols-3 text-sm"
                     style={{ background: i % 2 === 0 ? C.bgAlt : "rgba(30,41,59,0.4)", borderTop: `1px solid ${C.border}` }}>
                     <div className="p-4 font-semibold" style={{ color: C.textMuted }}>{row.label}</div>
-                    {[row.std, row.pre, row.ent].map((val, j) => (
+                    {[row.basic, row.premium].map((val, j) => (
                       <div key={j} className="p-4 flex items-center justify-center">
                         {val === true ? (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#34d399" strokeWidth="2.5">
