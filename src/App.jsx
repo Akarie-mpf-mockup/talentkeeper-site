@@ -190,6 +190,7 @@ function Reveal({ children, delay = 0, from = 'bottom' }) {
 /* ── メインコンポーネント ── */
 export default function TalentKeeperLandingPage() {
   const [introDone, setIntroDone] = useState(false);
+  const [billing, setBilling] = useState('monthly');
 
   const C = {
     bg:        "#111827",
@@ -227,18 +228,35 @@ export default function TalentKeeperLandingPage() {
 
   const plans = [
     {
-      name: "スタンダード", nameEn: "Standard", price: "50,000", note: "30名まで対応",
-      features: ["AIチャットボット", "事務局モニタリング", "月次レポート", "メールサポート"],
+      name: "スタンダード", nameEn: "Standard",
+      monthly: "50,000", annual: "500,000", annualMonthly: "41,667",
+      note: "30名まで対応",
     },
     {
-      name: "プレミアム", nameEn: "Premium", price: "100,000", note: "60名まで対応",
-      features: ["スタンダードの全機能", "専門家相談（月2回）", "週次レポート＋ダッシュボード", "カスタマイズ対応", "優先サポート"],
+      name: "プレミアム", nameEn: "Premium",
+      monthly: "100,000", annual: "1,000,000", annualMonthly: "83,333",
+      note: "60名まで対応",
       recommended: true,
     },
     {
-      name: "エンタープライズ", nameEn: "Enterprise", price: "要相談", note: "200名以上",
-      features: ["プレミアムの全機能", "専門家相談（無制限）", "システム連携・API対応", "職種別・部門別カスタマイズ", "専任担当者アサイン"],
+      name: "エンタープライズ", nameEn: "Enterprise",
+      monthly: null, annual: null, annualMonthly: null,
+      note: "200名以上",
     },
+  ];
+
+  const featureMatrix = [
+    { label: "AIチャットボット（24h対応）",    std: true,      pre: true,       ent: true       },
+    { label: "事務局モニタリング",              std: true,      pre: true,       ent: true       },
+    { label: "月次レポート",                    std: true,      pre: true,       ent: true       },
+    { label: "メールサポート",                  std: true,      pre: true,       ent: true       },
+    { label: "専門家相談",                      std: false,     pre: "月2回",    ent: "無制限"   },
+    { label: "週次レポート＋ダッシュボード",    std: false,     pre: true,       ent: true       },
+    { label: "カスタマイズ対応",                std: false,     pre: true,       ent: true       },
+    { label: "優先サポート",                    std: false,     pre: true,       ent: true       },
+    { label: "API・システム連携",               std: false,     pre: false,      ent: true       },
+    { label: "職種別・部門別カスタマイズ",      std: false,     pre: false,      ent: true       },
+    { label: "専任担当者アサイン",              std: false,     pre: false,      ent: true       },
   ];
 
   return (
@@ -567,75 +585,170 @@ export default function TalentKeeperLandingPage() {
         {/* ─── Pricing ─── */}
         <section id="pricing" style={{ background: C.bgAlt }} className="py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
+
+            {/* ROI アンカー */}
             <Reveal>
-              <div className="mb-14">
-                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>05 — PRICING</p>
-                <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>料金プラン</h2>
-                <p className="mt-3 text-lg" style={{ color: C.textMuted }}>対象人数や期間に応じて柔軟に調整可能。トライアル・段階的導入もご相談ください。</p>
+              <div className="mb-14 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-5"
+                style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)" }}>
+                <div className="text-4xl shrink-0">💡</div>
+                <div>
+                  <p className="text-base font-black" style={{ color: C.accent }}>
+                    1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span>（採用費・教育費・引き継ぎコストの合計）
+                  </p>
+                  <p className="mt-1 text-base" style={{ color: C.textMuted }}>
+                    月額5万円で、その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>30倍のROI</strong>。
+                    離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
+                  </p>
+                </div>
               </div>
             </Reveal>
 
-            <div className="grid gap-6 md:grid-cols-3">
-              {plans.map((plan, i) => (
-                <Reveal key={plan.name} delay={i * 0.1}>
-                  <div className="relative rounded-3xl p-9 transition hover:-translate-y-1 h-full"
-                    style={{
-                      background: plan.recommended ? C.accent : C.card,
-                      border: plan.recommended ? 'none' : `1px solid ${C.border}`,
-                      boxShadow: plan.recommended ? `0 20px 60px rgba(245,158,11,0.25)` : "none"
-                    }}>
-                    {plan.recommended && (
-                      <div className="absolute right-6 top-6 rounded-full px-4 py-1 text-sm font-black"
-                        style={{ background: "rgba(0,0,0,0.2)", color: "white" }}>
-                        おすすめ
+            {/* ヘッダー + トグル */}
+            <Reveal>
+              <div className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+                <div>
+                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>05 — PRICING</p>
+                  <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>料金プラン</h2>
+                </div>
+                {/* 月払い / 年払い トグル */}
+                <div className="flex items-center gap-1 rounded-full p-1" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                  {[['monthly', '月払い'], ['annual', '年払い']].map(([key, label]) => (
+                    <button key={key} onClick={() => setBilling(key)}
+                      className="relative rounded-full px-5 py-2 text-sm font-black transition-all"
+                      style={{
+                        background: billing === key ? C.accent : 'transparent',
+                        color: billing === key ? 'white' : C.textDim,
+                      }}>
+                      {label}
+                      {key === 'annual' && (
+                        <span className="ml-1.5 rounded-full px-2 py-0.5 text-xs font-black"
+                          style={{ background: billing === 'annual' ? 'rgba(0,0,0,0.2)' : 'rgba(245,158,11,0.15)', color: billing === 'annual' ? 'white' : C.accent }}>
+                          2ヶ月分お得
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* プランカード 3枚 */}
+            <div className="grid gap-6 md:grid-cols-3 mb-10">
+              {plans.map((plan, i) => {
+                const price = billing === 'annual' ? plan.annualMonthly : plan.monthly;
+                return (
+                  <Reveal key={plan.name} delay={i * 0.1}>
+                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                      style={{
+                        background: plan.recommended ? C.accent : C.card,
+                        border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.border}`,
+                        boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
+                      }}>
+                      {plan.recommended && (
+                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-5 py-1 text-xs font-black text-white"
+                          style={{ background: "#d97706" }}>
+                          ★ いちばん選ばれています
+                        </div>
+                      )}
+                      <div className="text-xs font-black tracking-[0.2em] uppercase mb-2"
+                        style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>
+                        {plan.nameEn}
                       </div>
-                    )}
-                    <div className="text-sm font-black tracking-[0.2em] uppercase"
-                      style={{ color: plan.recommended ? "rgba(255,255,255,0.7)" : C.textDim }}>
-                      {plan.nameEn}
-                    </div>
-                    <h3 className="serif mt-1 text-2xl font-black"
-                      style={{ color: plan.recommended ? "white" : C.text }}>
-                      {plan.name}
-                    </h3>
-                    <div className="mt-5 flex items-end gap-1">
-                      {plan.price !== "要相談" ? (
+                      <h3 className="serif text-2xl font-black"
+                        style={{ color: "white" }}>
+                        {plan.name}
+                      </h3>
+                      <div className="mt-1 text-sm font-bold mb-5"
+                        style={{ color: plan.recommended ? "rgba(255,255,255,0.7)" : C.textDim }}>
+                        {plan.note}
+                      </div>
+
+                      {price ? (
                         <>
-                          <span className="text-base font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.7)" : C.textDim }}>月額</span>
-                          <span className="serif text-5xl font-black" style={{ color: plan.recommended ? "white" : C.text }}>¥{plan.price}</span>
+                          <div className="flex items-end gap-1">
+                            <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>月額</span>
+                            <span className="serif text-4xl font-black" style={{ color: "white" }}>¥{price}</span>
+                          </div>
+                          {billing === 'annual' && (
+                            <p className="mt-1 text-xs font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.textDim }}>
+                              年間 ¥{plan.annual}（税別）
+                            </p>
+                          )}
                         </>
                       ) : (
-                        <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.text }}>要相談</span>
+                        <div className="serif text-3xl font-black text-white">お問い合わせ</div>
                       )}
+
+                      <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.border }} />
+
+                      <a href="#contact"
+                        className="mt-auto flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
+                        style={{
+                          background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent,
+                          color: "white",
+                        }}>
+                        {plan.monthly ? "無料デモを予約する" : "詳細を相談する"}
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                      </a>
                     </div>
-                    <div className="mt-1 text-base font-bold"
-                      style={{ color: plan.recommended ? "rgba(255,255,255,0.8)" : C.textDim }}>{plan.note}</div>
-                    <div className="my-6 h-px"
-                      style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.border }} />
-                    <ul className="space-y-3.5">
-                      {plan.features.map((f) => (
-                        <li key={f} className="flex items-start gap-3 text-base font-semibold"
-                          style={{ color: plan.recommended ? "rgba(255,255,255,0.9)" : C.textMuted }}>
-                          <svg className="mt-0.5 h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24"
-                            stroke={plan.recommended ? "white" : "#34d399"} strokeWidth="2.5">
+                  </Reveal>
+                );
+              })}
+            </div>
+
+            {/* 機能比較テーブル */}
+            <Reveal>
+              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.border}` }}>
+                {/* テーブルヘッダー */}
+                <div className="grid grid-cols-4 text-sm font-black tracking-wide"
+                  style={{ background: C.card }}>
+                  <div className="p-4" style={{ color: C.textDim }}>機能</div>
+                  {plans.map((p) => (
+                    <div key={p.nameEn} className="p-4 text-center"
+                      style={{ color: p.recommended ? C.accent : C.textMuted }}>
+                      {p.nameEn}
+                    </div>
+                  ))}
+                </div>
+                {/* テーブル行 */}
+                {featureMatrix.map((row, i) => (
+                  <div key={row.label} className="grid grid-cols-4 text-sm"
+                    style={{ background: i % 2 === 0 ? C.bgAlt : "rgba(30,41,59,0.4)", borderTop: `1px solid ${C.border}` }}>
+                    <div className="p-4 font-semibold" style={{ color: C.textMuted }}>{row.label}</div>
+                    {[row.std, row.pre, row.ent].map((val, j) => (
+                      <div key={j} className="p-4 flex items-center justify-center">
+                        {val === true ? (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#34d399" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <a href="#contact"
-                      className="mt-8 flex w-full items-center justify-center gap-2 rounded-full py-4 text-base font-black transition hover:opacity-80"
-                      style={{
-                        background: plan.recommended ? "rgba(0,0,0,0.2)" : C.accent,
-                        color: "white",
-                      }}>
-                      このプランで相談する
-                    </a>
+                        ) : val === false ? (
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="#374151" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                          </svg>
+                        ) : (
+                          <span className="rounded-full px-3 py-0.5 text-xs font-black"
+                            style={{ background: "rgba(245,158,11,0.12)", color: C.accent }}>
+                            {val}
+                          </span>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </Reveal>
-              ))}
-            </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* 安心ワード */}
+            <Reveal delay={0.1}>
+              <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.textDim }}>
+                {["✓ 最低契約期間なし", "✓ 初月無料トライアルあり", "✓ クレジットカード不要", "✓ 即日ご対応"].map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+              </div>
+            </Reveal>
+
           </div>
         </section>
 
