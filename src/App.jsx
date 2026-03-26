@@ -371,12 +371,14 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
                 <Reveal delay={0.1}>
                   <h1 className="serif text-5xl font-black leading-snug text-white sm:text-6xl lg:text-[3.6rem]">
-                    <span style={{ color: C.highlight }}>"大丈夫です"</span>の裏で、<br />
-                    転職サイトを開いていた。
+                    その声を、<br />拾える仕組みが<br />ありますか？
                   </h1>
                 </Reveal>
                 <Reveal delay={0.2}>
-                  <p className="mt-5 text-xl font-bold" style={{ color: C.textMuted }}>
+                  <p className="mt-5 text-xl font-bold" style={{ color: C.highlight }}>
+                    "大丈夫です"の裏で、転職サイトを開いていた。
+                  </p>
+                  <p className="mt-3 text-lg leading-9" style={{ color: C.textMuted }}>
                     辞める人は、必ず一度だけ助けを求めています。
                   </p>
                   <p className="mt-4 max-w-lg text-lg leading-9" style={{ color: C.textDim }}>
