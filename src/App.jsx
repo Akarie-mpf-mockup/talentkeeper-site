@@ -446,76 +446,6 @@ export default function TalentKeeperLandingPage() {
           </svg>
         </section>
 
-        {/* ─── Problem ─── */}
-        <section style={{ background: C.bg }} className="py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <div className="grid items-start gap-16 lg:grid-cols-[1fr_1.6fr]">
-              <div>
-                <Reveal>
-                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>01 — PROBLEM</p>
-                  <h2 className="serif mt-4 text-4xl font-black leading-snug lg:text-5xl" style={{ color: C.text }}>
-                    見逃される、<br />入社後の<br />小さなサイン
-                  </h2>
-                  <p className="mt-6 text-lg leading-9" style={{ color: C.textMuted }}>
-                    入社直後の期待と現実のギャップが早期離職の主因。小さな不満が段階的に悪化し、最終的に組織崩壊やエース級人材の離脱に至るリスクがあります。
-                  </p>
-                  <div className="mt-8 inline-block rounded-full px-6 py-3 text-base font-bold text-white" style={{ background: C.accentRed }}>
-                    早期ケアが定着率向上の鍵
-                  </div>
-                </Reveal>
-              </div>
-              <div className="space-y-4">
-                {stages.map((s, i) => (
-                  <Reveal key={s.num} delay={i * 0.1} from="right">
-                    <div className="flex items-start gap-5 rounded-2xl p-6 transition hover:shadow-xl"
-                      style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-base font-black text-white"
-                        style={{ background: s.color }}>
-                        {s.num}
-                      </div>
-                      <div>
-                        <div className="text-xl font-black" style={{ color: C.text }}>{s.title}</div>
-                        <p className="mt-2 text-base leading-8" style={{ color: C.textMuted }}>{s.desc}</p>
-                      </div>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── Service ─── */}
-        <section id="service" style={{ background: C.bgAlt }} className="py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <Reveal>
-              <div className="mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>02 — SERVICE</p>
-                  <h2 className="serif mt-4 text-4xl font-black text-white lg:text-5xl">タレントキーパーとは</h2>
-                </div>
-                <p className="max-w-md text-base sm:text-right" style={{ color: C.textMuted }}>
-                  継続的な接点を前提に設計された、新入社員の定着支援サービスです。
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="grid gap-6 md:grid-cols-3">
-              {features.map((f, i) => (
-                <Reveal key={f.num} delay={i * 0.12}>
-                  <div className="group h-full rounded-3xl p-8 transition hover:-translate-y-1 hover:shadow-2xl"
-                    style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                    <span className="text-sm font-black tracking-[0.2em]" style={{ color: C.accent }}>{f.num}</span>
-                    <h3 className="serif mt-4 text-2xl font-black text-white">{f.title}</h3>
-                    <p className="mt-4 text-base leading-8" style={{ color: C.textMuted }}>{f.text}</p>
-                    <div className="mt-6 h-0.5 w-10 rounded-full transition-all duration-300 group-hover:w-full"
-                      style={{ background: C.accent }} />
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ─── 3-layer support ─── */}
         <section id="how" style={{ background: C.bg }} className="py-24">
@@ -575,70 +505,6 @@ export default function TalentKeeperLandingPage() {
           </div>
         </section>
 
-        {/* ─── Flow ─── */}
-        <section style={{ background: C.bgAlt }} className="py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>04 — IMPLEMENTATION</p>
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="serif text-4xl font-black text-white lg:text-5xl">最短3週間で<br />導入完了</h2>
-                <p className="max-w-sm text-base sm:text-right" style={{ color: C.textMuted }}>設計から改善まで伴走サポートします</p>
-              </div>
-            </Reveal>
-
-            <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { step: "WEEK 1",   title: "設計・カスタマイズ", desc: "企業規模・ニーズに合わせたフォロー設計とKPI設定", color: "#0ea5e9" },
-                { step: "WEEK 2",   title: "周知・準備",         desc: "従業員への案内、アカウント設定、既存制度との連携確認", color: "#a78bfa" },
-                { step: "WEEK 3–4", title: "配信スタート",       desc: "定期フォロー開始。継続的な接点創出をスタートします", color: "#34d399" },
-                { step: "MONTHLY",  title: "レポート＆改善",     desc: "ダッシュボードで状態を可視化しPDCAを回します", color: C.highlight },
-              ].map((f, i) => (
-                <Reveal key={f.step} delay={i * 0.1}>
-                  <div className="relative rounded-2xl p-7 h-full" style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                    {i < 3 && (
-                      <div className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 lg:block" style={{ color: C.textDim }}>
-                        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                      </div>
-                    )}
-                    <div className="mb-4 inline-block rounded-full px-4 py-1.5 text-sm font-black text-white" style={{ background: f.color }}>
-                      {f.step}
-                    </div>
-                    <div className="serif text-xl font-black text-white">{f.title}</div>
-                    <p className="mt-3 text-base leading-8" style={{ color: C.textMuted }}>{f.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ─── KPI ─── */}
-        {/* ─── KPI ─── */}
-        <section style={{ background: C.bg }} className="py-20">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <Reveal>
-              <h2 className="serif mb-12 text-center text-3xl font-black" style={{ color: C.text }}>数字で見る導入効果</h2>
-            </Reveal>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { value: "90%+",    label: "継続利用率",              sub: "導入企業の実績値",          color: "#a78bfa" },
-                { value: "40〜70%", label: "チャットボット利用率",     sub: "一般的なチャットは数%",     color: "#0ea5e9" },
-                { value: "100万円+", label: "1名退職による損失額",     sub: "採用・教育・機会損失の合計", color: C.accentRed },
-                { value: "86.8%",   label: "入社1ヶ月以内に不安を感じる", sub: "最大のクリティカル期間",  color: C.accent },
-              ].map((k, i) => (
-                <Reveal key={k.label} delay={i * 0.1}>
-                  <div className="rounded-2xl p-8 text-center flex flex-col gap-2" style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                    <div className="serif text-4xl font-black" style={{ color: k.color }}>{k.value}</div>
-                    <div className="text-base font-black" style={{ color: C.text }}>{k.label}</div>
-                    <div className="text-xs font-bold" style={{ color: C.textDim }}>{k.sub}</div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ─── Case Studies ─── */}
         <section style={{ background: C.bgAlt }} className="py-24">
@@ -728,75 +594,23 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ─── Testimonials ─── */}
-        <section style={{ background: C.bg }} className="py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>VOICE</p>
-              <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>
-                導入した人たちの<br />リアルな声
-              </h2>
-            </Reveal>
-
-            {/* 従業員の声 */}
-            <div className="mt-14">
-              <Reveal>
-                <p className="text-sm font-black tracking-[0.15em] mb-6" style={{ color: C.textDim }}>
-                  ── 従業員から
-                </p>
-              </Reveal>
-              <div className="grid gap-5 md:grid-cols-3">
+            {/* 声 — 3つだけ */}
+            <Reveal delay={0.1}>
+              <div className="mt-12 grid gap-4 md:grid-cols-3">
                 {[
                   { text: "めっちゃこれいいです。チャットの形で話ができるので。自然と話せます", role: "IT カスタマーサクセス職" },
-                  { text: "社内の人か、社外の人が選べるのがいいです。自分が悪いのか、環境が悪いのか、第三者に判断してもらいたい時があります", role: "不動産 営業職" },
-                  { text: "このようなシステムを導入している、というだけで、会社が従業員を大切にしている思いを感じます。早期に辞めてしまった会社にも入れてほしかった…", role: "元 介護職" },
+                  { text: "社内の人か、社外の人が選べるのがいいです。第三者に判断してもらいたい時があります", role: "不動産 営業職" },
+                  { text: "このシステムを導入しているだけで、会社が従業員を大切にしている思いを感じます", role: "元 介護職" },
                 ].map((v, i) => (
-                  <Reveal key={i} delay={i * 0.1}>
-                    <div className="rounded-2xl p-7 h-full flex flex-col gap-4"
-                      style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                      <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
-                        <path d="M0 20V12.5C0 5.5 4 1.5 12 0L13.5 2.5C9.5 3.5 7.5 6 7.5 9.5H12V20H0ZM16 20V12.5C16 5.5 20 1.5 28 0L29.5 2.5C25.5 3.5 23.5 6 23.5 9.5H28V20H16Z"
-                          fill={`${C.accent}40`} />
-                      </svg>
-                      <p className="text-base leading-8 flex-1" style={{ color: C.text }}>「{v.text}」</p>
-                      <p className="text-sm font-black" style={{ color: C.textDim }}>— {v.role}</p>
-                    </div>
-                  </Reveal>
+                  <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
+                    style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}` }}>
+                    <p className="text-sm leading-7" style={{ color: C.textMuted }}>「{v.text}」</p>
+                    <p className="text-xs font-black" style={{ color: C.textDim }}>— {v.role}</p>
+                  </div>
                 ))}
               </div>
-            </div>
-
-            {/* 法人担当者の声 */}
-            <div className="mt-14">
-              <Reveal>
-                <p className="text-sm font-black tracking-[0.15em] mb-6" style={{ color: C.textDim }}>
-                  ── 導入企業 HR・経営担当から
-                </p>
-              </Reveal>
-              <div className="grid gap-5 md:grid-cols-2">
-                {[
-                  { company: "G社", text: "1名の離職を防ぐだけでも採用コストは平均30万円ほどかかるため、大きな成果につながります。初年度には離職率を3%改善することができました。" },
-                  { company: "K社", text: "正直な意見の中には愚痴のようなものも含まれますが、それらを適切に取捨選択しています。早期に判断できるようになり、機会ロスが大幅に減少しました。" },
-                  { company: "N社", text: "これまで事業所内で完結してしまい、拾いきれていなかった従業員の生の声を収集できるようになりました。前向きな異動希望を叶えることも可能になりました。" },
-                  { company: "S社", text: "面談したスタッフから『事業所以外で相談できる場があることで、もっと頑張りたい』との声があり、効果を実感しました。未来につながる仕組みの重要性を感じています。" },
-                ].map((v, i) => (
-                  <Reveal key={i} delay={i * 0.1}>
-                    <div className="flex gap-5 rounded-2xl p-7"
-                      style={{ background: C.card, border: `1px solid ${C.border}` }}>
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
-                        style={{ background: C.accent }}>{v.company}</div>
-                      <div>
-                        <p className="text-base leading-8" style={{ color: C.textMuted }}>「{v.text}」</p>
-                        <p className="mt-3 text-sm font-black" style={{ color: C.textDim }}>— {v.company} HR・経営担当</p>
-                      </div>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
