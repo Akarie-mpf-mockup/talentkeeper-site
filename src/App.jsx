@@ -209,6 +209,7 @@ function Reveal({ children, delay = 0, from = 'bottom' }) {
 export default function TalentKeeperLandingPage() {
   const [introDone, setIntroDone] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [billing, setBilling] = useState('annual'); // 'annual' | 'monthly'
   const [formData, setFormData] = useState({ company: '', name: '', email: '', size: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | sending | sent | error
 
@@ -279,7 +280,8 @@ export default function TalentKeeperLandingPage() {
   const plans = [
     {
       name: "スタンダード", nameEn: "BASIC",
-      price: "50,000",
+      priceAnnual: "40,000", totalAnnual: "480,000",
+      priceMonthly: "50,000",
       maxFollow: "30名まで",
       guideline: "毎月5名入社 × 6ヶ月フォロー",
       slots: "月最大 5枠",
@@ -287,7 +289,8 @@ export default function TalentKeeperLandingPage() {
     },
     {
       name: "プレミアム", nameEn: "PREMIUM",
-      price: "100,000",
+      priceAnnual: "80,000", totalAnnual: "960,000",
+      priceMonthly: "100,000",
       maxFollow: "60名まで",
       guideline: "毎月10名入社 × 6ヶ月フォロー",
       slots: "月最大 10枠",
@@ -675,6 +678,30 @@ export default function TalentKeeperLandingPage() {
                   <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>料金プラン</h2>
                   <p className="mt-3 text-base" style={{ color: C.ltMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
                 </div>
+
+                {/* 契約期間トグル */}
+                <div className="flex items-center gap-1 rounded-2xl p-1.5 self-start sm:self-auto"
+                  style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}` }}>
+                  {[['annual', '年次契約', '20%OFF'], ['monthly', '月次契約', null]].map(([key, label, badge]) => (
+                    <button key={key} onClick={() => setBilling(key)}
+                      className="relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-black transition-all"
+                      style={{
+                        background: billing === key ? C.accent : 'transparent',
+                        color: billing === key ? 'white' : C.ltMuted,
+                      }}>
+                      {label}
+                      {badge && (
+                        <span className="rounded-full px-2 py-0.5 text-xs font-black"
+                          style={{
+                            background: billing === key ? 'rgba(0,0,0,0.18)' : 'rgba(217,119,6,0.12)',
+                            color: billing === key ? 'white' : C.accent,
+                          }}>
+                          {badge}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </Reveal>
 
@@ -691,8 +718,8 @@ export default function TalentKeeperLandingPage() {
                     }}>
                     {plan.recommended && (
                       <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-5 py-1 text-xs font-black text-white"
-                        style={{ background: "#d97706" }}>
-                        ★ いちばん選ばれています
+                        style={{ background: "#92400e" }}>
+                        {billing === 'annual' ? '★ 年次契約 20%OFF' : '★ いちばん選ばれています'}
                       </div>
                     )}
                     <div className="text-xs font-black tracking-[0.2em] mb-2"
@@ -701,10 +728,26 @@ export default function TalentKeeperLandingPage() {
                     </div>
                     <h3 className="serif text-2xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
 
-                    <div className="mt-5 flex items-end gap-1">
-                      <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
-                      <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>¥{plan.price}</span>
-                      <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
+                    <div className="mt-5">
+                      <div className="flex items-end gap-1">
+                        <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
+                        <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>
+                          ¥{billing === 'annual' ? plan.priceAnnual : plan.priceMonthly}
+                        </span>
+                        <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
+                      </div>
+                      {billing === 'annual' && (
+                        <p className="mt-1 text-xs font-bold"
+                          style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
+                          年間 ¥{plan.totalAnnual}（一括払い）
+                        </p>
+                      )}
+                      {billing === 'monthly' && (
+                        <p className="mt-1 text-xs font-bold"
+                          style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
+                          年次契約なら ¥{plan.priceAnnual}/月（20%お得）
+                        </p>
+                      )}
                     </div>
 
                     <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.ltBorder }} />
@@ -797,7 +840,12 @@ export default function TalentKeeperLandingPage() {
             {/* 安心ワード */}
             <Reveal delay={0.1}>
               <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.ltDim }}>
-                {["✓ 最低契約期間なし", "✓ 初月無料トライアルあり", "✓ クレジットカード不要", "✓ 即日ご対応"].map((t) => (
+                {[
+                  billing === 'annual' ? "✓ 年次一括払い（20%お得）" : "✓ 月次契約・いつでも解約可",
+                  "✓ 初月無料トライアルあり",
+                  "✓ クレジットカード不要",
+                  "✓ 即日ご対応",
+                ].map((t) => (
                   <span key={t}>{t}</span>
                 ))}
               </div>
@@ -820,8 +868,8 @@ export default function TalentKeeperLandingPage() {
                   a: "社内ツールや上司との面談では「言いにくい本音」が残ります。TalentKeeperは外部の中立的な第三者窓口として機能するため、従業員が社内では言えない不満・不安を吐き出せる環境をつくります。AIが24時間受け付け、専門スタッフがフォローする仕組みが差別化点です。",
                 },
                 {
-                  q: "契約はいつでも解約できますか？",
-                  a: "最低契約期間はありません。月次契約のため、いつでも解約いただけます。初月無料トライアルからお試しいただき、効果を見てご判断ください。",
+                  q: "契約期間はどう選べばいいですか？",
+                  a: "月次契約と年次契約の2種類からお選びいただけます。月次契約はいつでも解約可能。年次契約（一括払い）は月額が20%お得になります。初月無料トライアル終了後にどちらかを選んでいただく流れです。なお、離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
                 },
                 {
                   q: "従業員の相談内容は会社に筒抜けになりますか？",
