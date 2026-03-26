@@ -297,15 +297,24 @@ export default function TalentKeeperLandingPage() {
       target: "中堅企業・大規模採用企業",
       recommended: true,
     },
+    {
+      name: "エンタープライズ", nameEn: "ENTERPRISE",
+      maxFollow: "61名以上・上限なし",
+      guideline: "規模・体制に応じて設計",
+      slots: "カスタム（上限なし）",
+      target: "大企業・多拠点展開企業",
+      enterprise: true,
+    },
   ];
 
   const featureMatrix = [
-    { label: "AIチャットボット（24h対応）",  basic: true,       premium: true       },
-    { label: "事務局モニタリング",            basic: true,       premium: true       },
-    { label: "月次レポート",                  basic: true,       premium: true       },
-    { label: "最大同時フォロー人数",          basic: "30名",     premium: "60名"     },
-    { label: "お悩み面談 相談枠",            basic: "月5枠",    premium: "月10枠"   },
-    { label: "推奨企業規模",                  basic: "中小企業", premium: "中堅企業" },
+    { label: "AIチャットボット（24h対応）",  basic: true,       premium: true,       enterprise: true        },
+    { label: "事務局モニタリング",            basic: true,       premium: true,       enterprise: true        },
+    { label: "月次レポート",                  basic: true,       premium: true,       enterprise: true        },
+    { label: "最大同時フォロー人数",          basic: "30名",     premium: "60名",     enterprise: "上限なし"  },
+    { label: "お悩み面談 相談枠",            basic: "月5枠",    premium: "月10枠",   enterprise: "カスタム"  },
+    { label: "専任担当者",                    basic: false,      premium: false,      enterprise: true        },
+    { label: "推奨企業規模",                  basic: "中小企業", premium: "中堅企業", enterprise: "大企業"    },
   ];
 
   return (
@@ -705,123 +714,155 @@ export default function TalentKeeperLandingPage() {
               </div>
             </Reveal>
 
-            {/* プランカード 2枚 + カスタム誘導 */}
-            <div className="grid gap-6 lg:grid-cols-[1fr_1fr_auto] items-start mb-10">
-              {/* 2プランカード */}
+            {/* プランカード 3枚 */}
+            <div className="grid gap-6 lg:grid-cols-3 items-start mb-10">
               {plans.map((plan, i) => (
                 <Reveal key={plan.name} delay={i * 0.1}>
-                  <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
-                    style={{
-                      background: plan.recommended ? C.accent : C.card,
-                      border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
-                      boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
-                    }}>
-                    {plan.recommended && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-5 py-1 text-xs font-black text-white"
-                        style={{ background: "#92400e" }}>
-                        {billing === 'annual' ? '★ 年次契約 20%OFF' : '★ いちばん選ばれています'}
+                  {plan.enterprise ? (
+                    /* Enterprise カード */
+                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                      style={{
+                        background: C.nav,
+                        border: `1px solid rgba(255,220,150,0.15)`,
+                        boxShadow: "0 8px 32px rgba(16,13,8,0.18)",
+                      }}>
+                      <div className="text-xs font-black tracking-[0.2em] mb-2"
+                        style={{ color: "rgba(245,158,11,0.6)" }}>
+                        {plan.nameEn}
                       </div>
-                    )}
-                    <div className="text-xs font-black tracking-[0.2em] mb-2"
-                      style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>
-                      {plan.nameEn}
-                    </div>
-                    <h3 className="serif text-2xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
+                      <h3 className="serif text-2xl font-black" style={{ color: C.text }}>{plan.name}</h3>
 
-                    <div className="mt-5">
-                      <div className="flex items-end gap-1">
-                        <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
-                        <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>
-                          ¥{billing === 'annual' ? plan.priceAnnual : plan.priceMonthly}
-                        </span>
-                        <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
+                      <div className="mt-5">
+                        <p className="serif text-3xl font-black" style={{ color: C.highlight }}>ご相談</p>
+                        <p className="mt-1 text-xs font-bold" style={{ color: C.textDim }}>
+                          規模・要件に応じてお見積りします
+                        </p>
                       </div>
-                      {billing === 'annual' && (
-                        <p className="mt-1 text-xs font-bold"
-                          style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
-                          年間 ¥{plan.totalAnnual}（一括払い）
-                        </p>
-                      )}
-                      {billing === 'monthly' && (
-                        <p className="mt-1 text-xs font-bold"
-                          style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
-                          年次契約なら ¥{plan.priceAnnual}/月（20%お得）
-                        </p>
-                      )}
+
+                      <div className="my-5 h-px" style={{ background: C.border }} />
+
+                      <ul className="space-y-3 flex-1">
+                        {[
+                          ["最大同時フォロー", plan.maxFollow],
+                          ["月の目安", plan.guideline],
+                          ["お悩み面談", plan.slots],
+                          ["推奨規模", plan.target],
+                        ].map(([k, v]) => (
+                          <li key={k} className="flex flex-col gap-0.5">
+                            <span className="text-xs font-black tracking-wide" style={{ color: C.textDim }}>{k}</span>
+                            <span className="text-sm font-bold" style={{ color: C.textMuted }}>{v}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <a href="#contact"
+                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
+                        style={{ background: "rgba(245,158,11,0.15)", color: C.highlight, border: `1px solid rgba(245,158,11,0.3)` }}>
+                        内容を相談する
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                      </a>
                     </div>
+                  ) : (
+                    /* Basic / Premium カード */
+                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                      style={{
+                        background: plan.recommended ? C.accent : C.card,
+                        border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
+                        boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
+                      }}>
+                      {plan.recommended && (
+                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-5 py-1 text-xs font-black text-white"
+                          style={{ background: "#92400e" }}>
+                          {billing === 'annual' ? '★ 年次契約 20%OFF' : '★ いちばん選ばれています'}
+                        </div>
+                      )}
+                      <div className="text-xs font-black tracking-[0.2em] mb-2"
+                        style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>
+                        {plan.nameEn}
+                      </div>
+                      <h3 className="serif text-2xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
 
-                    <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.ltBorder }} />
+                      <div className="mt-5">
+                        <div className="flex items-end gap-1">
+                          <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
+                          <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>
+                            ¥{billing === 'annual' ? plan.priceAnnual : plan.priceMonthly}
+                          </span>
+                          <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
+                        </div>
+                        {billing === 'annual' && (
+                          <p className="mt-1 text-xs font-bold"
+                            style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
+                            年間 ¥{plan.totalAnnual}（一括払い）
+                          </p>
+                        )}
+                        {billing === 'monthly' && (
+                          <p className="mt-1 text-xs font-bold"
+                            style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
+                            年次契約なら ¥{plan.priceAnnual}/月（20%お得）
+                          </p>
+                        )}
+                      </div>
 
-                    <ul className="space-y-3 flex-1">
-                      {[
-                        ["最大同時フォロー", plan.maxFollow],
-                        ["月の目安", plan.guideline],
-                        ["お悩み面談", plan.slots],
-                        ["推奨規模", plan.target],
-                      ].map(([k, v]) => (
-                        <li key={k} className="flex flex-col gap-0.5">
-                          <span className="text-xs font-black tracking-wide"
-                            style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.ltDim }}>{k}</span>
-                          <span className="text-sm font-bold"
-                            style={{ color: plan.recommended ? "white" : C.lt }}>{v}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.ltBorder }} />
 
-                    <a href="#contact"
-                      className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
-                      style={{ background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent, color: "white" }}>
-                      無料デモを予約する
-                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                      </svg>
-                    </a>
-                  </div>
+                      <ul className="space-y-3 flex-1">
+                        {[
+                          ["最大同時フォロー", plan.maxFollow],
+                          ["月の目安", plan.guideline],
+                          ["お悩み面談", plan.slots],
+                          ["推奨規模", plan.target],
+                        ].map(([k, v]) => (
+                          <li key={k} className="flex flex-col gap-0.5">
+                            <span className="text-xs font-black tracking-wide"
+                              style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.ltDim }}>{k}</span>
+                            <span className="text-sm font-bold"
+                              style={{ color: plan.recommended ? "white" : C.lt }}>{v}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <a href="#contact"
+                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
+                        style={{ background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent, color: "white" }}>
+                        無料デモを予約する
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
                 </Reveal>
               ))}
-
-              {/* カスタムプラン — カードにしない */}
-              <Reveal delay={0.2}>
-                <div className="rounded-3xl p-8 flex flex-col gap-4 lg:w-64"
-                  style={{ border: `1px dashed ${C.ltBorder}`, background: "transparent" }}>
-                  <p className="text-xs font-black tracking-[0.2em]" style={{ color: C.ltDim }}>CUSTOM</p>
-                  <p className="serif text-xl font-black" style={{ color: C.ltMuted }}>規模・ニーズに<br />合わせて設計</p>
-                  <p className="text-sm leading-7" style={{ color: C.ltDim }}>
-                    フォロー期間・対象人数・オプション構成など、実態に合わせてお見積りします。
-                  </p>
-                  <a href="#contact" className="text-sm font-black transition hover:opacity-70"
-                    style={{ color: C.accent }}>
-                    カスタムプランを相談する →
-                  </a>
-                </div>
-              </Reveal>
             </div>
 
             {/* 機能比較テーブル（2プランのみ） */}
             <Reveal>
               <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.ltBorder}` }}>
-                <div className="grid grid-cols-3 text-sm font-black tracking-wide"
+                <div className="grid grid-cols-4 text-sm font-black tracking-wide"
                   style={{ background: C.card }}>
                   <div className="p-4" style={{ color: C.ltDim }}>プラン比較</div>
                   {plans.map((p) => (
                     <div key={p.nameEn} className="p-4 text-center"
-                      style={{ color: p.recommended ? C.accent : C.ltMuted }}>
+                      style={{ color: p.recommended ? C.accent : p.enterprise ? C.highlight : C.ltMuted }}>
                       {p.nameEn}
                     </div>
                   ))}
                 </div>
                 {featureMatrix.map((row, i) => (
-                  <div key={row.label} className="grid grid-cols-3 text-sm"
+                  <div key={row.label} className="grid grid-cols-4 text-sm"
                     style={{ background: i % 2 === 0 ? C.bgAlt : C.card, borderTop: `1px solid ${C.ltBorder}` }}>
                     <div className="p-4 font-semibold" style={{ color: C.ltMuted }}>{row.label}</div>
-                    {[row.basic, row.premium].map((val, j) => (
+                    {[row.basic, row.premium, row.enterprise].map((val, j) => (
                       <div key={j} className="p-4 flex items-center justify-center">
                         {val === true ? (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#d97706" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
                         ) : val === false ? (
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="#374151" strokeWidth="2">
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="#c4b5a0" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                           </svg>
                         ) : (
