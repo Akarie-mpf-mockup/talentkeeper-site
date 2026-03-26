@@ -280,8 +280,8 @@ export default function TalentKeeperLandingPage() {
   const plans = [
     {
       name: "スタンダード", nameEn: "BASIC",
-      priceAnnual: "40,000", totalAnnual: "480,000",
-      priceMonthly: "60,000",
+      priceAnnual: "50,000", totalAnnual: "600,000",
+      priceMonthly: "75,000",
       maxFollow: "30名まで",
       guideline: "毎月5名入社 × 6ヶ月フォロー",
       slots: "月最大 5枠",
@@ -289,8 +289,8 @@ export default function TalentKeeperLandingPage() {
     },
     {
       name: "プレミアム", nameEn: "PREMIUM",
-      priceAnnual: "80,000", totalAnnual: "960,000",
-      priceMonthly: "120,000",
+      priceAnnual: "100,000", totalAnnual: "1,200,000",
+      priceMonthly: "150,000",
       maxFollow: "60名まで",
       guideline: "毎月10名入社 × 6ヶ月フォロー",
       slots: "月最大 10枠",
@@ -788,7 +788,7 @@ export default function TalentKeeperLandingPage() {
                     1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span>（採用費・教育費・引き継ぎコストの合計）
                   </p>
                   <p className="mt-1 text-base" style={{ color: C.ltMuted }}>
-                    年次契約なら月額4万円〜。その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>37倍のROI</strong>。
+                    月額5万円〜。その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>30倍のROI</strong>。
                     離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
                   </p>
                 </div>
@@ -1026,7 +1026,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   q: "契約期間はどう選べばいいですか？",
-                  a: "月次契約と年次契約の2種類からお選びいただけます。年次契約（一括払い）は月次契約より33%お得です（例：Basicプランなら月次¥60,000→年次¥40,000）。初月無料トライアル終了後にどちらかを選んでいただく流れです。離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
+                  a: "月次契約と年次契約の2種類からお選びいただけます。年次契約（一括払い）は月次契約より33%お得です（例：Basicプランなら月次¥75,000→年次¥50,000）。初月無料トライアル終了後にどちらかを選んでいただく流れです。離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
                 },
                 {
                   q: "従業員の相談内容は会社に筒抜けになりますか？",
