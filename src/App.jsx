@@ -281,7 +281,7 @@ export default function TalentKeeperLandingPage() {
     {
       name: "スタンダード", nameEn: "BASIC",
       priceAnnual: "40,000", totalAnnual: "480,000",
-      priceMonthly: "50,000",
+      priceMonthly: "60,000",
       maxFollow: "30名まで",
       guideline: "毎月5名入社 × 6ヶ月フォロー",
       slots: "月最大 5枠",
@@ -290,7 +290,7 @@ export default function TalentKeeperLandingPage() {
     {
       name: "プレミアム", nameEn: "PREMIUM",
       priceAnnual: "80,000", totalAnnual: "960,000",
-      priceMonthly: "100,000",
+      priceMonthly: "120,000",
       maxFollow: "60名まで",
       guideline: "毎月10名入社 × 6ヶ月フォロー",
       slots: "月最大 10枠",
@@ -545,6 +545,122 @@ export default function TalentKeeperLandingPage() {
         </section>
 
 
+        {/* ─── 競合比較 ─── */}
+        <section style={{ background: C.bgAlt }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>WHY US</p>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>
+                  他の手段と、<br />何が違うのか
+                </h2>
+                <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
+                  従業員の「孤独な夜」に寄り添えるのは、24時間有人対応だけです
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <div className="mt-12 overflow-x-auto rounded-3xl" style={{ border: `1px solid ${C.ltBorder}` }}>
+                <table className="w-full text-sm min-w-[640px]">
+                  <thead>
+                    <tr style={{ background: C.bg }}>
+                      <th className="p-5 text-left font-black" style={{ color: C.ltDim, width: "24%" }}>手段</th>
+                      {[
+                        ["24h即応", "緊急・夜間の対応"],
+                        ["本音が出やすい", "心理的安全性"],
+                        ["個別対応", "一人ひとりに寄り添う"],
+                        ["継続フォロー", "解決まで伴走"],
+                      ].map(([label, sub]) => (
+                        <th key={label} className="p-5 text-center font-black" style={{ color: C.ltDim }}>
+                          <div>{label}</div>
+                          <div className="text-xs font-bold mt-0.5" style={{ color: C.ltDim }}>{sub}</div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      {
+                        name: "メンタル相談\n（産業医）",
+                        vals: ["×", "×", "△", "△"],
+                        note: "予約制・敷居が高く「今すぐ」の悩みに対応できない",
+                        tk: false,
+                      },
+                      {
+                        name: "内部通報\n（弁護士）",
+                        vals: ["×", "×", "△", "×"],
+                        note: "重大不正向け。日常の離職予兆には心理的ハードルが高すぎる",
+                        tk: false,
+                      },
+                      {
+                        name: "アンケート・\n適性検査",
+                        vals: ["×", "△", "×", "△"],
+                        note: "広く浅い定点観測。入社後のリアルタイム対応は不可",
+                        tk: false,
+                      },
+                      {
+                        name: "人事窓口・\n社員対応",
+                        vals: ["△", "△", "△", "△"],
+                        note: "評価者への遠慮で本音が出にくい。リソース限界もある",
+                        tk: false,
+                      },
+                      {
+                        name: "TalentKeeper",
+                        vals: ["◎", "◎", "◎", "◎"],
+                        note: "営業時間外（7〜8割）も有人即応。専門家＋人事で解決まで伴走",
+                        tk: true,
+                      },
+                    ].map((row, i) => (
+                      <tr key={i} style={{
+                        background: row.tk ? C.accent : i % 2 === 0 ? C.card : C.bg,
+                        borderTop: `1px solid ${row.tk ? "rgba(255,255,255,0.15)" : C.ltBorder}`,
+                      }}>
+                        <td className="p-5">
+                          <div className="font-black text-sm whitespace-pre-line"
+                            style={{ color: row.tk ? "white" : C.lt }}>
+                            {row.name}
+                          </div>
+                          <div className="mt-1 text-xs leading-5"
+                            style={{ color: row.tk ? "rgba(255,255,255,0.75)" : C.ltDim }}>
+                            {row.note}
+                          </div>
+                        </td>
+                        {row.vals.map((v, j) => (
+                          <td key={j} className="p-5 text-center">
+                            <span className="text-lg font-black" style={{
+                              color: row.tk
+                                ? "white"
+                                : v === "◎" ? C.accent
+                                : v === "○" ? "#b45309"
+                                : v === "△" ? C.ltDim
+                                : "#c4b5a0",
+                            }}>
+                              {v}
+                            </span>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Reveal>
+
+            {/* KEY TAKEAWAY */}
+            <Reveal delay={0.15}>
+              <div className="mt-8 rounded-2xl p-6 flex items-start gap-4"
+                style={{ background: "rgba(146,64,14,0.06)", border: "1px solid rgba(146,64,14,0.15)" }}>
+                <span className="text-2xl shrink-0">💡</span>
+                <p className="text-base font-bold leading-8" style={{ color: "#92400e" }}>
+                  <strong>AI任せではなく、専任スタッフが24時間365日対応。</strong>
+                  従業員の相談は7〜8割が営業時間外に発生します。その瞬間に寄り添える仕組みが、定着率を変えます。
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* ─── Case Studies ─── */}
         <section style={{ background: C.bgAlt }} className="py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -672,7 +788,7 @@ export default function TalentKeeperLandingPage() {
                     1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span>（採用費・教育費・引き継ぎコストの合計）
                   </p>
                   <p className="mt-1 text-base" style={{ color: C.ltMuted }}>
-                    月額5万円で、その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>30倍のROI</strong>。
+                    年次契約なら月額4万円〜。その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>37倍のROI</strong>。
                     離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
                   </p>
                 </div>
@@ -691,7 +807,7 @@ export default function TalentKeeperLandingPage() {
                 {/* 契約期間トグル */}
                 <div className="flex items-center gap-1 rounded-2xl p-1.5 self-start sm:self-auto"
                   style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}` }}>
-                  {[['annual', '年次契約', '20%OFF'], ['monthly', '月次契約', null]].map(([key, label, badge]) => (
+                  {[['annual', '年次契約', '33%OFF'], ['monthly', '月次契約', null]].map(([key, label, badge]) => (
                     <button key={key} onClick={() => setBilling(key)}
                       className="relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-black transition-all"
                       style={{
@@ -801,7 +917,7 @@ export default function TalentKeeperLandingPage() {
                         {billing === 'monthly' && (
                           <p className="mt-1 text-xs font-bold"
                             style={{ color: plan.recommended ? "rgba(255,255,255,0.6)" : C.ltDim }}>
-                            年次契約なら ¥{plan.priceAnnual}/月（20%お得）
+                            年次契約なら ¥{plan.priceAnnual}/月（33%お得）
                           </p>
                         )}
                       </div>
@@ -882,7 +998,7 @@ export default function TalentKeeperLandingPage() {
             <Reveal delay={0.1}>
               <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.ltDim }}>
                 {[
-                  billing === 'annual' ? "✓ 年次一括払い（20%お得）" : "✓ 月次契約・いつでも解約可",
+                  billing === 'annual' ? "✓ 年次一括払い（33%お得）" : "✓ 月次契約・いつでも解約可",
                   "✓ 初月無料トライアルあり",
                   "✓ クレジットカード不要",
                   "✓ 即日ご対応",
@@ -910,7 +1026,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   q: "契約期間はどう選べばいいですか？",
-                  a: "月次契約と年次契約の2種類からお選びいただけます。月次契約はいつでも解約可能。年次契約（一括払い）は月額が20%お得になります。初月無料トライアル終了後にどちらかを選んでいただく流れです。なお、離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
+                  a: "月次契約と年次契約の2種類からお選びいただけます。年次契約（一括払い）は月次契約より33%お得です（例：Basicプランなら月次¥60,000→年次¥40,000）。初月無料トライアル終了後にどちらかを選んでいただく流れです。離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
                 },
                 {
                   q: "従業員の相談内容は会社に筒抜けになりますか？",
