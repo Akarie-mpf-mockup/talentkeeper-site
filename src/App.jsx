@@ -78,8 +78,8 @@ function IntroScreen({ onDone }) {
   const [showCursor2, setShowCursor2] = useState(false);
   const [fading, setFading] = useState(false);
 
-  const text1 = '"大丈夫です"の裏で、転職サイトを開いていた。';
-  const text2 = 'その声を、拾える仕組みがありますか？';
+  const text1 = '今日も、誰かが辞めようとしています。';
+  const text2 = 'あなたは気づけていますか？';
 
   useEffect(() => {
     let i = 0;
