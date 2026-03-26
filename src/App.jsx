@@ -215,18 +215,28 @@ export default function TalentKeeperLandingPage() {
   };
 
   const C = {
-    bg:        "#111827",
-    bgAlt:     "#0f172a",
-    card:      "#1e293b",
-    cardDark:  "#162032",
-    nav:       "#070d1a",
-    accent:    "#f59e0b",
-    accentRed: "#ef4444",
+    // ダーク（ナビ・ヒーロー・コンタクト）
+    nav:       "#0c1220",
+    darkCard:  "#1e2d42",
+    cardDark:  "#162035",
     text:      "#f1f5f9",
     textMuted: "#94a3b8",
     textDim:   "#64748b",
-    highlight: "#fbbf24",
     border:    "rgba(255,255,255,0.07)",
+    highlight: "#f59e0b",
+
+    // ライト（コンテンツセクション）
+    bg:        "#f8f5f0",
+    bgAlt:     "#f0ece6",
+    card:      "#ffffff",
+    lt:        "#1c1209",
+    ltMuted:   "#6b5845",
+    ltDim:     "#9c8878",
+    ltBorder:  "rgba(0,0,0,0.09)",
+
+    // 共通アクセント
+    accent:    "#d97706",
+    accentRed: "#dc2626",
   };
 
   const features = [
@@ -452,38 +462,34 @@ export default function TalentKeeperLandingPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
               <div className="mb-16">
-                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>03 — HOW IT WORKS</p>
+                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>HOW IT WORKS</p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                  <h2 className="serif text-4xl font-black leading-snug lg:text-5xl" style={{ color: C.text }}>
+                  <h2 className="serif text-4xl font-black leading-snug lg:text-5xl" style={{ color: C.lt }}>
                     三層サポート体制で<br />漏れなく支える
                   </h2>
-                  <p className="max-w-sm text-base sm:text-right" style={{ color: C.textMuted }}>
+                  <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
                     AIと人のハイブリッドで、未解決の課題を早期発見します
                   </p>
                 </div>
               </div>
             </Reveal>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               {supports.map(({ Illust, num, title, sub, desc }, i) => (
                 <Reveal key={num} from={i % 2 === 0 ? 'left' : 'right'} delay={0.1}>
-                  <div className={`grid items-center gap-10 rounded-3xl p-8 lg:p-12 ${i % 2 === 0 ? "lg:grid-cols-[220px_1fr]" : "lg:grid-cols-[1fr_220px]"}`}
-                    style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                  <div className={`grid items-center gap-10 rounded-3xl p-8 lg:p-12 ${i % 2 === 0 ? "lg:grid-cols-[200px_1fr]" : "lg:grid-cols-[1fr_200px]"}`}
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 2px 20px rgba(28,18,9,0.06)" }}>
                     <div className={`flex justify-center ${i % 2 !== 0 ? "lg:order-2" : ""}`}>
-                      <div className="h-44 w-44">
-                        <Illust />
-                      </div>
+                      <div className="h-40 w-40"><Illust /></div>
                     </div>
                     <div className={i % 2 !== 0 ? "lg:order-1" : ""}>
                       <div className="flex items-center gap-3 mb-3">
                         <span className="text-sm font-black tracking-[0.2em]" style={{ color: C.accentRed }}>LAYER {num}</span>
                         <span className="rounded-full px-4 py-1 text-sm font-bold"
-                          style={{ background: "rgba(239,68,68,0.12)", color: C.accentRed }}>
-                          {sub}
-                        </span>
+                          style={{ background: "rgba(220,38,38,0.08)", color: C.accentRed }}>{sub}</span>
                       </div>
-                      <h3 className="serif text-3xl font-black" style={{ color: C.text }}>{title}</h3>
-                      <p className="mt-4 text-lg leading-9" style={{ color: C.textMuted }}>{desc}</p>
+                      <h3 className="serif text-3xl font-black" style={{ color: C.lt }}>{title}</h3>
+                      <p className="mt-4 text-lg leading-9" style={{ color: C.ltMuted }}>{desc}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -491,12 +497,12 @@ export default function TalentKeeperLandingPage() {
             </div>
 
             <Reveal delay={0.2}>
-              <div className="mt-8 flex items-start gap-5 rounded-2xl p-7"
-                style={{ background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.2)" }}>
+              <div className="mt-6 flex items-start gap-5 rounded-2xl p-7"
+                style={{ background: "rgba(2,132,199,0.06)", border: "1px solid rgba(2,132,199,0.15)" }}>
                 <span className="text-4xl">🔒</span>
                 <div>
-                  <div className="text-lg font-black" style={{ color: "#38bdf8" }}>高度なセキュリティと中立性を保証</div>
-                  <p className="mt-1 text-base leading-8" style={{ color: "#7dd3fc" }}>
+                  <div className="text-lg font-black" style={{ color: "#0369a1" }}>高度なセキュリティと中立性を保証</div>
+                  <p className="mt-1 text-base leading-8" style={{ color: "#0284c7" }}>
                     高度なセキュリティとプライバシー保護を徹底。中立の外部事務局が公正な解決を支援するため、従業員が安心して本音を話せます。
                   </p>
                 </div>
@@ -512,10 +518,10 @@ export default function TalentKeeperLandingPage() {
             <Reveal>
               <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>CASE STUDIES</p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.text }}>
+                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>
                   早期離職を防いだ<br />4社の選択
                 </h2>
-                <p className="max-w-sm text-base sm:text-right" style={{ color: C.textMuted }}>
+                <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
                   実際の導入企業における、課題・取り組み・成果
                 </p>
               </div>
@@ -558,13 +564,13 @@ export default function TalentKeeperLandingPage() {
               ].map((c, i) => (
                 <Reveal key={c.id} delay={i * 0.1}>
                   <div className="rounded-3xl p-8 h-full flex flex-col gap-5"
-                    style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 2px 20px rgba(28,18,9,0.06)" }}>
                     {/* ヘッダー */}
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <span className="text-xs font-black tracking-[0.2em]" style={{ color: C.textDim }}>{c.id}</span>
-                        <h3 className="serif mt-1 text-2xl font-black" style={{ color: C.text }}>{c.company}</h3>
-                        <span className="text-sm font-bold" style={{ color: C.textMuted }}>{c.industry}</span>
+                        <span className="text-xs font-black tracking-[0.2em]" style={{ color: C.ltDim }}>{c.id}</span>
+                        <h3 className="serif mt-1 text-2xl font-black" style={{ color: C.lt }}>{c.company}</h3>
+                        <span className="text-sm font-bold" style={{ color: C.ltMuted }}>{c.industry}</span>
                       </div>
                       <div className="rounded-full px-4 py-1.5 text-xs font-black shrink-0"
                         style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}40` }}>
@@ -573,22 +579,22 @@ export default function TalentKeeperLandingPage() {
                     </div>
 
                     {/* Before */}
-                    <div className="rounded-xl p-4" style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)" }}>
-                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#f87171" }}>BEFORE — 導入前の課題</p>
-                      <p className="text-sm leading-7" style={{ color: C.textMuted }}>{c.before}</p>
+                    <div className="rounded-xl p-4" style={{ background: "rgba(220,38,38,0.05)", border: "1px solid rgba(220,38,38,0.12)" }}>
+                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#dc2626" }}>BEFORE — 導入前の課題</p>
+                      <p className="text-sm leading-7" style={{ color: C.ltMuted }}>{c.before}</p>
                     </div>
 
                     {/* Action */}
-                    <div className="rounded-xl p-4" style={{ background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)" }}>
-                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#818cf8" }}>ACTION — 取り組み</p>
-                      <p className="text-sm leading-7" style={{ color: C.textMuted }}>{c.action}</p>
+                    <div className="rounded-xl p-4" style={{ background: "rgba(79,70,229,0.05)", border: "1px solid rgba(79,70,229,0.12)" }}>
+                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#4f46e5" }}>ACTION — 取り組み</p>
+                      <p className="text-sm leading-7" style={{ color: C.ltMuted }}>{c.action}</p>
                     </div>
 
                     {/* Result */}
                     <div className="mt-auto rounded-xl p-5 text-center"
                       style={{ background: `${c.color}12`, border: `1px solid ${c.color}30` }}>
                       <p className="serif text-2xl font-black" style={{ color: c.color }}>{c.result}</p>
-                      <p className="mt-1 text-sm font-bold" style={{ color: C.textMuted }}>{c.resultSub}</p>
+                      <p className="mt-1 text-sm font-bold" style={{ color: C.ltMuted }}>{c.resultSub}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -604,9 +610,9 @@ export default function TalentKeeperLandingPage() {
                   { text: "このシステムを導入しているだけで、会社が従業員を大切にしている思いを感じます", role: "元 介護職" },
                 ].map((v, i) => (
                   <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
-                    style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}` }}>
-                    <p className="text-sm leading-7" style={{ color: C.textMuted }}>「{v.text}」</p>
-                    <p className="text-xs font-black" style={{ color: C.textDim }}>— {v.role}</p>
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}` }}>
+                    <p className="text-sm leading-7" style={{ color: C.ltMuted }}>「{v.text}」</p>
+                    <p className="text-xs font-black" style={{ color: C.ltDim }}>— {v.role}</p>
                   </div>
                 ))}
               </div>
@@ -627,7 +633,7 @@ export default function TalentKeeperLandingPage() {
                   <p className="text-base font-black" style={{ color: C.accent }}>
                     1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span>（採用費・教育費・引き継ぎコストの合計）
                   </p>
-                  <p className="mt-1 text-base" style={{ color: C.textMuted }}>
+                  <p className="mt-1 text-base" style={{ color: C.ltMuted }}>
                     月額5万円で、その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>30倍のROI</strong>。
                     離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
                   </p>
@@ -640,8 +646,8 @@ export default function TalentKeeperLandingPage() {
               <div className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
                 <div>
                   <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>05 — PRICING</p>
-                  <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.text }}>料金プラン</h2>
-                  <p className="mt-3 text-base" style={{ color: C.textMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
+                  <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>料金プラン</h2>
+                  <p className="mt-3 text-base" style={{ color: C.ltMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
                 </div>
               </div>
             </Reveal>
@@ -654,7 +660,7 @@ export default function TalentKeeperLandingPage() {
                   <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
                     style={{
                       background: plan.recommended ? C.accent : C.card,
-                      border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.border}`,
+                      border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
                       boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
                     }}>
                     {plan.recommended && (
@@ -664,18 +670,18 @@ export default function TalentKeeperLandingPage() {
                       </div>
                     )}
                     <div className="text-xs font-black tracking-[0.2em] mb-2"
-                      style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>
+                      style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>
                       {plan.nameEn}
                     </div>
-                    <h3 className="serif text-2xl font-black text-white">{plan.name}</h3>
+                    <h3 className="serif text-2xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
 
                     <div className="mt-5 flex items-end gap-1">
-                      <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>月額</span>
-                      <span className="serif text-4xl font-black text-white">¥{plan.price}</span>
-                      <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.textDim }}>（税別）</span>
+                      <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
+                      <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>¥{plan.price}</span>
+                      <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
                     </div>
 
-                    <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.border }} />
+                    <div className="my-5 h-px" style={{ background: plan.recommended ? "rgba(255,255,255,0.2)" : C.ltBorder }} />
 
                     <ul className="space-y-3 flex-1">
                       {[
@@ -686,9 +692,9 @@ export default function TalentKeeperLandingPage() {
                       ].map(([k, v]) => (
                         <li key={k} className="flex flex-col gap-0.5">
                           <span className="text-xs font-black tracking-wide"
-                            style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.textDim }}>{k}</span>
+                            style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.ltDim }}>{k}</span>
                           <span className="text-sm font-bold"
-                            style={{ color: plan.recommended ? "white" : C.text }}>{v}</span>
+                            style={{ color: plan.recommended ? "white" : C.lt }}>{v}</span>
                         </li>
                       ))}
                     </ul>
@@ -708,10 +714,10 @@ export default function TalentKeeperLandingPage() {
               {/* カスタムプラン — カードにしない */}
               <Reveal delay={0.2}>
                 <div className="rounded-3xl p-8 flex flex-col gap-4 lg:w-64"
-                  style={{ border: `1px dashed ${C.border}`, background: "transparent" }}>
-                  <p className="text-xs font-black tracking-[0.2em]" style={{ color: C.textDim }}>CUSTOM</p>
-                  <p className="serif text-xl font-black" style={{ color: C.textMuted }}>規模・ニーズに<br />合わせて設計</p>
-                  <p className="text-sm leading-7" style={{ color: C.textDim }}>
+                  style={{ border: `1px dashed ${C.ltBorder}`, background: "transparent" }}>
+                  <p className="text-xs font-black tracking-[0.2em]" style={{ color: C.ltDim }}>CUSTOM</p>
+                  <p className="serif text-xl font-black" style={{ color: C.ltMuted }}>規模・ニーズに<br />合わせて設計</p>
+                  <p className="text-sm leading-7" style={{ color: C.ltDim }}>
                     フォロー期間・対象人数・オプション構成など、実態に合わせてお見積りします。
                   </p>
                   <a href="#contact" className="text-sm font-black transition hover:opacity-70"
@@ -724,21 +730,21 @@ export default function TalentKeeperLandingPage() {
 
             {/* 機能比較テーブル（2プランのみ） */}
             <Reveal>
-              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.border}` }}>
+              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.ltBorder}` }}>
                 <div className="grid grid-cols-3 text-sm font-black tracking-wide"
                   style={{ background: C.card }}>
-                  <div className="p-4" style={{ color: C.textDim }}>プラン比較</div>
+                  <div className="p-4" style={{ color: C.ltDim }}>プラン比較</div>
                   {plans.map((p) => (
                     <div key={p.nameEn} className="p-4 text-center"
-                      style={{ color: p.recommended ? C.accent : C.textMuted }}>
+                      style={{ color: p.recommended ? C.accent : C.ltMuted }}>
                       {p.nameEn}
                     </div>
                   ))}
                 </div>
                 {featureMatrix.map((row, i) => (
                   <div key={row.label} className="grid grid-cols-3 text-sm"
-                    style={{ background: i % 2 === 0 ? C.bgAlt : "rgba(30,41,59,0.4)", borderTop: `1px solid ${C.border}` }}>
-                    <div className="p-4 font-semibold" style={{ color: C.textMuted }}>{row.label}</div>
+                    style={{ background: i % 2 === 0 ? C.bgAlt : C.card, borderTop: `1px solid ${C.ltBorder}` }}>
+                    <div className="p-4 font-semibold" style={{ color: C.ltMuted }}>{row.label}</div>
                     {[row.basic, row.premium].map((val, j) => (
                       <div key={j} className="p-4 flex items-center justify-center">
                         {val === true ? (
@@ -764,7 +770,7 @@ export default function TalentKeeperLandingPage() {
 
             {/* 安心ワード */}
             <Reveal delay={0.1}>
-              <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.textDim }}>
+              <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.ltDim }}>
                 {["✓ 最低契約期間なし", "✓ 初月無料トライアルあり", "✓ クレジットカード不要", "✓ 即日ご対応"].map((t) => (
                   <span key={t}>{t}</span>
                 ))}
