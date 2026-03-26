@@ -2,69 +2,78 @@ import { useState, useEffect, useRef } from 'react';
 
 /* ── SVG イラストコンポーネント ── */
 
+/* AIチャットボット — チャットバブル＋AI応答 */
 function IllustChatbot() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
-      <rect x="32" y="46" width="56" height="42" rx="14" fill="#f97316" />
-      <rect x="38" y="24" width="44" height="30" rx="12" fill="#fdba74" />
-      <line x1="60" y1="24" x2="60" y2="14" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="60" cy="12" r="4" fill="#f59e0b" />
-      <circle cx="49" cy="36" r="5" fill="white" />
-      <circle cx="71" cy="36" r="5" fill="white" />
-      <circle cx="50" cy="37" r="3" fill="#7c2d12" />
-      <circle cx="72" cy="37" r="3" fill="#7c2d12" />
-      <path d="M50 46 Q60 52 70 46" stroke="#7c2d12" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-      <rect x="72" y="18" width="34" height="22" rx="8" fill="#f1f5f9" />
-      <path d="M76 40 L70 46 L80 40Z" fill="#f1f5f9" />
-      <circle cx="82" cy="29" r="2.5" fill="#f59e0b" />
-      <circle cx="89" cy="29" r="2.5" fill="#f59e0b" />
-      <circle cx="96" cy="29" r="2.5" fill="#f59e0b" />
-      <circle cx="52" cy="62" r="5" fill="#fef3c7" />
-      <circle cx="68" cy="62" r="5" fill="#fef3c7" />
-      <rect x="18" y="52" width="16" height="8" rx="4" fill="#fdba74" />
-      <rect x="86" y="52" width="16" height="8" rx="4" fill="#fdba74" />
+      {/* 背景 */}
+      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
+      {/* 従業員側バブル */}
+      <rect x="14" y="28" width="62" height="34" rx="10" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2"/>
+      <path d="M24 62 L18 74 L36 64" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2" strokeLinejoin="round"/>
+      {/* 入力中ドット */}
+      <circle cx="34" cy="45" r="4" fill="#d97706"/>
+      <circle cx="48" cy="45" r="4" fill="#d97706" opacity="0.5"/>
+      <circle cx="62" cy="45" r="4" fill="#d97706" opacity="0.2"/>
+      {/* AI応答バブル */}
+      <rect x="44" y="66" width="62" height="28" rx="10" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" strokeWidth="2"/>
+      <path d="M96 66 L102 56 L88 64" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" strokeWidth="2" strokeLinejoin="round"/>
+      {/* AI返信テキスト線 */}
+      <line x1="56" y1="76" x2="94" y2="76" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="56" y1="84" x2="82" y2="84" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+      {/* AI スパーク */}
+      <path d="M100 18 L103 12 L106 18 L112 21 L106 24 L103 30 L100 24 L94 21 Z" fill="#f59e0b" opacity="0.85"/>
     </svg>
   );
 }
 
+/* 事務局ウォッチ — ダッシュボード＋モニタリング */
 function IllustMonitor() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
-      <circle cx="60" cy="30" r="14" fill="#fbbf24" />
-      <path d="M46 28 Q50 16 60 18 Q70 16 74 28" fill="#92400e" />
-      <circle cx="54" cy="29" r="2.5" fill="#3b1f0e" />
-      <circle cx="66" cy="29" r="2.5" fill="#3b1f0e" />
-      <path d="M55 36 Q60 40 65 36" stroke="#3b1f0e" strokeWidth="2" strokeLinecap="round" fill="none" />
-      <path d="M44 60 Q44 50 60 48 Q76 50 76 60 L78 82 H42 Z" fill="#f59e0b" />
-      <circle cx="84" cy="50" r="14" stroke="#b45309" strokeWidth="4" fill="#0f172a" />
-      <line x1="94" y1="60" x2="104" y2="72" stroke="#b45309" strokeWidth="5" strokeLinecap="round" />
-      <polyline points="76,55 80,50 84,53 88,46 92,49" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      <path d="M56 72 C56 70 53 67 50 69 C47 71 47 75 50 78 L56 84 L62 78 C65 75 65 71 62 69 C59 67 56 70 56 72Z" fill="#f97316" />
+      {/* 背景 */}
+      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
+      {/* モニター枠 */}
+      <rect x="12" y="18" width="96" height="64" rx="8" fill="rgba(217,119,6,0.07)" stroke="#d97706" strokeWidth="2"/>
+      {/* スタンド */}
+      <path d="M46 82 L42 100 M74 82 L78 100" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="36" y1="100" x2="84" y2="100" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
+      {/* グリッド線（薄） */}
+      <line x1="12" y1="62" x2="108" y2="62" stroke="#d97706" strokeWidth="1" opacity="0.2"/>
+      <line x1="12" y1="44" x2="108" y2="44" stroke="#d97706" strokeWidth="1" opacity="0.2"/>
+      {/* 上昇トレンドライン */}
+      <polyline points="22,72 38,58 54,64 70,46 86,36 102,28"
+        stroke="#d97706" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* データポイント */}
+      <circle cx="38" cy="58" r="3.5" fill="#d97706"/>
+      <circle cx="70" cy="46" r="3.5" fill="#d97706"/>
+      <circle cx="102" cy="28" r="3.5" fill="#f59e0b"/>
+      {/* アラートバッジ */}
+      <circle cx="100" cy="22" r="10" fill="#d97706"/>
+      <line x1="100" y1="18" x2="100" y2="23" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="100" cy="26" r="1.5" fill="white"/>
     </svg>
   );
 }
 
+/* 専門家相談 — プロフェッショナル対話 */
 function IllustCounselor() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="60" cy="60" r="56" fill="#fef3e2" />
-      <circle cx="36" cy="32" r="12" fill="#fbbf24" />
-      <path d="M24 58 Q24 48 36 46 Q48 48 48 58 L50 76 H22 Z" fill="#f59e0b" />
-      <circle cx="32" cy="31" r="2" fill="#3b1f0e" />
-      <circle cx="40" cy="31" r="2" fill="#3b1f0e" />
-      <path d="M33 37 Q36 40 39 37" stroke="#3b1f0e" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      <circle cx="82" cy="32" r="12" fill="#fb923c" />
-      <path d="M70 58 Q70 48 82 46 Q94 48 94 58 L96 76 H68 Z" fill="#fdba74" />
-      <circle cx="78" cy="31" r="2" fill="#3b1f0e" />
-      <circle cx="86" cy="31" r="2" fill="#3b1f0e" />
-      <path d="M79 38 Q82 35 85 38" stroke="#3b1f0e" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      <rect x="42" y="14" width="36" height="20" rx="8" fill="#f1f5f9" />
-      <path d="M56 34 L52 40 L62 34Z" fill="#f1f5f9" />
-      <path d="M54 21 C54 19.5 52 17.5 50 19 C48 20.5 48 23.5 50 25.5 L54 29 L58 25.5 C60 23.5 60 20.5 58 19 C56 17.5 54 19.5 54 21Z" fill="#f59e0b" />
-      <text x="63" y="27" fontSize="8" fill="#f59e0b" fontWeight="bold">♪</text>
-      <path d="M48 78 Q60 68 70 78" stroke="#f97316" strokeWidth="3" strokeLinecap="round" fill="none" strokeDasharray="4 3" />
+      {/* 背景 */}
+      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
+      {/* 従業員（左） */}
+      <circle cx="32" cy="36" r="14" fill="rgba(217,119,6,0.12)" stroke="#d97706" strokeWidth="2"/>
+      <path d="M12 80 Q12 62 32 62 Q52 62 52 80" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
+      {/* 専門家（右） */}
+      <circle cx="88" cy="36" r="14" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" strokeWidth="2"/>
+      <path d="M68 80 Q68 62 88 62 Q108 62 108 80" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
+      {/* 専門家バッジ（資格） */}
+      <circle cx="98" cy="26" r="8" fill="#d97706"/>
+      <path d="M95 26 L97 28.5 L102 23" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* 中央の接続線（対話） */}
+      <path d="M50 44 Q60 36 70 44" stroke="#92400e" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+      <path d="M52 50 Q60 58 68 50" stroke="#92400e" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.5"/>
     </svg>
   );
 }
