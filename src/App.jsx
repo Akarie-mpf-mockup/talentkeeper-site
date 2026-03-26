@@ -62,7 +62,7 @@ function IllustCounselor() {
       <path d="M79 38 Q82 35 85 38" stroke="#3b1f0e" strokeWidth="1.8" strokeLinecap="round" fill="none" />
       <rect x="42" y="14" width="36" height="20" rx="8" fill="#f1f5f9" />
       <path d="M56 34 L52 40 L62 34Z" fill="#f1f5f9" />
-      <path d="M54 21 C54 19.5 52 17.5 50 19 C48 20.5 48 23.5 50 25.5 L54 29 L58 25.5 C60 23.5 60 20.5 58 19 C56 17.5 54 19.5 54 21Z" fill="#f472b6" />
+      <path d="M54 21 C54 19.5 52 17.5 50 19 C48 20.5 48 23.5 50 25.5 L54 29 L58 25.5 C60 23.5 60 20.5 58 19 C56 17.5 54 19.5 54 21Z" fill="#f59e0b" />
       <text x="63" y="27" fontSize="8" fill="#f59e0b" fontWeight="bold">♪</text>
       <path d="M48 78 Q60 68 70 78" stroke="#f97316" strokeWidth="3" strokeLinecap="round" fill="none" strokeDasharray="4 3" />
     </svg>
@@ -233,14 +233,14 @@ export default function TalentKeeperLandingPage() {
   };
 
   const C = {
-    // ダーク（ナビ・ヒーロー・コンタクト）
-    nav:       "#0c1220",
-    darkCard:  "#1e2d42",
-    cardDark:  "#162035",
-    text:      "#f1f5f9",
-    textMuted: "#94a3b8",
-    textDim:   "#64748b",
-    border:    "rgba(255,255,255,0.07)",
+    // ダーク（ナビ・ヒーロー・コンタクト）— ウォームダークに統一
+    nav:       "#100d08",
+    darkCard:  "#1e1a12",
+    cardDark:  "#17130a",
+    text:      "#f5f0e8",
+    textMuted: "#b8aa99",
+    textDim:   "#8a7a69",
+    border:    "rgba(255,220,150,0.08)",
     highlight: "#f59e0b",
 
     // ライト（コンテンツセクション）
@@ -252,9 +252,9 @@ export default function TalentKeeperLandingPage() {
     ltDim:     "#9c8878",
     ltBorder:  "rgba(0,0,0,0.09)",
 
-    // 共通アクセント
+    // ブランドアクセント（amber 1色体系）
     accent:    "#d97706",
-    accentRed: "#dc2626",
+    accentRed: "#dc2626",   // フォーム必須 * とエラーのみ使用
   };
 
   const features = [
@@ -483,7 +483,7 @@ export default function TalentKeeperLandingPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
               <div className="mb-16">
-                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>HOW IT WORKS</p>
+                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>HOW IT WORKS</p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                   <h2 className="serif text-4xl font-black leading-snug lg:text-5xl" style={{ color: C.lt }}>
                     三層サポート体制で<br />漏れなく支える
@@ -505,9 +505,9 @@ export default function TalentKeeperLandingPage() {
                     </div>
                     <div className={i % 2 !== 0 ? "lg:order-1" : ""}>
                       <div className="flex items-center gap-3 mb-3">
-                        <span className="text-sm font-black tracking-[0.2em]" style={{ color: C.accentRed }}>LAYER {num}</span>
+                        <span className="text-sm font-black tracking-[0.2em]" style={{ color: C.accent }}>LAYER {num}</span>
                         <span className="rounded-full px-4 py-1 text-sm font-bold"
-                          style={{ background: "rgba(220,38,38,0.08)", color: C.accentRed }}>{sub}</span>
+                          style={{ background: "rgba(217,119,6,0.1)", color: C.accent }}>{sub}</span>
                       </div>
                       <h3 className="serif text-3xl font-black" style={{ color: C.lt }}>{title}</h3>
                       <p className="mt-4 text-lg leading-9" style={{ color: C.ltMuted }}>{desc}</p>
@@ -519,11 +519,11 @@ export default function TalentKeeperLandingPage() {
 
             <Reveal delay={0.2}>
               <div className="mt-6 flex items-start gap-5 rounded-2xl p-7"
-                style={{ background: "rgba(2,132,199,0.06)", border: "1px solid rgba(2,132,199,0.15)" }}>
+                style={{ background: "rgba(217,119,6,0.06)", border: "1px solid rgba(217,119,6,0.2)" }}>
                 <span className="text-4xl">🔒</span>
                 <div>
-                  <div className="text-lg font-black" style={{ color: "#0369a1" }}>高度なセキュリティと中立性を保証</div>
-                  <p className="mt-1 text-base leading-8" style={{ color: "#0284c7" }}>
+                  <div className="text-lg font-black" style={{ color: "#92400e" }}>高度なセキュリティと中立性を保証</div>
+                  <p className="mt-1 text-base leading-8" style={{ color: C.ltMuted }}>
                     高度なセキュリティとプライバシー保護を徹底。中立の外部事務局が公正な解決を支援するため、従業員が安心して本音を話せます。
                   </p>
                 </div>
@@ -557,7 +557,7 @@ export default function TalentKeeperLandingPage() {
                   action: "チャット相談（約20分）で気軽に相談できる環境を提供。体力的負担や人間関係の違和感を早期キャッチ。",
                   result: "初年度離職率 3%改善",
                   resultSub: "1名あたり30万円のコスト削減",
-                  color: "#34d399",
+                  color: "#92400e",
                 },
                 {
                   id: "CASE 02", company: "N社", industry: "小売業（店舗複数）",
@@ -566,7 +566,7 @@ export default function TalentKeeperLandingPage() {
                   action: "第三者窓口による本音の収集。短期・中期・長期の段階的アクション計画を策定。",
                   result: "退職を未然に回避",
                   resultSub: "前向きな異動希望を実現",
-                  color: "#60a5fa",
+                  color: "#b45309",
                 },
                 {
                   id: "CASE 03", company: "K社", industry: "医療・介護施設",
@@ -575,7 +575,7 @@ export default function TalentKeeperLandingPage() {
                   action: "正直な意見の収集と適切な取捨選択。現場運用のグレーゾーンを可視化し、ルール統一を実現。",
                   result: "機会ロス大幅減少",
                   resultSub: "経営判断のスピードが向上",
-                  color: "#f59e0b",
+                  color: "#d97706",
                 },
                 {
                   id: "CASE 04", company: "S社", industry: "スタートアップ",
@@ -584,7 +584,7 @@ export default function TalentKeeperLandingPage() {
                   action: "事業所外の相談窓口を設置。ハラスメント疑いを本社へエスカレーション。段階的な対応を実施。",
                   result: "「もっと頑張りたい」",
                   resultSub: "モチベーション向上・定着実現",
-                  color: "#f472b6",
+                  color: "#f59e0b",
                 },
               ].map((c, i) => (
                 <Reveal key={c.id} delay={i * 0.1}>
@@ -611,8 +611,8 @@ export default function TalentKeeperLandingPage() {
                     </div>
 
                     {/* Action */}
-                    <div className="rounded-xl p-4" style={{ background: "rgba(79,70,229,0.05)", border: "1px solid rgba(79,70,229,0.12)" }}>
-                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#4f46e5" }}>ACTION — 取り組み</p>
+                    <div className="rounded-xl p-4" style={{ background: "rgba(217,119,6,0.05)", border: "1px solid rgba(217,119,6,0.18)" }}>
+                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#92400e" }}>ACTION — 取り組み</p>
                       <p className="text-sm leading-7" style={{ color: C.ltMuted }}>{c.action}</p>
                     </div>
 
@@ -671,7 +671,7 @@ export default function TalentKeeperLandingPage() {
             <Reveal>
               <div className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
                 <div>
-                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>05 — PRICING</p>
+                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>05 — PRICING</p>
                   <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>料金プラン</h2>
                   <p className="mt-3 text-base" style={{ color: C.ltMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
                 </div>
@@ -774,7 +774,7 @@ export default function TalentKeeperLandingPage() {
                     {[row.basic, row.premium].map((val, j) => (
                       <div key={j} className="p-4 flex items-center justify-center">
                         {val === true ? (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#34d399" strokeWidth="2.5">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#d97706" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
                         ) : val === false ? (
@@ -810,7 +810,7 @@ export default function TalentKeeperLandingPage() {
         <section style={{ background: C.bg }} className="py-24">
           <div className="mx-auto max-w-4xl px-6 lg:px-12">
             <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accentRed }}>FAQ</p>
+              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>FAQ</p>
               <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>よくある質問</h2>
             </Reveal>
             <div className="mt-12 space-y-4">
