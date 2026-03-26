@@ -308,13 +308,13 @@ export default function TalentKeeperLandingPage() {
   ];
 
   const featureMatrix = [
-    { label: "AIチャットボット（24h対応）",  basic: true,       premium: true,       enterprise: true        },
-    { label: "事務局モニタリング",            basic: true,       premium: true,       enterprise: true        },
-    { label: "月次レポート",                  basic: true,       premium: true,       enterprise: true        },
-    { label: "最大同時フォロー人数",          basic: "30名",     premium: "60名",     enterprise: "上限なし"  },
-    { label: "お悩み面談 相談枠",            basic: "月5枠",    premium: "月10枠",   enterprise: "カスタム"  },
-    { label: "専任担当者",                    basic: false,      premium: false,      enterprise: true        },
-    { label: "推奨企業規模",                  basic: "中小企業", premium: "中堅企業", enterprise: "大企業"    },
+    { label: "AIチャットボット（24h対応）",  basic: true,       premium: true,       enterprise: "ご相談" },
+    { label: "事務局モニタリング",            basic: true,       premium: true,       enterprise: "ご相談" },
+    { label: "月次レポート",                  basic: true,       premium: true,       enterprise: "ご相談" },
+    { label: "最大同時フォロー人数",          basic: "30名",     premium: "60名",     enterprise: "ご相談" },
+    { label: "お悩み面談 相談枠",            basic: "月5枠",    premium: "月10枠",   enterprise: "ご相談" },
+    { label: "専任担当者",                    basic: false,      premium: false,      enterprise: "ご相談" },
+    { label: "推奨企業規模",                  basic: "中小企業", premium: "中堅企業", enterprise: "ご相談" },
   ];
 
   return (
@@ -653,7 +653,7 @@ export default function TalentKeeperLandingPage() {
                 style={{ background: "rgba(146,64,14,0.06)", border: "1px solid rgba(146,64,14,0.15)" }}>
                 <span className="text-2xl shrink-0">💡</span>
                 <p className="text-base font-bold leading-8" style={{ color: "#92400e" }}>
-                  <strong>AI任せではなく、専任スタッフが24時間365日対応。</strong>
+                  <strong>AI任せではなく、専任スタッフが常時対応。</strong>
                   従業員の相談は7〜8割が営業時間外に発生します。その瞬間に寄り添える仕組みが、定着率を変えます。
                 </p>
               </div>
