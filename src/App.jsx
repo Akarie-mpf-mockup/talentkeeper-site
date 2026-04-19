@@ -87,8 +87,8 @@ function IntroScreen({ onDone }) {
   const [showCursor2, setShowCursor2] = useState(false);
   const [fading, setFading] = useState(false);
 
-  const text1 = '今日も、誰かが辞めようとしています。';
-  const text2 = 'あなたは気づけていますか？';
+  const text1 = '仕組みがあれば、定着は変わります。';
+  const text2 = '100人以上の声から生まれたサービス。';
 
   const handleSkip = () => {
     setFading(true);
@@ -130,7 +130,7 @@ function IntroScreen({ onDone }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: '#070d1a',
+      background: '#ffffff',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       flexDirection: 'column',
       transition: 'opacity 0.9s ease',
@@ -140,8 +140,8 @@ function IntroScreen({ onDone }) {
       {/* スキップボタン */}
       <button onClick={handleSkip} style={{
         position: 'absolute', top: '24px', right: '28px',
-        background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)',
-        color: 'rgba(255,255,255,0.45)', borderRadius: '999px',
+        background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.12)',
+        color: 'rgba(28,18,9,0.4)', borderRadius: '999px',
         padding: '6px 16px', fontSize: '12px', fontWeight: 700,
         cursor: 'pointer', letterSpacing: '0.08em', transition: 'opacity 0.2s',
       }}
@@ -156,7 +156,7 @@ function IntroScreen({ onDone }) {
         <p style={{
           fontSize: 'clamp(1.3rem, 3.5vw, 2.1rem)',
           fontWeight: 900,
-          color: '#f1f5f9',
+          color: '#1c1209',
           letterSpacing: '0.06em',
           lineHeight: 1.9,
           fontFamily: "'Noto Sans JP', sans-serif",
@@ -243,8 +243,10 @@ export default function TalentKeeperLandingPage() {
   };
 
   const C = {
-    // ダーク（ナビ・ヒーロー・コンタクト）— ウォームダークに統一
-    nav:       "#100d08",
+    // ライト（ナビ・ヒーロー）
+    nav:       "#fefcf8",
+    // ダーク（コンタクト・フッター用）
+    darkBg:    "#100d08",
     darkCard:  "#1e1a12",
     cardDark:  "#17130a",
     text:      "#f5f0e8",
@@ -337,7 +339,7 @@ export default function TalentKeeperLandingPage() {
       }} className="min-h-screen">
 
         {/* ─── Navigation ─── */}
-        <nav style={{ background: C.nav, borderBottom: `1px solid ${C.border}` }} className="sticky top-0 z-50">
+        <nav style={{ background: C.nav, borderBottom: `1px solid ${C.ltBorder}` }} className="sticky top-0 z-50">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-12">
             {/* ロゴ */}
             <a href="#" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
@@ -346,7 +348,7 @@ export default function TalentKeeperLandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                 </svg>
               </div>
-              <span className="serif text-xl font-black tracking-wide text-white">TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
+              <span className="serif text-xl font-black tracking-wide" style={{ color: C.lt }}>TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
             </a>
 
             {/* PC ナビ */}
@@ -371,11 +373,11 @@ export default function TalentKeeperLandingPage() {
             <button className="md:hidden flex flex-col gap-1.5 p-2" onClick={() => setMobileOpen(o => !o)}
               aria-label="メニュー">
               <span className="block h-0.5 w-6 rounded transition-all"
-                style={{ background: C.text, transform: mobileOpen ? 'translateY(8px) rotate(45deg)' : 'none' }} />
+                style={{ background: C.lt, transform: mobileOpen ? 'translateY(8px) rotate(45deg)' : 'none' }} />
               <span className="block h-0.5 w-6 rounded transition-all"
-                style={{ background: C.text, opacity: mobileOpen ? 0 : 1 }} />
+                style={{ background: C.lt, opacity: mobileOpen ? 0 : 1 }} />
               <span className="block h-0.5 w-6 rounded transition-all"
-                style={{ background: C.text, transform: mobileOpen ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
+                style={{ background: C.lt, transform: mobileOpen ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
             </button>
           </div>
 
@@ -386,7 +388,7 @@ export default function TalentKeeperLandingPage() {
               {navLinks.map(([label, href]) => (
                 <a key={label} href={href}
                   className="rounded-xl px-4 py-3 text-sm font-black tracking-[0.12em] transition hover:opacity-80"
-                  style={{ color: C.textMuted, background: "rgba(255,255,255,0.04)" }}
+                  style={{ color: C.ltMuted, background: "rgba(0,0,0,0.04)" }}
                   onClick={() => setMobileOpen(false)}>
                   {label}
                 </a>
@@ -405,7 +407,6 @@ export default function TalentKeeperLandingPage() {
         <section style={{ background: C.nav, position: 'relative', overflow: 'hidden' }}>
           {/* 動くオーブ背景 */}
           <div className="hero-orb hero-orb-1" />
-          <div className="hero-orb hero-orb-2" />
           <div className="hero-orb hero-orb-3" />
 
           <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-24 lg:px-12 lg:pb-32 lg:pt-32">
@@ -417,24 +418,24 @@ export default function TalentKeeperLandingPage() {
                     <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: C.accent }} />
                     新入社員の定着支援サービス
                   </div>
-                  <p className="mb-5 text-sm font-bold" style={{ color: C.textDim }}>
+                  <p className="mb-5 text-sm font-bold" style={{ color: C.ltDim }}>
                     月5〜20名採用している中小・中堅企業の人事担当者・経営者へ
                   </p>
                 </Reveal>
                 <Reveal delay={0.1}>
-                  <h1 className="serif text-5xl font-black leading-snug text-white sm:text-6xl lg:text-[3.6rem]">
-                    その声を、<br />拾える仕組みが<br />ありますか？
+                  <h1 className="serif text-5xl font-black leading-snug sm:text-6xl lg:text-[3.6rem]" style={{ color: C.lt }}>
+                    仕組みで、<br />定着は<br />変わります。
                   </h1>
                 </Reveal>
                 <Reveal delay={0.2}>
-                  <p className="mt-5 text-xl font-bold" style={{ color: C.highlight }}>
-                    "大丈夫です"の裏で、転職サイトを開いていた。
+                  <p className="mt-5 text-xl font-bold" style={{ color: C.accent }}>
+                    声を拾う仕組みがあれば、多くの離職は防げます。
                   </p>
-                  <p className="mt-3 text-lg leading-9" style={{ color: C.textMuted }}>
-                    辞める人は、必ず一度だけ助けを求めています。
+                  <p className="mt-3 text-lg leading-9" style={{ color: C.ltMuted }}>
+                    100人以上のヒアリングが、このサービスの土台です。
                   </p>
-                  <p className="mt-4 max-w-lg text-lg leading-9" style={{ color: C.textDim }}>
-                    新入社員の60.6%が1年後も不安を抱え続ける現実<span className="text-xs align-super" style={{ color: C.textDim }}>※1</span>。三層サポート体制と24時間対応で、離職リスクを初期段階で察知します。
+                  <p className="mt-4 max-w-lg text-lg leading-9" style={{ color: C.ltDim }}>
+                    新入社員が定着する職場には、共通の仕組みがあります。三層サポート体制と24時間対応で、早期離職を未然に防ぎます。
                   </p>
                 </Reveal>
                 <Reveal delay={0.3}>
@@ -455,11 +456,11 @@ export default function TalentKeeperLandingPage() {
                   </div>
                 </Reveal>
                 <Reveal delay={0.4}>
-                  <div className="mt-12 flex flex-wrap gap-8 border-t pt-8" style={{ borderColor: C.border }}>
+                  <div className="mt-12 flex flex-wrap gap-8 border-t pt-8" style={{ borderColor: C.ltBorder }}>
                     {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"], ["30×", "ROI試算"]].map(([v, l]) => (
                       <div key={l}>
-                        <div className="serif text-3xl font-black" style={{ color: C.highlight }}>{v}</div>
-                        <div className="mt-0.5 text-sm font-bold" style={{ color: C.textDim }}>{l}</div>
+                        <div className="serif text-3xl font-black" style={{ color: C.accent }}>{v}</div>
+                        <div className="mt-0.5 text-sm font-bold" style={{ color: C.ltDim }}>{l}</div>
                       </div>
                     ))}
                   </div>
@@ -468,7 +469,7 @@ export default function TalentKeeperLandingPage() {
 
               {/* stat card */}
               <Reveal from="right" delay={0.2}>
-                <div className="rounded-3xl p-8" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                <div className="rounded-3xl p-8" style={{ background: C.card, border: `1px solid ${C.ltBorder}` }}>
                   <p className="mb-6 text-sm font-black tracking-[0.2em] uppercase" style={{ color: C.accent }}>実態データ</p>
                   <div className="space-y-5">
                     {[
@@ -494,7 +495,7 @@ export default function TalentKeeperLandingPage() {
 
           {/* curve */}
           <svg viewBox="0 0 1440 64" preserveAspectRatio="none" style={{ display: "block", background: C.bg }}>
-            <path d="M0 64 C360 0 1080 0 1440 64 L1440 0 L0 0 Z" fill={C.nav} />
+            <path d="M0 64 C360 0 1080 0 1440 64 L1440 0 L0 0 Z" fill={C.nav} opacity="0.6" />
           </svg>
         </section>
 
@@ -1072,7 +1073,7 @@ export default function TalentKeeperLandingPage() {
         </section>
 
         {/* ─── Contact ─── */}
-        <section id="contact" style={{ background: C.nav, position: 'relative', overflow: 'hidden' }} className="py-24">
+        <section id="contact" style={{ background: C.darkBg, position: 'relative', overflow: 'hidden' }} className="py-24">
           <div className="hero-orb hero-orb-contact" />
           <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
             <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr] items-start">
