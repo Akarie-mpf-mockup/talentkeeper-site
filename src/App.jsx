@@ -1,189 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 
-/* ── SVG イラストコンポーネント ── */
-
-/* AIチャットボット — チャットバブル＋AI応答 */
-function IllustChatbot() {
-  return (
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* 背景 */}
-      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
-      {/* 従業員側バブル */}
-      <rect x="14" y="28" width="62" height="34" rx="10" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2"/>
-      <path d="M24 62 L18 74 L36 64" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2" strokeLinejoin="round"/>
-      {/* 入力中ドット */}
-      <circle cx="34" cy="45" r="4" fill="#d97706"/>
-      <circle cx="48" cy="45" r="4" fill="#d97706" opacity="0.5"/>
-      <circle cx="62" cy="45" r="4" fill="#d97706" opacity="0.2"/>
-      {/* AI応答バブル */}
-      <rect x="44" y="66" width="62" height="28" rx="10" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" strokeWidth="2"/>
-      <path d="M96 66 L102 56 L88 64" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" strokeWidth="2" strokeLinejoin="round"/>
-      {/* AI返信テキスト線 */}
-      <line x1="56" y1="76" x2="94" y2="76" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="56" y1="84" x2="82" y2="84" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
-      {/* AI スパーク */}
-      <path d="M100 18 L103 12 L106 18 L112 21 L106 24 L103 30 L100 24 L94 21 Z" fill="#f59e0b" opacity="0.85"/>
-    </svg>
-  );
-}
-
-/* 事務局ウォッチ — ダッシュボード＋モニタリング */
-function IllustMonitor() {
-  return (
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* 背景 */}
-      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
-      {/* モニター枠 */}
-      <rect x="12" y="18" width="96" height="64" rx="8" fill="rgba(217,119,6,0.07)" stroke="#d97706" strokeWidth="2"/>
-      {/* スタンド */}
-      <path d="M46 82 L42 100 M74 82 L78 100" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="36" y1="100" x2="84" y2="100" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
-      {/* グリッド線（薄） */}
-      <line x1="12" y1="62" x2="108" y2="62" stroke="#d97706" strokeWidth="1" opacity="0.2"/>
-      <line x1="12" y1="44" x2="108" y2="44" stroke="#d97706" strokeWidth="1" opacity="0.2"/>
-      {/* 上昇トレンドライン */}
-      <polyline points="22,72 38,58 54,64 70,46 86,36 102,28"
-        stroke="#d97706" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      {/* データポイント */}
-      <circle cx="38" cy="58" r="3.5" fill="#d97706"/>
-      <circle cx="70" cy="46" r="3.5" fill="#d97706"/>
-      <circle cx="102" cy="28" r="3.5" fill="#f59e0b"/>
-      {/* アラートバッジ */}
-      <circle cx="100" cy="22" r="10" fill="#d97706"/>
-      <line x1="100" y1="18" x2="100" y2="23" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="100" cy="26" r="1.5" fill="white"/>
-    </svg>
-  );
-}
-
-/* 専門家相談 — プロフェッショナル対話 */
-function IllustCounselor() {
-  return (
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* 背景 */}
-      <rect x="4" y="4" width="112" height="112" rx="28" fill="#fef9ee"/>
-      {/* 従業員（左） */}
-      <circle cx="32" cy="36" r="14" fill="rgba(217,119,6,0.12)" stroke="#d97706" strokeWidth="2"/>
-      <path d="M12 80 Q12 62 32 62 Q52 62 52 80" fill="rgba(217,119,6,0.1)" stroke="#d97706" strokeWidth="2" strokeLinecap="round"/>
-      {/* 専門家（右） */}
-      <circle cx="88" cy="36" r="14" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" strokeWidth="2"/>
-      <path d="M68 80 Q68 62 88 62 Q108 62 108 80" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/>
-      {/* 専門家バッジ（資格） */}
-      <circle cx="98" cy="26" r="8" fill="#d97706"/>
-      <path d="M95 26 L97 28.5 L102 23" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      {/* 中央の接続線（対話） */}
-      <path d="M50 44 Q60 36 70 44" stroke="#92400e" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
-      <path d="M52 50 Q60 58 68 50" stroke="#92400e" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.5"/>
-    </svg>
-  );
-}
-
-/* ── タイプライター イントロ ── */
-function IntroScreen({ onDone }) {
-  const [line1, setLine1] = useState('');
-  const [line2, setLine2] = useState('');
-  const [showCursor1, setShowCursor1] = useState(true);
-  const [showLine2, setShowLine2] = useState(false);
-  const [showCursor2, setShowCursor2] = useState(false);
-  const [fading, setFading] = useState(false);
-
-  const text1 = '仕組みがあれば、定着は変わります。';
-  const text2 = '100人以上の声から生まれたサービス。';
-
-  const handleSkip = () => {
-    setFading(true);
-    setTimeout(onDone, 400);
-  };
-
-  useEffect(() => {
-    let i = 0;
-    const t1 = setInterval(() => {
-      i++;
-      setLine1(text1.slice(0, i));
-      if (i >= text1.length) {
-        clearInterval(t1);
-        setShowCursor1(false);
-        setTimeout(() => {
-          setShowLine2(true);
-          setShowCursor2(true);
-          let j = 0;
-          const t2 = setInterval(() => {
-            j++;
-            setLine2(text2.slice(0, j));
-            if (j >= text2.length) {
-              clearInterval(t2);
-              setTimeout(() => {
-                setShowCursor2(false);
-                setTimeout(() => {
-                  setFading(true);
-                  setTimeout(onDone, 900);
-                }, 300);
-              }, 1400);
-            }
-          }, 80);
-        }, 700);
-      }
-    }, 65);
-    return () => clearInterval(t1);
-  }, []);
-
-  return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 9999,
-      background: '#ffffff',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      flexDirection: 'column',
-      transition: 'opacity 0.9s ease',
-      opacity: fading ? 0 : 1,
-      pointerEvents: fading ? 'none' : 'all',
-    }}>
-      {/* スキップボタン */}
-      <button onClick={handleSkip} style={{
-        position: 'absolute', top: '24px', right: '28px',
-        background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.12)',
-        color: 'rgba(28,18,9,0.4)', borderRadius: '999px',
-        padding: '6px 16px', fontSize: '12px', fontWeight: 700,
-        cursor: 'pointer', letterSpacing: '0.08em', transition: 'opacity 0.2s',
-      }}
-        onMouseOver={e => e.currentTarget.style.opacity = '0.7'}
-        onMouseOut={e => e.currentTarget.style.opacity = '1'}>
-        SKIP →
-      </button>
-
-      {/* 装飾ライン */}
-      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(245,158,11,0.15), transparent)', transform: 'translateY(-80px)' }} />
-      <div style={{ textAlign: 'center', padding: '2rem', maxWidth: '720px' }}>
-        <p style={{
-          fontSize: 'clamp(1.3rem, 3.5vw, 2.1rem)',
-          fontWeight: 900,
-          color: '#1c1209',
-          letterSpacing: '0.06em',
-          lineHeight: 1.9,
-          fontFamily: "'Noto Sans JP', sans-serif",
-          minHeight: '3rem',
-        }}>
-          {line1}
-          {showCursor1 && <span className="intro-cursor">|</span>}
-        </p>
-        {showLine2 && (
-          <p style={{
-            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
-            fontWeight: 700,
-            color: '#f59e0b',
-            letterSpacing: '0.1em',
-            marginTop: '1.8rem',
-            fontFamily: "'Noto Sans JP', sans-serif",
-            minHeight: '2rem',
-          }}>
-            {line2}
-            {showCursor2 && <span className="intro-cursor">|</span>}
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
-
 /* ── スクロール表示フック ── */
 function useInView(threshold = 0.12) {
   const ref = useRef(null);
@@ -216,7 +32,6 @@ function Reveal({ children, delay = 0, from = 'bottom' }) {
 
 /* ── メインコンポーネント ── */
 export default function TalentKeeperLandingPage() {
-  const [introDone, setIntroDone] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [billing, setBilling] = useState('annual'); // 'annual' | 'monthly'
   const [formData, setFormData] = useState({ company: '', name: '', email: '', size: '', message: '' });
@@ -244,28 +59,30 @@ export default function TalentKeeperLandingPage() {
 
   const C = {
     // ライト（ナビ・ヒーロー）
-    nav:       "#fefcf8",
+    nav:       "#ffffff",
     // ダーク（コンタクト・フッター用）
-    darkBg:    "#100d08",
-    darkCard:  "#1e1a12",
-    cardDark:  "#17130a",
-    text:      "#f5f0e8",
-    textMuted: "#b8aa99",
-    textDim:   "#8a7a69",
-    border:    "rgba(255,220,150,0.08)",
-    highlight: "#f59e0b",
+    darkBg:    "#0b1220",
+    darkCard:  "#1e293b",
+    cardDark:  "#0f172a",
+    text:      "#f1f5f9",
+    textMuted: "#94a3b8",
+    textDim:   "#64748b",
+    border:    "rgba(255,255,255,0.08)",
 
     // ライト（コンテンツセクション）
-    bg:        "#f8f5f0",
-    bgAlt:     "#f0ece6",
+    bg:        "#ffffff",
+    bgAlt:     "#f8fafc",
     card:      "#ffffff",
-    lt:        "#1c1209",
-    ltMuted:   "#6b5845",
-    ltDim:     "#9c8878",
-    ltBorder:  "rgba(0,0,0,0.09)",
+    lt:        "#0f172a",
+    ltMuted:   "#475569",
+    ltDim:     "#94a3b8",
+    ltBorder:  "rgba(15,23,42,0.08)",
 
-    // ブランドアクセント（amber 1色体系）
-    accent:    "#d97706",
+    // ブランド: ネイビー基調 + 橙CTA
+    accent:    "#1e3a8a",   // ラベル・見出し下線・タグなど編集アクセント
+    accentDeep:"#172554",   // 強いネイビー（バッジ等）
+    cta:       "#d97706",   // CTA ボタン専用
+    ctaLight:  "#f59e0b",   // CTA hover / ホットな数字（30倍ROIなど）
     accentRed: "#dc2626",   // フォーム必須 * とエラーのみ使用
   };
 
@@ -275,17 +92,10 @@ export default function TalentKeeperLandingPage() {
     { num: "03", title: "エンゲージメント可視化", text: "入社者ごとの状態変化を見える化し、どこに支援が必要かを整理。現場と人事が同じ景色を見やすくします。" },
   ];
 
-  const stages = [
-    { num: "01", title: "小さな不満・違和感", desc: "「思っていたのと違う」という小さなモヤモヤが蓄積し始める段階。この時点での対応が最も効果的です。", color: "#f59e0b" },
-    { num: "02", title: "孤立・相談機会の喪失", desc: "誰にも言えず一人で抱え込み、エンゲージメントが静かに、しかし確実に低下していく。", color: "#f97316" },
-    { num: "03", title: "深刻化・転職検討", desc: "転職サイトへの登録や情報収集が始まり、離職の意思が固まっていく段階。", color: "#ef4444" },
-    { num: "04", title: "組織崩壊・連鎖離職", desc: "エース級人材の離脱を機に組織全体の士気と生産性が急落する最終段階。", color: "#b91c1c" },
-  ];
-
   const supports = [
-    { Illust: IllustChatbot,  num: "01", title: "AIチャットボット", sub: "24時間 365日対応", desc: "いつでも吐き出せる場所をつくります。職場の悩みは夜や休日に増大するため、24時間体制で小さな声を受け止めます。" },
-    { Illust: IllustMonitor,  num: "02", title: "事務局ウォッチ",   sub: "専門スタッフが継続監視", desc: "AIが集めた情報を専門スタッフが継続モニタリング。未解決の課題を早期に掬い上げ、必要に応じてエスカレーションします。" },
-    { Illust: IllustCounselor,num: "03", title: "専門家相談",       sub: "産業カウンセラーが対応", desc: "中立の外部機関だからこそ話せる本音があります。産業カウンセラーや人事のプロが、深い悩みに丁寧に向き合います。" },
+    { num: "01", title: "AIチャットボット", sub: "24時間 365日対応", desc: "いつでも吐き出せる場所をつくります。職場の悩みは夜や休日に増大するため、24時間体制で小さな声を受け止めます。" },
+    { num: "02", title: "事務局ウォッチ",   sub: "専門スタッフが継続監視", desc: "AIが集めた情報を専門スタッフが継続モニタリング。未解決の課題を早期に掬い上げ、必要に応じてエスカレーションします。" },
+    { num: "03", title: "専門家相談",       sub: "産業カウンセラーが対応", desc: "中立の外部機関だからこそ話せる本音があります。産業カウンセラーや人事のプロが、深い悩みに丁寧に向き合います。" },
   ];
 
   const plans = [
@@ -329,32 +139,25 @@ export default function TalentKeeperLandingPage() {
   ];
 
   return (
-    <>
-      {!introDone && <IntroScreen onDone={() => setIntroDone(true)} />}
-
-      <div style={{
-        background: C.bg, color: C.text,
-        opacity: introDone ? 1 : 0,
-        transition: 'opacity 0.9s ease',
-      }} className="min-h-screen">
+      <div style={{ background: C.bg, color: C.lt }} className="min-h-screen">
 
         {/* ─── Navigation ─── */}
         <nav style={{ background: C.nav, borderBottom: `1px solid ${C.ltBorder}` }} className="sticky top-0 z-50">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-12">
             {/* ロゴ */}
             <a href="#" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: C.accent }}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: C.cta }}>
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                 </svg>
               </div>
-              <span className="serif text-xl font-black tracking-wide" style={{ color: C.lt }}>TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
+              <span className="serif text-xl font-semibold tracking-[0.08em]" style={{ color: C.lt }}>TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
             </a>
 
             {/* PC ナビ */}
             <div className="hidden items-center gap-8 md:flex">
               {navLinks.map(([label, href]) => (
-                <a key={label} href={href} className="text-xs font-bold tracking-[0.15em] transition"
+                <a key={label} href={href} className="text-xs font-medium tracking-[0.12em] transition"
                   style={{ color: C.textDim }}
                   onMouseOver={e => e.target.style.color = C.accent}
                   onMouseOut={e => e.target.style.color = C.textDim}>
@@ -365,7 +168,7 @@ export default function TalentKeeperLandingPage() {
 
             {/* PC CTA */}
             <a href="#contact" className="hidden md:inline-flex rounded-full px-6 py-2.5 text-base font-bold text-white transition hover:opacity-80"
-              style={{ background: C.accent }}>
+              style={{ background: C.cta }}>
               お問い合わせ
             </a>
 
@@ -383,19 +186,19 @@ export default function TalentKeeperLandingPage() {
 
           {/* モバイル ドロワー */}
           <div className="md:hidden overflow-hidden transition-all duration-300"
-            style={{ maxHeight: mobileOpen ? '400px' : '0', borderTop: mobileOpen ? `1px solid ${C.border}` : 'none' }}>
+            style={{ maxHeight: mobileOpen ? '400px' : '0', borderTop: mobileOpen ? `1px solid ${C.ltBorder}` : 'none' }}>
             <div className="flex flex-col px-6 py-6 gap-2" style={{ background: C.nav }}>
               {navLinks.map(([label, href]) => (
                 <a key={label} href={href}
-                  className="rounded-xl px-4 py-3 text-sm font-black tracking-[0.12em] transition hover:opacity-80"
+                  className="rounded-xl px-4 py-3 text-sm font-semibold tracking-[0.08em] transition hover:opacity-80"
                   style={{ color: C.ltMuted, background: "rgba(0,0,0,0.04)" }}
                   onClick={() => setMobileOpen(false)}>
                   {label}
                 </a>
               ))}
               <a href="#contact"
-                className="mt-2 rounded-full px-6 py-3 text-base font-black text-white text-center transition hover:opacity-80"
-                style={{ background: C.accent }}
+                className="mt-2 rounded-full px-6 py-3 text-base font-bold text-white text-center transition hover:opacity-80"
+                style={{ background: C.cta }}
                 onClick={() => setMobileOpen(false)}>
                 無料でお問い合わせ
               </a>
@@ -405,16 +208,12 @@ export default function TalentKeeperLandingPage() {
 
         {/* ─── Hero ─── */}
         <section style={{ background: C.nav, position: 'relative', overflow: 'hidden' }}>
-          {/* 動くオーブ背景 */}
-          <div className="hero-orb hero-orb-1" />
-          <div className="hero-orb hero-orb-3" />
-
           <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-24 lg:px-12 lg:pb-32 lg:pt-32">
             <div className="grid items-center gap-16 lg:grid-cols-2">
               <div>
                 <Reveal>
                   <div className="mb-4 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold"
-                    style={{ background: "rgba(245,158,11,0.12)", color: C.accent, border: `1px solid rgba(245,158,11,0.25)` }}>
+                    style={{ background: "rgba(30,58,138,0.06)", color: C.accent, border: `1px solid rgba(30,58,138,0.18)` }}>
                     <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: C.accent }} />
                     新入社員の定着支援サービス
                   </div>
@@ -423,7 +222,7 @@ export default function TalentKeeperLandingPage() {
                   </p>
                 </Reveal>
                 <Reveal delay={0.1}>
-                  <h1 className="serif text-5xl font-black leading-snug sm:text-6xl lg:text-[3.6rem]" style={{ color: C.lt }}>
+                  <h1 className="serif text-5xl font-bold leading-snug sm:text-6xl lg:text-[3.6rem]" style={{ color: C.lt }}>
                     仕組みで、<br />定着は<br />変わります。
                   </h1>
                 </Reveal>
@@ -442,7 +241,7 @@ export default function TalentKeeperLandingPage() {
                   <div className="mt-10 flex flex-wrap gap-4">
                     <a href="#contact"
                       className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:opacity-80"
-                      style={{ background: C.accent }}>
+                      style={{ background: C.cta }}>
                       無料デモを予約する
                       <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -450,7 +249,7 @@ export default function TalentKeeperLandingPage() {
                     </a>
                     <a href="#how"
                       className="rounded-full border px-8 py-4 text-lg font-bold transition hover:opacity-80"
-                      style={{ borderColor: C.border, color: C.textMuted }}>
+                      style={{ borderColor: C.ltBorder, color: C.ltMuted }}>
                       サービスを見る
                     </a>
                   </div>
@@ -459,7 +258,7 @@ export default function TalentKeeperLandingPage() {
                   <div className="mt-12 flex flex-wrap gap-8 border-t pt-8" style={{ borderColor: C.ltBorder }}>
                     {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"], ["30×", "ROI試算"]].map(([v, l]) => (
                       <div key={l}>
-                        <div className="serif text-3xl font-black" style={{ color: C.accent }}>{v}</div>
+                        <div className="serif text-3xl font-bold" style={{ color: C.accent }}>{v}</div>
                         <div className="mt-0.5 text-sm font-bold" style={{ color: C.ltDim }}>{l}</div>
                       </div>
                     ))}
@@ -469,21 +268,24 @@ export default function TalentKeeperLandingPage() {
 
               {/* stat card */}
               <Reveal from="right" delay={0.2}>
-                <div className="rounded-3xl p-8" style={{ background: C.card, border: `1px solid ${C.ltBorder}` }}>
-                  <p className="mb-6 text-sm font-black tracking-[0.2em] uppercase" style={{ color: C.accent }}>実態データ</p>
-                  <div className="space-y-5">
+                <div className="border-l pl-8 py-2" style={{ borderColor: C.ltBorder }}>
+                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>実態データ</p>
+                  <p className="mt-3 text-sm" style={{ color: C.ltDim }}>パーソル総合研究所 ほか</p>
+
+                  <div className="mt-8 space-y-7">
                     {[
-                      { label: "入社後1年で未解決の不安を抱える割合", value: "60.6%", bar: 61, color: "#ef4444" },
-                      { label: "最も不安のピークを迎えるタイミング", value: "入社1ヶ月", bar: 80, color: C.highlight },
-                      { label: "早期離職の採用コストロス倍率", value: "約3倍", bar: 75, color: "#f97316" },
-                    ].map((s) => (
-                      <div key={s.label} className="rounded-2xl p-5" style={{ background: C.cardDark }}>
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-base" style={{ color: C.textMuted }}>{s.label}</span>
-                          <span className="serif shrink-0 text-3xl font-black" style={{ color: s.color }}>{s.value}</span>
-                        </div>
-                        <div className="mt-3 h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.06)" }}>
-                          <div className="h-1.5 rounded-full" style={{ width: `${s.bar}%`, background: s.color }} />
+                      { label: "入社後1年で未解決の不安を抱える割合", value: "60.6", unit: "%" },
+                      { label: "最も不安のピークを迎えるタイミング", value: "入社1", unit: "ヶ月" },
+                      { label: "早期離職の採用コストロス倍率", value: "約3", unit: "倍" },
+                    ].map((s, i) => (
+                      <div key={s.label} className="flex items-baseline gap-5">
+                        <span className="font-semibold text-xs tabular-nums" style={{ color: C.ltDim, minWidth: '1.5em' }}>0{i + 1}</span>
+                        <div className="flex-1">
+                          <div className="flex items-baseline gap-1">
+                            <span className="serif text-5xl font-bold leading-none" style={{ color: C.lt }}>{s.value}</span>
+                            <span className="serif text-xl font-bold" style={{ color: C.lt }}>{s.unit}</span>
+                          </div>
+                          <p className="mt-2 text-sm leading-6" style={{ color: C.ltMuted }}>{s.label}</p>
                         </div>
                       </div>
                     ))}
@@ -493,10 +295,6 @@ export default function TalentKeeperLandingPage() {
             </div>
           </div>
 
-          {/* curve */}
-          <svg viewBox="0 0 1440 64" preserveAspectRatio="none" style={{ display: "block", background: C.bg }}>
-            <path d="M0 64 C360 0 1080 0 1440 64 L1440 0 L0 0 Z" fill={C.nav} opacity="0.6" />
-          </svg>
         </section>
 
 
@@ -505,9 +303,9 @@ export default function TalentKeeperLandingPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
               <div className="mb-16">
-                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>HOW IT WORKS</p>
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>HOW IT WORKS</p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                  <h2 className="serif text-4xl font-black leading-snug lg:text-5xl" style={{ color: C.lt }}>
+                  <h2 className="serif text-4xl font-bold leading-snug lg:text-5xl" style={{ color: C.lt }}>
                     三層サポート体制で<br />漏れなく支える
                   </h2>
                   <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
@@ -517,22 +315,21 @@ export default function TalentKeeperLandingPage() {
               </div>
             </Reveal>
 
-            <div className="space-y-6">
-              {supports.map(({ Illust, num, title, sub, desc }, i) => (
-                <Reveal key={num} from={i % 2 === 0 ? 'left' : 'right'} delay={0.1}>
-                  <div className={`grid items-center gap-10 rounded-3xl p-8 lg:p-12 ${i % 2 === 0 ? "lg:grid-cols-[200px_1fr]" : "lg:grid-cols-[1fr_200px]"}`}
-                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 2px 20px rgba(28,18,9,0.06)" }}>
-                    <div className={`flex justify-center ${i % 2 !== 0 ? "lg:order-2" : ""}`}>
-                      <div className="h-40 w-40"><Illust /></div>
+            <div>
+              {supports.map(({ num, title, sub, desc }, i) => (
+                <Reveal key={num} delay={i * 0.08}>
+                  <div className="grid gap-8 py-12 lg:py-14 lg:grid-cols-[140px_1fr_auto] lg:gap-12 items-baseline border-t"
+                    style={{ borderColor: C.ltBorder }}>
+                    <div className="serif text-6xl lg:text-7xl font-bold leading-none tabular-nums" style={{ color: C.lt }}>
+                      {num}
                     </div>
-                    <div className={i % 2 !== 0 ? "lg:order-1" : ""}>
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-sm font-black tracking-[0.2em]" style={{ color: C.accent }}>LAYER {num}</span>
-                        <span className="rounded-full px-4 py-1 text-sm font-bold"
-                          style={{ background: "rgba(217,119,6,0.1)", color: C.accent }}>{sub}</span>
-                      </div>
-                      <h3 className="serif text-3xl font-black" style={{ color: C.lt }}>{title}</h3>
-                      <p className="mt-4 text-lg leading-9" style={{ color: C.ltMuted }}>{desc}</p>
+                    <div>
+                      <h3 className="serif text-3xl lg:text-4xl font-bold leading-tight" style={{ color: C.lt }}>{title}</h3>
+                      <p className="mt-5 text-base lg:text-lg leading-8 max-w-2xl" style={{ color: C.ltMuted }}>{desc}</p>
+                    </div>
+                    <div className="text-xs font-semibold tracking-[0.16em] uppercase whitespace-nowrap lg:text-right lg:pt-2"
+                      style={{ color: C.accent }}>
+                      {sub}
                     </div>
                   </div>
                 </Reveal>
@@ -540,11 +337,13 @@ export default function TalentKeeperLandingPage() {
             </div>
 
             <Reveal delay={0.2}>
-              <div className="mt-6 flex items-start gap-5 rounded-2xl p-7"
-                style={{ background: "rgba(217,119,6,0.06)", border: "1px solid rgba(217,119,6,0.2)" }}>
-                <span className="text-4xl">🔒</span>
+              <div className="mt-6 flex items-start gap-5 rounded-xl p-7"
+                style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
+                <svg className="h-7 w-7 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke={C.accent} strokeWidth="1.6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
                 <div>
-                  <div className="text-lg font-black" style={{ color: "#92400e" }}>高度なセキュリティと中立性を保証</div>
+                  <div className="text-lg font-bold" style={{ color: C.accent }}>高度なセキュリティと中立性を保証</div>
                   <p className="mt-1 text-base leading-8" style={{ color: C.ltMuted }}>
                     高度なセキュリティとプライバシー保護を徹底。中立の外部事務局が公正な解決を支援するため、従業員が安心して本音を話せます。
                   </p>
@@ -559,9 +358,9 @@ export default function TalentKeeperLandingPage() {
         <section style={{ background: C.bgAlt }} className="py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>WHY US</p>
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>WHY US</p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>
+                <h2 className="serif text-4xl font-bold lg:text-5xl" style={{ color: C.lt }}>
                   他の手段と、<br />何が違うのか
                 </h2>
                 <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
@@ -571,18 +370,18 @@ export default function TalentKeeperLandingPage() {
             </Reveal>
 
             <Reveal delay={0.1}>
-              <div className="mt-12 overflow-x-auto rounded-3xl" style={{ border: `1px solid ${C.ltBorder}` }}>
+              <div className="mt-12 overflow-x-auto rounded-xl" style={{ border: `1px solid ${C.ltBorder}` }}>
                 <table className="w-full text-sm min-w-[640px]">
                   <thead>
                     <tr style={{ background: C.bg }}>
-                      <th className="p-5 text-left font-black" style={{ color: C.ltDim, width: "24%" }}>手段</th>
+                      <th className="p-5 text-left font-bold" style={{ color: C.ltDim, width: "24%" }}>手段</th>
                       {[
                         ["24h即応", "緊急・夜間の対応"],
                         ["本音が出やすい", "心理的安全性"],
                         ["個別対応", "一人ひとりに寄り添う"],
                         ["継続フォロー", "解決まで伴走"],
                       ].map(([label, sub]) => (
-                        <th key={label} className="p-5 text-center font-black" style={{ color: C.ltDim }}>
+                        <th key={label} className="p-5 text-center font-bold" style={{ color: C.ltDim }}>
                           <div>{label}</div>
                           <div className="text-xs font-bold mt-0.5" style={{ color: C.ltDim }}>{sub}</div>
                         </th>
@@ -627,7 +426,7 @@ export default function TalentKeeperLandingPage() {
                         borderTop: `1px solid ${row.tk ? "rgba(255,255,255,0.15)" : C.ltBorder}`,
                       }}>
                         <td className="p-5">
-                          <div className="font-black text-sm whitespace-pre-line"
+                          <div className="font-bold text-sm whitespace-pre-line"
                             style={{ color: row.tk ? "white" : C.lt }}>
                             {row.name}
                           </div>
@@ -638,11 +437,11 @@ export default function TalentKeeperLandingPage() {
                         </td>
                         {row.vals.map((v, j) => (
                           <td key={j} className="p-5 text-center">
-                            <span className="text-lg font-black" style={{
+                            <span className="text-lg font-bold" style={{
                               color: row.tk
                                 ? "white"
                                 : v === "◎" ? C.accent
-                                : v === "○" ? "#b45309"
+                                : v === "○" ? C.accent
                                 : v === "△" ? C.ltDim
                                 : "#c4b5a0",
                             }}>
@@ -659,11 +458,11 @@ export default function TalentKeeperLandingPage() {
 
             {/* KEY TAKEAWAY */}
             <Reveal delay={0.15}>
-              <div className="mt-8 rounded-2xl p-6 flex items-start gap-4"
-                style={{ background: "rgba(146,64,14,0.06)", border: "1px solid rgba(146,64,14,0.15)" }}>
-                <span className="text-2xl shrink-0">💡</span>
-                <p className="text-base font-bold leading-8" style={{ color: "#92400e" }}>
-                  <strong>AI任せではなく、専任スタッフが常時対応。</strong>
+              <div className="mt-8 rounded-xl p-6 flex items-start gap-4"
+                style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
+                <div className="shrink-0 mt-1 w-0.5 h-12 rounded-full" style={{ background: C.accent }} />
+                <p className="text-base leading-8" style={{ color: C.ltMuted }}>
+                  <strong style={{ color: C.lt }}>AI任せではなく、専任スタッフが常時対応。</strong>
                   従業員の相談は7〜8割が営業時間外に発生します。その瞬間に寄り添える仕組みが、定着率を変えます。
                 </p>
               </div>
@@ -672,12 +471,12 @@ export default function TalentKeeperLandingPage() {
         </section>
 
         {/* ─── Case Studies ─── */}
-        <section style={{ background: C.bgAlt }} className="py-24">
+        <section style={{ background: C.bg }} className="py-28" id="cases">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>CASE STUDIES</p>
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>CASE STUDIES</p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="serif text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>
+                <h2 className="serif text-4xl font-bold lg:text-5xl" style={{ color: C.lt }}>
                   早期離職を防いだ<br />4社の選択
                 </h2>
                 <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
@@ -695,7 +494,6 @@ export default function TalentKeeperLandingPage() {
                   action: "チャット相談（約20分）で気軽に相談できる環境を提供。体力的負担や人間関係の違和感を早期キャッチ。",
                   result: "初年度離職率 3%改善",
                   resultSub: "1名あたり30万円のコスト削減",
-                  color: "#92400e",
                 },
                 {
                   id: "CASE 02", company: "N社", industry: "小売業（店舗複数）",
@@ -704,7 +502,6 @@ export default function TalentKeeperLandingPage() {
                   action: "第三者窓口による本音の収集。短期・中期・長期の段階的アクション計画を策定。",
                   result: "退職を未然に回避",
                   resultSub: "前向きな異動希望を実現",
-                  color: "#b45309",
                 },
                 {
                   id: "CASE 03", company: "K社", industry: "医療・介護施設",
@@ -713,7 +510,6 @@ export default function TalentKeeperLandingPage() {
                   action: "正直な意見の収集と適切な取捨選択。現場運用のグレーゾーンを可視化し、ルール統一を実現。",
                   result: "機会ロス大幅減少",
                   resultSub: "経営判断のスピードが向上",
-                  color: "#d97706",
                 },
                 {
                   id: "CASE 04", company: "S社", industry: "スタートアップ",
@@ -722,43 +518,36 @@ export default function TalentKeeperLandingPage() {
                   action: "事業所外の相談窓口を設置。ハラスメント疑いを本社へエスカレーション。段階的な対応を実施。",
                   result: "「もっと頑張りたい」",
                   resultSub: "モチベーション向上・定着実現",
-                  color: "#f59e0b",
                 },
               ].map((c, i) => (
                 <Reveal key={c.id} delay={i * 0.1}>
-                  <div className="rounded-3xl p-8 h-full flex flex-col gap-5"
-                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 2px 20px rgba(28,18,9,0.06)" }}>
+                  <div className="rounded-xl p-8 h-full flex flex-col"
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}` }}>
                     {/* ヘッダー */}
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <span className="text-xs font-black tracking-[0.2em]" style={{ color: C.ltDim }}>{c.id}</span>
-                        <h3 className="serif mt-1 text-2xl font-black" style={{ color: C.lt }}>{c.company}</h3>
-                        <span className="text-sm font-bold" style={{ color: C.ltMuted }}>{c.industry}</span>
-                        <span className="block mt-1 text-xs font-bold" style={{ color: C.ltDim }}>{c.meta}</span>
-                      </div>
-                      <div className="rounded-full px-4 py-1.5 text-xs font-black shrink-0"
-                        style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}40` }}>
-                        導入事例
-                      </div>
+                    <div className="pb-5 mb-5 border-b" style={{ borderColor: C.ltBorder }}>
+                      <span className="text-xs font-semibold tracking-[0.22em]" style={{ color: C.ltDim }}>{c.id}</span>
+                      <h3 className="serif mt-2 text-2xl font-bold" style={{ color: C.lt }}>{c.company}</h3>
+                      <p className="mt-1 text-sm" style={{ color: C.ltMuted }}>{c.industry}</p>
+                      <p className="mt-0.5 text-xs" style={{ color: C.ltDim }}>{c.meta}</p>
                     </div>
 
                     {/* Before */}
-                    <div className="rounded-xl p-4" style={{ background: "rgba(220,38,38,0.05)", border: "1px solid rgba(220,38,38,0.12)" }}>
-                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#dc2626" }}>BEFORE — 導入前の課題</p>
+                    <div className="mb-5">
+                      <p className="text-[10px] font-semibold tracking-[0.22em] mb-2" style={{ color: C.ltDim }}>BEFORE</p>
                       <p className="text-sm leading-7" style={{ color: C.ltMuted }}>{c.before}</p>
                     </div>
 
                     {/* Action */}
-                    <div className="rounded-xl p-4" style={{ background: "rgba(217,119,6,0.05)", border: "1px solid rgba(217,119,6,0.18)" }}>
-                      <p className="text-xs font-black tracking-wide mb-2" style={{ color: "#92400e" }}>ACTION — 取り組み</p>
+                    <div className="mb-6">
+                      <p className="text-[10px] font-semibold tracking-[0.22em] mb-2" style={{ color: C.ltDim }}>ACTION</p>
                       <p className="text-sm leading-7" style={{ color: C.ltMuted }}>{c.action}</p>
                     </div>
 
                     {/* Result */}
-                    <div className="mt-auto rounded-xl p-5 text-center"
-                      style={{ background: `${c.color}12`, border: `1px solid ${c.color}30` }}>
-                      <p className="serif text-2xl font-black" style={{ color: c.color }}>{c.result}</p>
-                      <p className="mt-1 text-sm font-bold" style={{ color: C.ltMuted }}>{c.resultSub}</p>
+                    <div className="mt-auto pt-5 border-t" style={{ borderColor: C.ltBorder }}>
+                      <p className="text-[10px] font-semibold tracking-[0.22em] mb-2" style={{ color: C.accent }}>RESULT</p>
+                      <p className="serif text-2xl font-bold" style={{ color: C.lt }}>{c.result}</p>
+                      <p className="mt-1 text-sm" style={{ color: C.ltMuted }}>{c.resultSub}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -773,10 +562,10 @@ export default function TalentKeeperLandingPage() {
                   { text: "社内の人か、社外の人が選べるのがいいです。第三者に判断してもらいたい時があります", role: "不動産 営業職" },
                   { text: "このシステムを導入しているだけで、会社が従業員を大切にしている思いを感じます", role: "元 介護職" },
                 ].map((v, i) => (
-                  <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
+                  <div key={i} className="rounded-xl p-5 flex flex-col gap-3"
                     style={{ background: C.card, border: `1px solid ${C.ltBorder}` }}>
                     <p className="text-sm leading-7" style={{ color: C.ltMuted }}>「{v.text}」</p>
-                    <p className="text-xs font-black" style={{ color: C.ltDim }}>— {v.role}</p>
+                    <p className="text-xs font-bold" style={{ color: C.ltDim }}>— {v.role}</p>
                   </div>
                 ))}
               </div>
@@ -790,15 +579,16 @@ export default function TalentKeeperLandingPage() {
 
             {/* ROI アンカー */}
             <Reveal>
-              <div className="mb-14 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-5"
-                style={{ background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)" }}>
-                <div className="text-4xl shrink-0">💡</div>
+              <div className="mb-14 rounded-xl px-7 py-6 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
+                <div className="shrink-0 self-stretch w-0.5 rounded-full hidden sm:block" style={{ background: C.accent }} />
                 <div>
-                  <p className="text-base font-black" style={{ color: C.accent }}>
-                    1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span>（採用費・教育費・引き継ぎコストの合計）
+                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>ROI</p>
+                  <p className="mt-2 text-base font-bold leading-7" style={{ color: C.lt }}>
+                    1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span><span className="text-sm font-medium" style={{ color: C.ltMuted }}>（採用費・教育費・引き継ぎコストの合計）</span>
                   </p>
-                  <p className="mt-1 text-base" style={{ color: C.ltMuted }}>
-                    月額5万円〜。その損失を1件防ぐだけで <strong style={{ color: C.highlight }}>30倍のROI</strong>。
+                  <p className="mt-2 text-base leading-7" style={{ color: C.ltMuted }}>
+                    月額5万円〜。その損失を1件防ぐだけで <strong style={{ color: C.cta }}>30倍のROI</strong>。
                     離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
                   </p>
                 </div>
@@ -809,26 +599,26 @@ export default function TalentKeeperLandingPage() {
             <Reveal>
               <div className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
                 <div>
-                  <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>05 — PRICING</p>
-                  <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>料金プラン</h2>
+                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>05 — PRICING</p>
+                  <h2 className="serif mt-4 text-4xl font-bold lg:text-5xl" style={{ color: C.lt }}>料金プラン</h2>
                   <p className="mt-3 text-base" style={{ color: C.ltMuted }}>フォロー期間・対象人数に応じて柔軟にお見積りします</p>
                 </div>
 
                 {/* 契約期間トグル */}
-                <div className="flex items-center gap-1 rounded-2xl p-1.5 self-start sm:self-auto"
+                <div className="flex items-center gap-1 rounded-xl p-1.5 self-start sm:self-auto"
                   style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}` }}>
                   {[['annual', '年次契約', '33%OFF'], ['monthly', '月次契約', null]].map(([key, label, badge]) => (
                     <button key={key} onClick={() => setBilling(key)}
-                      className="relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-black transition-all"
+                      className="relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all"
                       style={{
                         background: billing === key ? C.accent : 'transparent',
                         color: billing === key ? 'white' : C.ltMuted,
                       }}>
                       {label}
                       {badge && (
-                        <span className="rounded-full px-2 py-0.5 text-xs font-black"
+                        <span className="rounded-full px-2 py-0.5 text-xs font-bold"
                           style={{
-                            background: billing === key ? 'rgba(0,0,0,0.18)' : 'rgba(217,119,6,0.12)',
+                            background: billing === key ? 'rgba(0,0,0,0.18)' : 'rgba(30,58,138,0.12)',
                             color: billing === key ? 'white' : C.accent,
                           }}>
                           {badge}
@@ -846,26 +636,24 @@ export default function TalentKeeperLandingPage() {
                 <Reveal key={plan.name} delay={i * 0.1}>
                   {plan.enterprise ? (
                     /* Enterprise カード */
-                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                    <div className="relative rounded-xl p-8 h-full flex flex-col transition hover:-translate-y-0.5"
                       style={{
-                        background: C.nav,
-                        border: `1px solid rgba(255,220,150,0.15)`,
-                        boxShadow: "0 8px 32px rgba(16,13,8,0.18)",
+                        background: "#f8fafc",
+                        border: `1px solid ${C.ltBorder}`,
                       }}>
-                      <div className="text-xs font-black tracking-[0.2em] mb-2"
-                        style={{ color: "rgba(245,158,11,0.6)" }}>
+                      <div className="text-xs font-semibold tracking-[0.14em] mb-2" style={{ color: C.ltDim }}>
                         {plan.nameEn}
                       </div>
-                      <h3 className="serif text-2xl font-black" style={{ color: C.text }}>{plan.name}</h3>
+                      <h3 className="serif text-2xl font-bold" style={{ color: C.lt }}>{plan.name}</h3>
 
                       <div className="mt-5">
-                        <p className="serif text-3xl font-black" style={{ color: C.highlight }}>ご相談</p>
-                        <p className="mt-1 text-xs font-bold" style={{ color: C.textDim }}>
+                        <p className="serif text-3xl font-bold" style={{ color: C.lt }}>ご相談</p>
+                        <p className="mt-1 text-xs" style={{ color: C.ltMuted }}>
                           規模・要件に応じてお見積りします
                         </p>
                       </div>
 
-                      <div className="my-5 h-px" style={{ background: C.border }} />
+                      <div className="my-5 h-px" style={{ background: C.ltBorder }} />
 
                       <ul className="space-y-3 flex-1">
                         {[
@@ -875,45 +663,45 @@ export default function TalentKeeperLandingPage() {
                           ["推奨規模", plan.target],
                         ].map(([k, v]) => (
                           <li key={k} className="flex flex-col gap-0.5">
-                            <span className="text-xs font-black tracking-wide" style={{ color: C.textDim }}>{k}</span>
-                            <span className="text-sm font-bold" style={{ color: C.textMuted }}>{v}</span>
+                            <span className="text-xs font-semibold tracking-[0.08em]" style={{ color: C.ltDim }}>{k}</span>
+                            <span className="text-sm font-medium" style={{ color: C.lt }}>{v}</span>
                           </li>
                         ))}
                       </ul>
 
                       <a href="#contact"
-                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
-                        style={{ background: "rgba(245,158,11,0.15)", color: C.highlight, border: `1px solid rgba(245,158,11,0.3)` }}>
+                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-bold transition hover:opacity-80"
+                        style={{ background: "transparent", color: C.lt, border: `1.5px solid ${C.lt}` }}>
                         内容を相談する
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                         </svg>
                       </a>
                     </div>
                   ) : (
                     /* Basic / Premium カード */
-                    <div className="relative rounded-3xl p-8 h-full flex flex-col transition hover:-translate-y-1"
+                    <div className="relative rounded-xl p-8 h-full flex flex-col transition hover:-translate-y-0.5"
                       style={{
                         background: plan.recommended ? C.accent : C.card,
-                        border: plan.recommended ? `2px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
-                        boxShadow: plan.recommended ? `0 24px 60px rgba(245,158,11,0.22)` : "none",
+                        border: plan.recommended ? `1px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
+                        boxShadow: plan.recommended ? `0 12px 40px rgba(15,23,42,0.12)` : "none",
                       }}>
                       {plan.recommended && (
-                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-5 py-1 text-xs font-black text-white"
-                          style={{ background: "#92400e" }}>
-                          {billing === 'annual' ? '★ 年次契約 20%OFF' : '★ いちばん選ばれています'}
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[10px] font-semibold tracking-[0.18em] text-white uppercase"
+                          style={{ background: C.cta }}>
+                          {billing === 'annual' ? 'Most Popular — 20% OFF' : 'Most Popular'}
                         </div>
                       )}
-                      <div className="text-xs font-black tracking-[0.2em] mb-2"
+                      <div className="text-xs font-semibold tracking-[0.14em] mb-2"
                         style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>
                         {plan.nameEn}
                       </div>
-                      <h3 className="serif text-2xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
+                      <h3 className="serif text-2xl font-bold" style={{ color: plan.recommended ? "white" : C.lt }}>{plan.name}</h3>
 
                       <div className="mt-5">
                         <div className="flex items-end gap-1">
                           <span className="text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>月額</span>
-                          <span className="serif text-4xl font-black" style={{ color: plan.recommended ? "white" : C.lt }}>
+                          <span className="serif text-4xl font-bold" style={{ color: plan.recommended ? "white" : C.lt }}>
                             ¥{billing === 'annual' ? plan.priceAnnual : plan.priceMonthly}
                           </span>
                           <span className="mb-1 text-sm font-bold" style={{ color: plan.recommended ? "rgba(255,255,255,0.65)" : C.ltDim }}>（税別）</span>
@@ -942,7 +730,7 @@ export default function TalentKeeperLandingPage() {
                           ["推奨規模", plan.target],
                         ].map(([k, v]) => (
                           <li key={k} className="flex flex-col gap-0.5">
-                            <span className="text-xs font-black tracking-wide"
+                            <span className="text-xs font-semibold tracking-[0.08em]"
                               style={{ color: plan.recommended ? "rgba(255,255,255,0.5)" : C.ltDim }}>{k}</span>
                             <span className="text-sm font-bold"
                               style={{ color: plan.recommended ? "white" : C.lt }}>{v}</span>
@@ -951,8 +739,8 @@ export default function TalentKeeperLandingPage() {
                       </ul>
 
                       <a href="#contact"
-                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-black transition hover:opacity-80"
-                        style={{ background: plan.recommended ? "rgba(0,0,0,0.18)" : C.accent, color: "white" }}>
+                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-bold transition hover:opacity-80"
+                        style={{ background: C.cta, color: "white" }}>
                         無料デモを予約する
                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -966,13 +754,13 @@ export default function TalentKeeperLandingPage() {
 
             {/* 機能比較テーブル（2プランのみ） */}
             <Reveal>
-              <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${C.ltBorder}` }}>
-                <div className="grid grid-cols-4 text-sm font-black tracking-wide"
+              <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${C.ltBorder}` }}>
+                <div className="grid grid-cols-4 text-sm font-semibold tracking-[0.08em]"
                   style={{ background: C.card }}>
                   <div className="p-4" style={{ color: C.ltDim }}>プラン比較</div>
                   {plans.map((p) => (
                     <div key={p.nameEn} className="p-4 text-center"
-                      style={{ color: p.recommended ? C.accent : p.enterprise ? C.highlight : C.ltMuted }}>
+                      style={{ color: p.recommended ? C.accent : p.enterprise ? C.accent : C.ltMuted }}>
                       {p.nameEn}
                     </div>
                   ))}
@@ -984,7 +772,7 @@ export default function TalentKeeperLandingPage() {
                     {[row.basic, row.premium, row.enterprise].map((val, j) => (
                       <div key={j} className="p-4 flex items-center justify-center">
                         {val === true ? (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#d97706" strokeWidth="2.5">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke={C.accent} strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
                         ) : val === false ? (
@@ -992,8 +780,8 @@ export default function TalentKeeperLandingPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                           </svg>
                         ) : (
-                          <span className="rounded-full px-3 py-0.5 text-xs font-black"
-                            style={{ background: "rgba(245,158,11,0.12)", color: C.accent }}>
+                          <span className="rounded-full px-3 py-0.5 text-xs font-bold"
+                            style={{ background: "rgba(30,58,138,0.12)", color: C.accent }}>
                             {val}
                           </span>
                         )}
@@ -1025,8 +813,8 @@ export default function TalentKeeperLandingPage() {
         <section style={{ background: C.bg }} className="py-24">
           <div className="mx-auto max-w-4xl px-6 lg:px-12">
             <Reveal>
-              <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>FAQ</p>
-              <h2 className="serif mt-4 text-4xl font-black lg:text-5xl" style={{ color: C.lt }}>よくある質問</h2>
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>FAQ</p>
+              <h2 className="serif mt-4 text-4xl font-bold lg:text-5xl" style={{ color: C.lt }}>よくある質問</h2>
             </Reveal>
             <div className="mt-12 space-y-4">
               {[
@@ -1052,9 +840,9 @@ export default function TalentKeeperLandingPage() {
                 },
               ].map((item, i) => (
                 <Reveal key={i} delay={i * 0.05}>
-                  <details className="group rounded-2xl overflow-hidden"
+                  <details className="group rounded-xl overflow-hidden"
                     style={{ border: `1px solid ${C.ltBorder}`, background: C.card }}>
-                    <summary className="flex items-center justify-between gap-4 px-7 py-5 cursor-pointer list-none font-black text-base"
+                    <summary className="flex items-center justify-between gap-4 px-7 py-5 cursor-pointer list-none font-bold text-base"
                       style={{ color: C.lt }}>
                       <span>Q. {item.q}</span>
                       <svg className="shrink-0 transition-transform group-open:rotate-45" width="20" height="20"
@@ -1080,8 +868,8 @@ export default function TalentKeeperLandingPage() {
 
               {/* 左：見出し＋安心材料 */}
               <Reveal>
-                <p className="text-sm font-black tracking-[0.25em] uppercase" style={{ color: C.accent }}>06 — CONTACT</p>
-                <h2 className="serif mt-5 text-4xl font-black text-white lg:text-5xl">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>06 — CONTACT</p>
+                <h2 className="serif mt-5 text-4xl font-bold text-white lg:text-5xl">
                   まずは、<br />無料デモを予約する
                 </h2>
                 <p className="mt-6 text-lg leading-9" style={{ color: C.textMuted }}>
@@ -1106,73 +894,80 @@ export default function TalentKeeperLandingPage() {
 
               {/* 右：フォーム */}
               <Reveal from="right" delay={0.15}>
-                <div className="rounded-3xl p-8 lg:p-10" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+                <div className="rounded-xl p-8 lg:p-10" style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 24px 60px rgba(15,23,42,0.25)" }}>
                   {formStatus === 'sent' ? (
                     <div className="text-center py-10">
-                      <div className="text-5xl mb-4">✅</div>
-                      <h3 className="serif text-2xl font-black" style={{ color: C.lt }}>送信しました！</h3>
-                      <p className="mt-3 text-base" style={{ color: C.textMuted }}>
+                      <div className="mb-5 mx-auto flex h-14 w-14 items-center justify-center rounded-full" style={{ background: "rgba(30,58,138,0.08)" }}>
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke={C.accent} strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                      </div>
+                      <h3 className="serif text-2xl font-bold" style={{ color: C.lt }}>送信しました</h3>
+                      <p className="mt-3 text-base" style={{ color: C.ltMuted }}>
                         1〜2営業日以内にご連絡いたします。
                       </p>
                     </div>
                   ) : (
                     <>
-                    <div className="mb-5 flex items-center justify-between">
-                      <p className="text-base font-black" style={{ color: C.lt }}>お問い合わせフォーム</p>
-                      <span className="text-xs font-bold rounded-full px-3 py-1"
-                        style={{ background: "rgba(217,119,6,0.1)", color: C.accent }}>
-                        ⏱ 約30秒で入力完了
+                    <div className="mb-6 flex items-center justify-between">
+                      <p className="text-base font-bold" style={{ color: C.lt }}>お問い合わせフォーム</p>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1"
+                        style={{ background: "rgba(30,58,138,0.06)", color: C.accent }}>
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        約30秒で入力完了
                       </span>
                     </div>
                     <form onSubmit={handleFormSubmit} className="space-y-5">
                       <div className="grid gap-5 sm:grid-cols-2">
                         {/* 会社名 */}
                         <div>
-                          <label className="block text-sm font-black mb-2" style={{ color: C.textMuted }}>
+                          <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
                             会社名 <span style={{ color: C.accentRed }}>*</span>
                           </label>
                           <input type="text" name="company" required value={formData.company} onChange={handleFormChange}
                             placeholder="株式会社〇〇"
                             className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                            style={{ background: C.bgAlt, border: `1px solid ${C.border}`, color: C.text }}
+                            style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                             onFocus={e => e.target.style.borderColor = C.accent}
-                            onBlur={e => e.target.style.borderColor = C.border} />
+                            onBlur={e => e.target.style.borderColor = C.ltBorder} />
                         </div>
                         {/* お名前 */}
                         <div>
-                          <label className="block text-sm font-black mb-2" style={{ color: C.textMuted }}>
+                          <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
                             お名前 <span style={{ color: C.accentRed }}>*</span>
                           </label>
                           <input type="text" name="name" required value={formData.name} onChange={handleFormChange}
                             placeholder="山田 太郎"
                             className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                            style={{ background: C.bgAlt, border: `1px solid ${C.border}`, color: C.text }}
+                            style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                             onFocus={e => e.target.style.borderColor = C.accent}
-                            onBlur={e => e.target.style.borderColor = C.border} />
+                            onBlur={e => e.target.style.borderColor = C.ltBorder} />
                         </div>
                       </div>
 
                       {/* メールアドレス */}
                       <div>
-                        <label className="block text-sm font-black mb-2" style={{ color: C.textMuted }}>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
                           メールアドレス <span style={{ color: C.accentRed }}>*</span>
                         </label>
                         <input type="email" name="email" required value={formData.email} onChange={handleFormChange}
                           placeholder="taro@company.co.jp"
                           className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.border}`, color: C.text }}
+                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                           onFocus={e => e.target.style.borderColor = C.accent}
-                          onBlur={e => e.target.style.borderColor = C.border} />
+                          onBlur={e => e.target.style.borderColor = C.ltBorder} />
                       </div>
 
                       {/* 従業員規模 */}
                       <div>
-                        <label className="block text-sm font-black mb-2" style={{ color: C.textMuted }}>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
                           年間採用人数（目安）
                         </label>
                         <select name="size" value={formData.size} onChange={handleFormChange}
                           className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.border}`, color: formData.size ? C.text : C.textDim }}>
+                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: formData.size ? C.lt : C.ltDim }}>
                           <option value="">選択してください</option>
                           <option value="〜5名">〜5名</option>
                           <option value="6〜15名">6〜15名</option>
@@ -1184,15 +979,15 @@ export default function TalentKeeperLandingPage() {
 
                       {/* お問い合わせ内容 */}
                       <div>
-                        <label className="block text-sm font-black mb-2" style={{ color: C.textMuted }}>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
                           お問い合わせ内容
                         </label>
                         <textarea name="message" rows={4} value={formData.message} onChange={handleFormChange}
                           placeholder="課題や気になる点をご記入ください（任意）"
                           className="w-full rounded-xl px-4 py-3 text-base outline-none transition resize-none"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.border}`, color: C.text }}
+                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                           onFocus={e => e.target.style.borderColor = C.accent}
-                          onBlur={e => e.target.style.borderColor = C.border} />
+                          onBlur={e => e.target.style.borderColor = C.ltBorder} />
                       </div>
 
                       {/* エラー */}
@@ -1204,8 +999,8 @@ export default function TalentKeeperLandingPage() {
 
                       {/* 送信ボタン */}
                       <button type="submit" disabled={formStatus === 'sending'}
-                        className="w-full rounded-full py-4 text-lg font-black text-white transition hover:opacity-80 disabled:opacity-50"
-                        style={{ background: C.accent }}>
+                        className="w-full rounded-full py-4 text-lg font-bold text-white transition hover:opacity-80 disabled:opacity-50"
+                        style={{ background: C.cta }}>
                         {formStatus === 'sending' ? '送信中...' : '無料デモを予約する →'}
                       </button>
 
@@ -1226,19 +1021,19 @@ export default function TalentKeeperLandingPage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: C.accent }}>
+                <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: C.cta }}>
                   <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                   </svg>
                 </div>
-                <span className="serif text-lg font-black text-white">TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
+                <span className="serif text-lg font-bold text-white">TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
               </div>
               <div className="flex gap-8">
                 {[["SERVICE", "#service"], ["HOW IT WORKS", "#how"], ["PRICING", "#pricing"]].map(([label, href]) => (
-                  <a key={label} href={href} className="text-xs font-bold tracking-[0.1em]" style={{ color: C.textDim }}>{label}</a>
+                  <a key={label} href={href} className="text-xs font-bold tracking-[0.08em]" style={{ color: C.textDim }}>{label}</a>
                 ))}
                 <a href="https://www.robottte.com/" target="_blank" rel="noopener noreferrer"
-                  className="text-xs font-bold tracking-[0.1em]" style={{ color: C.textDim }}>運営会社</a>
+                  className="text-xs font-bold tracking-[0.08em]" style={{ color: C.textDim }}>運営会社</a>
               </div>
               <p className="text-sm font-bold" style={{ color: C.textDim }}>© 2025 TalentKeeper®.</p>
             </div>
@@ -1251,6 +1046,5 @@ export default function TalentKeeperLandingPage() {
         </footer>
 
       </div>
-    </>
   );
 }
