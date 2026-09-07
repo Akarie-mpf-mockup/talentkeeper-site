@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { voices, voicesHubHref } from './data/voices';
 
 /* ── スクロール表示フック ── */
 function useInView(threshold = 0.12) {
@@ -16,11 +17,11 @@ function useInView(threshold = 0.12) {
 }
 
 /* ── フェードイン ラッパー ── */
-function Reveal({ children, delay = 0, from = 'bottom' }) {
+function Reveal({ children, delay = 0, from = 'bottom', className = '' }) {
   const [ref, inView] = useInView();
   const transforms = { bottom: 'translateY(40px)', left: 'translateX(-40px)', right: 'translateX(40px)' };
   return (
-    <div ref={ref} style={{
+    <div ref={ref} className={className} style={{
       transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
       opacity: inView ? 1 : 0,
       transform: inView ? 'none' : (transforms[from] || transforms.bottom),
@@ -37,7 +38,7 @@ export default function TalentKeeperLandingPage() {
   const [formData, setFormData] = useState({ company: '', name: '', email: '', size: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | sending | sent | error
 
-  const navLinks = [["SERVICE", "#how"], ["HOW IT WORKS", "#how"], ["PRICING", "#pricing"], ["CONTACT", "#contact"]];
+  const navLinks = [["SERVICE", "#how"], ["VOICES", "#voices"], ["CASES", "#cases"], ["PRICING", "#pricing"], ["CONTACT", "#contact"]];
 
   const handleFormChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -295,6 +296,63 @@ export default function TalentKeeperLandingPage() {
             </div>
           </div>
 
+        </section>
+
+
+        {/* ─── 従業員の声（ハブ記事・個別記事への導線） ─── */}
+        <section id="voices" style={{ background: C.bgAlt }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <div className="mb-14">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>VOICES</p>
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                  <h2 className="serif text-4xl font-bold leading-snug lg:text-5xl" style={{ color: C.lt }}>
+                    従業員から実際に<br />寄せられた声
+                  </h2>
+                  <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
+                    あなたの会社では、こうした声を拾えていますか？<br />
+                    いずれも退職の申し出より前に寄せられた相談です。
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {voices.map((v, i) => (
+                <Reveal key={v.caseNo} delay={i * 0.06} className="h-full">
+                  <a href={v.href} className="group flex h-full flex-col rounded-2xl p-7 transition hover:-translate-y-1"
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 1px 2px rgba(15,23,42,0.04)" }}>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-[11px] font-bold tracking-[0.18em] tabular-nums" style={{ color: C.accentDeep }}>{v.caseNo}</span>
+                      <span className="rounded-full px-3 py-1 text-[11px] font-semibold" style={{ background: "rgba(30,58,138,0.07)", color: C.accent }}>{v.category}</span>
+                    </div>
+                    <p className="serif mt-5 text-xl font-bold leading-relaxed" style={{ color: C.lt }}>「{v.quote}」</p>
+                    <p className="mt-4 flex-1 text-sm leading-7" style={{ color: C.ltMuted }}>{v.summary}</p>
+                    <span className="mt-6 inline-flex items-center gap-2 text-xs font-bold tracking-[0.1em]" style={{ color: C.cta }}>
+                      この事例を読む
+                      <span className="transition group-hover:translate-x-1">→</span>
+                    </span>
+                  </a>
+                </Reveal>
+              ))}
+
+              <Reveal delay={0.3} className="h-full">
+                <a href={voicesHubHref} className="group flex h-full flex-col justify-center rounded-2xl p-7 transition hover:opacity-90"
+                  style={{ background: C.accentDeep }}>
+                  <p className="serif text-xl font-bold leading-relaxed" style={{ color: "#ffffff" }}>
+                    5つの声を<br />まとめて読む
+                  </p>
+                  <p className="mt-4 text-sm leading-7" style={{ color: "rgba(255,255,255,0.72)" }}>
+                    それぞれの相談内容と、企業側が検討した対応をまとめています。
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-xs font-bold tracking-[0.1em]" style={{ color: C.ctaLight }}>
+                    記事を読む
+                    <span className="transition group-hover:translate-x-1">→</span>
+                  </span>
+                </a>
+              </Reveal>
+            </div>
+          </div>
         </section>
 
 
@@ -1029,7 +1087,7 @@ export default function TalentKeeperLandingPage() {
                 <span className="serif text-lg font-bold text-white">TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
               </div>
               <div className="flex gap-8">
-                {[["SERVICE", "#service"], ["HOW IT WORKS", "#how"], ["PRICING", "#pricing"]].map(([label, href]) => (
+                {[["SERVICE", "#how"], ["VOICES", voicesHubHref], ["CASES", "#cases"], ["PRICING", "#pricing"]].map(([label, href]) => (
                   <a key={label} href={href} className="text-xs font-bold tracking-[0.08em]" style={{ color: C.textDim }}>{label}</a>
                 ))}
                 <a href="https://www.robottte.com/" target="_blank" rel="noopener noreferrer"

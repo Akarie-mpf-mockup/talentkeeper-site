@@ -1,0 +1,383 @@
+/**
+ * content/voices/*.md → 静的HTML（dist/voices/）を生成する。
+ *
+ *   node scripts/build-articles.mjs --data-only   LP用のカードデータ（src/data/voices.js）のみ生成
+ *   node scripts/build-articles.mjs               記事HTML + sitemap.xml を dist へ出力
+ *
+ * npm run build から呼ばれる（prebuild でデータ生成 → vite build → 記事生成）。
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import MarkdownIt from 'markdown-it';
+
+const ROOT = path.resolve(import.meta.dirname, '..');
+const CONTENT_DIR = path.join(ROOT, 'content/voices');
+const DIST = path.join(ROOT, 'dist');
+const ORIGIN = 'https://www.talentkeeper.jp';
+const SECTION_PATH = '/voices/';
+const SECTION_TITLE = '従業員の声・対応事例';
+const dataOnly = process.argv.includes('--data-only');
+
+const md = new MarkdownIt({ html: true, linkify: false, typographer: false });
+
+/* ── フロントマター（スカラー + 箇条書きリストのみ対応） ── */
+function parseFrontMatter(raw) {
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) throw new Error('フロントマターがありません');
+  const data = {};
+  let listKey = null;
+  for (const line of m[1].split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    const item = line.match(/^\s*-\s+(.*)$/);
+    if (item && listKey) {
+      data[listKey].push(unquote(item[1]));
+      continue;
+    }
+    const kv = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+    if (!kv) continue;
+    const [, key, value] = kv;
+    if (value === '') {
+      listKey = key;
+      data[key] = [];
+    } else {
+      listKey = null;
+      data[key] = unquote(value);
+    }
+  }
+  return { data, body: raw.slice(m[0].length) };
+}
+const unquote = s => s.trim().replace(/^["'](.*)["']$/, '$1');
+
+/* ── :::cta ブロック ── */
+function extractCtas(body) {
+  const ctas = [];
+  const replaced = body.replace(/^:::cta\r?\n([\s\S]*?)^:::\s*$/gm, (_, inner) => {
+    const cta = {};
+    for (const line of inner.split(/\r?\n/)) {
+      const kv = line.match(/^([a-z]+):\s*(.*)$/);
+      if (kv) cta[kv[1]] = kv[2].trim();
+    }
+    ctas.push(cta);
+    return `\n@@CTA${ctas.length - 1}@@\n`;
+  });
+  return { body: replaced, ctas };
+}
+
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function ctaHtml(cta) {
+  const [pLabel, pHref] = (cta.primary || '').split('|');
+  const [sLabel, sHref] = (cta.secondary || '').split('|');
+  return `<aside class="cta">
+      <p class="cta-title">${esc(cta.title || '')}</p>
+      ${cta.body ? `<p class="cta-body">${esc(cta.body)}</p>` : ''}
+      <div class="cta-actions">
+        ${pLabel ? `<a class="btn-primary" href="${esc(pHref || '/#contact')}">${esc(pLabel)}</a>` : ''}
+        ${sLabel ? `<a class="btn-secondary" href="${esc(sHref || '/#contact')}">${esc(sLabel)}</a>` : ''}
+      </div>
+    </aside>`;
+}
+
+/* ── ページテンプレート ── */
+function template({ article, related, isHub }) {
+  const url = ORIGIN + (article.slug ? `${SECTION_PATH}${article.slug}/` : SECTION_PATH);
+  const crumbs = [
+    { name: 'HOME', url: `${ORIGIN}/` },
+    { name: SECTION_TITLE, url: ORIGIN + SECTION_PATH },
+    ...(isHub ? [] : [{ name: article.category || article.h1, url }]),
+  ];
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.h1,
+      description: article.description,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      inLanguage: 'ja',
+      isPartOf: { '@type': 'WebSite', name: 'TalentKeeper', url: `${ORIGIN}/` },
+      publisher: { '@type': 'Organization', name: 'TalentKeeper' },
+      ...(isHub ? {} : { about: article.category }),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem', position: i + 1, name: c.name, item: c.url,
+      })),
+    },
+  ];
+
+  return `<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${esc(article.seoTitle)}</title>
+<meta name="description" content="${esc(article.description)}" />
+<meta name="keywords" content="${esc(article.keywords || '')}" />
+<link rel="canonical" href="${url}" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="TalentKeeper" />
+<meta property="og:title" content="${esc(article.seoTitle)}" />
+<meta property="og:description" content="${esc(article.description)}" />
+<meta property="og:url" content="${url}" />
+<meta property="og:locale" content="ja_JP" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/voices/article.css" />
+<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+</head>
+<body>
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="logo" href="/">
+      <span class="logo-mark" aria-hidden="true">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><circle cx="9.4" cy="9.75" r="0.9" fill="white" stroke="none"/><circle cx="14.6" cy="9.75" r="0.9" fill="white" stroke="none"/></svg>
+      </span>
+      <span class="logo-text">TalentKeeper<sup>&reg;</sup></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#how">SERVICE</a>
+      <a href="${SECTION_PATH}">VOICES</a>
+      <a href="/#cases">CASES</a>
+      <a href="/#pricing">PRICING</a>
+      <a class="nav-cta" href="/#contact">無料で相談する</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <div class="wrap">
+    ${crumbs.map((c, i) => (i === crumbs.length - 1
+      ? `<span aria-current="page">${esc(c.name)}</span>`
+      : `<a href="${c.url.replace(ORIGIN, '') || '/'}">${esc(c.name)}</a><span class="sep">/</span>`)).join('\n    ')}
+  </div>
+</nav>
+
+<main>
+  <article>
+    <header class="article-head wrap">
+      <p class="kicker">${esc(article.kicker || SECTION_TITLE)}</p>
+      ${article.caseNo ? `<p class="case-no">${esc(article.caseNo)}<span class="tag">${esc(article.category)}</span></p>` : ''}
+      <h1>${esc(article.h1)}</h1>
+    </header>
+    <div class="article-body wrap">
+${article.html}
+    </div>
+  </article>
+
+  <section class="related wrap">
+    <h2>${isHub ? '5つの事例を個別に読む' : '関連する事例'}</h2>
+    <ul class="related-list">
+      ${related.map(r => `<li>
+        <a href="${SECTION_PATH}${r.slug}/">
+          <span class="related-tag">${esc(r.category)}</span>
+          <span class="related-quote">「${esc(r.cardQuote)}」</span>
+          <span class="related-summary">${esc(r.cardSummary)}</span>
+        </a>
+      </li>`).join('\n      ')}
+      ${isHub ? '' : `<li class="related-hub"><a href="${SECTION_PATH}">5つの声をまとめて読む（ハブ記事）</a></li>`}
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="footer-logo">TalentKeeper<sup>&reg;</sup></p>
+    <p class="footer-text">入社後の定着を、継続的に支える。</p>
+    <p class="footer-links"><a href="/">サービストップ</a><a href="/#pricing">料金</a><a href="/#contact">お問い合わせ</a></p>
+    <p class="footer-copy">&copy; ${new Date().getFullYear()} TalentKeeper</p>
+  </div>
+</footer>
+<p class="print-url">${url}</p>
+</body>
+</html>
+`;
+}
+
+/* ── 共通CSS（LPのトーン: ネイビー + 橙CTA / Noto Sans JP・Noto Serif JP） ── */
+const CSS = `:root{
+  --navy:#1e3a8a; --navy-deep:#172554; --cta:#d97706; --cta-light:#f59e0b;
+  --text:#0f172a; --muted:#475569; --dim:#94a3b8;
+  --bg:#ffffff; --bg-alt:#f8fafc; --border:rgba(15,23,42,0.08); --dark:#0b1220;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,sans-serif;font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased}
+.wrap{width:100%;max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--navy)}
+sup{font-size:.6em;letter-spacing:0}
+
+.site-nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9999px;background:var(--cta)}
+.logo-text{font-family:"Noto Serif JP",serif;font-size:20px;font-weight:600;letter-spacing:.08em;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--muted);text-decoration:none}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{background:var(--cta);color:#fff!important;padding:10px 20px;border-radius:9999px;letter-spacing:.04em!important}
+.nav-cta:hover{background:var(--cta-light)}
+@media(max-width:767px){.nav-links a:not(.nav-cta){display:none}}
+
+.breadcrumb{background:var(--bg-alt);border-bottom:1px solid var(--border);font-size:12px;color:var(--dim)}
+.breadcrumb .wrap{padding-top:12px;padding-bottom:12px}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--navy)}
+.breadcrumb .sep{margin:0 8px;color:var(--dim)}
+
+.article-head{padding:64px 24px 8px}
+.kicker{margin:0;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--navy)}
+.case-no{margin:16px 0 0;font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--navy-deep)}
+.case-no .tag{display:inline-block;margin-left:12px;padding:4px 12px;border-radius:9999px;background:rgba(30,58,138,.08);font-size:11px;font-weight:600;letter-spacing:.06em}
+.article-head h1{margin:20px 0 0;font-family:"Noto Serif JP",serif;font-size:clamp(26px,4vw,38px);font-weight:700;line-height:1.55;letter-spacing:.01em}
+
+.article-body{padding:32px 24px 24px}
+.article-body>p:first-child{color:var(--muted)}
+.article-body h2{margin:64px 0 20px;padding-left:16px;border-left:4px solid var(--navy);font-family:"Noto Serif JP",serif;font-size:clamp(21px,3vw,27px);font-weight:700;line-height:1.6}
+.article-body h3{margin:48px 0 16px;font-family:"Noto Serif JP",serif;font-size:19px;font-weight:700;color:var(--navy-deep)}
+.article-body p{margin:0 0 24px}
+.article-body ul{margin:0 0 28px;padding:24px 28px;list-style:none;background:var(--bg-alt);border:1px solid var(--border);border-radius:12px}
+.article-body li{position:relative;padding-left:22px;margin:10px 0;color:var(--muted)}
+.article-body li::before{content:"";position:absolute;left:0;top:.75em;width:8px;height:8px;border-radius:2px;background:var(--cta)}
+.article-body a{font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(30,58,138,.35)}
+.article-body a:hover{color:var(--cta)}
+.article-body strong{font-weight:700;color:var(--text)}
+
+.cta{margin:56px 0;padding:32px;border-radius:16px;background:linear-gradient(180deg,#f8fafc,#eef2f9);border:1px solid rgba(30,58,138,.12)}
+.cta-title{margin:0;font-family:"Noto Serif JP",serif;font-size:20px;font-weight:700;line-height:1.6;color:var(--navy-deep)}
+.cta-body{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.cta-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:24px}
+.btn-primary{display:inline-block;padding:14px 28px;border-radius:9999px;background:var(--cta);color:#fff;font-size:14px;font-weight:700;text-decoration:none}
+.btn-primary:hover{background:var(--cta-light)}
+.btn-secondary{font-size:13px;font-weight:600;color:var(--navy);text-decoration:underline;text-underline-offset:3px}
+
+.related{padding:24px 24px 88px}
+.related h2{margin:0 0 24px;font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700}
+.related-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.related-list a{display:block;padding:20px 24px;border:1px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
+.related-list a:hover{border-color:rgba(30,58,138,.35);box-shadow:0 6px 20px rgba(15,23,42,.06)}
+.related-tag{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--navy)}
+.related-quote{display:block;margin-top:8px;font-family:"Noto Serif JP",serif;font-size:17px;font-weight:700;line-height:1.6;color:var(--text)}
+.related-summary{display:block;margin-top:8px;font-size:13px;line-height:1.8;color:var(--muted)}
+.related-hub a{background:var(--bg-alt);font-size:14px;font-weight:700;color:var(--navy)}
+
+.site-footer{background:var(--dark);color:#f1f5f9;padding:56px 0}
+.footer-logo{margin:0;font-family:"Noto Serif JP",serif;font-size:18px;font-weight:600;letter-spacing:.08em}
+.footer-text{margin:8px 0 0;font-size:13px;color:#94a3b8}
+.footer-links{margin:24px 0 0;display:flex;flex-wrap:wrap;gap:20px}
+.footer-links a{font-size:13px;color:#cbd5e1;text-decoration:none}
+.footer-links a:hover{color:#fff}
+.footer-copy{margin:24px 0 0;font-size:11px;color:#64748b}
+.print-url{display:none}
+
+/* 商談資料としてPDF出力する用（ブラウザの「PDFで保存」） */
+@media print{
+  @page{margin:14mm}
+  body{font-size:10.5pt;line-height:1.75}
+  .site-nav,.breadcrumb,.related,.site-footer,.cta-actions{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .article-head{padding:0 0 8px}
+  .article-head h1{font-size:18pt}
+  .article-body h2{margin:20pt 0 8pt;font-size:13pt;break-after:avoid}
+  .article-body h3{margin:14pt 0 6pt;font-size:12pt;break-after:avoid}
+  .article-body p,.article-body li{color:#1f2937}
+  .article-body ul{background:none;border:1px solid #d1d5db;padding:10pt 14pt}
+  .cta{margin:14pt 0;padding:10pt 14pt;background:none;border:1px solid #d1d5db;break-inside:avoid}
+  .print-url{display:block;margin-top:16pt;font-size:8pt;color:#6b7280}
+  a{color:#111827;text-decoration:none}
+}
+`;
+
+/* ── 読み込み ── */
+const articles = fs.readdirSync(CONTENT_DIR)
+  .filter(f => f.endsWith('.md'))
+  .sort()
+  .map(file => {
+    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8');
+    const { data, body } = parseFrontMatter(raw);
+    const { body: stripped, ctas } = extractCtas(body);
+    let html = md.render(stripped);
+    ctas.forEach((cta, i) => {
+      html = html.replace(new RegExp(`<p>@@CTA${i}@@</p>`), ctaHtml(cta));
+    });
+    return { ...data, file, html };
+  });
+
+const hub = articles.find(a => a.type === 'hub');
+const cases = articles.filter(a => a.type === 'case').sort((a, b) => Number(a.order) - Number(b.order));
+if (!hub) throw new Error('ハブ記事（type: hub）が見つかりません');
+
+/* ── LP用カードデータ ── */
+function writeData() {
+  const cards = cases.map(c => ({
+    caseNo: c.caseNo, category: c.category, quote: c.cardQuote,
+    summary: c.cardSummary, href: `${SECTION_PATH}${c.slug}/`,
+  }));
+  const out = `// 自動生成ファイル - 編集しないでください。
+// 生成元: content/voices/*.md ／ 生成コマンド: node scripts/build-articles.mjs --data-only
+export const voicesHubHref = '${SECTION_PATH}';
+export const voices = ${JSON.stringify(cards, null, 2)};
+`;
+  fs.mkdirSync(path.join(ROOT, 'src/data'), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, 'src/data/voices.js'), out);
+  console.log(`[voices] src/data/voices.js を生成（${cards.length}件）`);
+
+  // 商談用トークスクリプト（非公開・deployされない docs/ に出力）
+  const talk = `# 商談トークスクリプト（社外非公開）
+
+「こんなケースありませんか？」→ 近い事例を選ぶ → 「実はこういう事例があって…」の流れで使う想定。
+各事例の詳細は記事URLをその場で開くか、記事ページをブラウザの「PDFで保存」で印刷して配布する。
+
+> このファイルは content/voices/*.md の salesTalk から自動生成されます（編集しないでください）。
+> 生成コマンド: npm run voices
+
+${cases.map(c => `## ${c.caseNo}｜${c.category}
+
+- 従業員の声：「${c.cardQuote}」
+- 記事URL：${ORIGIN}${SECTION_PATH}${c.slug}/
+${(c.salesTalk || []).map(t => `- ${t}`).join('\n')}
+`).join('\n')}`;
+  fs.mkdirSync(path.join(ROOT, 'docs'), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, 'docs/sales-talk-track.md'), talk);
+  console.log('[voices] docs/sales-talk-track.md を生成');
+}
+
+/* ── 記事HTML + sitemap ── */
+function writeHtml() {
+  if (!fs.existsSync(DIST)) throw new Error('dist がありません。先に vite build を実行してください。');
+  const outDir = path.join(DIST, 'voices');
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'article.css'), CSS);
+
+  const pages = [
+    { article: hub, related: cases, isHub: true, dir: outDir },
+    ...cases.map(c => ({
+      article: c,
+      related: cases.filter(o => o.slug !== c.slug),
+      isHub: false,
+      dir: path.join(outDir, c.slug),
+    })),
+  ];
+  for (const page of pages) {
+    fs.mkdirSync(page.dir, { recursive: true });
+    fs.writeFileSync(path.join(page.dir, 'index.html'), template(page));
+    console.log(`[voices] ${path.relative(ROOT, path.join(page.dir, 'index.html'))}`);
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = [`${ORIGIN}/`, ORIGIN + SECTION_PATH, ...cases.map(c => `${ORIGIN}${SECTION_PATH}${c.slug}/`)];
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${u === `${ORIGIN}/` ? '1.0' : '0.8'}</priority></url>`).join('\n')}
+</urlset>
+`;
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemap);
+  console.log(`[voices] dist/sitemap.xml を生成（${urls.length}URL）`);
+}
+
+writeData();
+if (!dataOnly) writeHtml();
