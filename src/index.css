@@ -27,6 +27,18 @@ body {
   flex-direction: column;
 }
 
+.reveal {
+  transform: var(--reveal-transform, none);
+}
+
+/* Match the single-column layout: fade without moving sideways on small screens. */
+@media (width < 1024px) {
+  .reveal[data-reveal-from="left"],
+  .reveal[data-reveal-from="right"] {
+    transform: none;
+  }
+}
+
 .serif {
   font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   letter-spacing: -0.005em;

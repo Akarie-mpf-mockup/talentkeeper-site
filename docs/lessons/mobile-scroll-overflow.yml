@@ -1,0 +1,21 @@
+date: '2026-09-08'
+topic: mobile-scroll-overflow
+observed_failure: >-
+  STORYの左右40pxの表示演出が24pxの余白を超え、スマホ幅でページを16px広げていた。
+  320pxではフッターの折り返しなしリンク列もはみ出していた。
+invariant: >-
+  通常倍率で、ページ自体のスクロール幅は画面幅以下とする。
+  アニメーション前・途中・完了後を含む。表内部の横スクロールは独立して維持する。
+prevention:
+  - 小画面では横移動を行わず、演出セクションの横はみ出しをclipする。
+  - リンク列は利用可能な幅で折り返す。
+  - READMEの回帰確認手順とPR用CIに実測テストを登録する。
+mechanical_check: npm run test:layout
+variants:
+  - 未表示のSTORYが存在する375px以上の画面でscrollWidthとclientWidthを比較する。
+  - 320px画面でフッターの各リンク矩形が画面内に収まることを確認する。
+hookable: false
+hook_reason: CSS構文だけでは実際の文字幅・変形後のスクロール領域を判定できないため、ブラウザで検証する。
+successful_pattern: >-
+  公開サイトの要素に検証ブラウザ内だけでクリップを適用し、横はみ出しが消えることを測定して原因を絞り込む。
+  修正前に失敗する実ブラウザテストを作り、CIにも登録して再発を防ぐ。

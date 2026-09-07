@@ -17,6 +17,22 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ---
 
+## 表示・スクロールの回帰確認
+
+```bash
+npm ci --legacy-peer-deps
+npx playwright install --with-deps chromium webkit
+npm run build
+npm run test:layout
+```
+
+GitHub Actionsの`Layout regression`でもPRとmainへのpush時に実行します。
+CSSの横幅・transform・overflowを変更するときは、初期表示とアニメーション途中の実測幅を確認してください。
+透明な要素もスクロール領域を拡張するため、表示完了後だけの確認では不十分です。
+ページ外にはみ出さないことに加え、比較表内部の横スクロールとstickyナビの動作を確認します。
+
+---
+
 ## 従業員の声・対応事例（SEO記事）
 
 `content/voices/*.md` を単一の情報源として、LPのカードと記事ページの両方を生成します。

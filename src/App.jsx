@@ -38,10 +38,10 @@ function Reveal({ children, delay = 0, from = 'bottom', className = '' }) {
   const [ref, inView] = useInView();
   const transforms = { bottom: 'translateY(40px)', left: 'translateX(-40px)', right: 'translateX(40px)' };
   return (
-    <div ref={ref} className={className} style={{
+    <div ref={ref} className={`reveal ${className}`} data-reveal-from={from} style={{
       transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
       opacity: inView ? 1 : 0,
-      transform: inView ? 'none' : (transforms[from] || transforms.bottom),
+      '--reveal-transform': inView ? 'none' : (transforms[from] || transforms.bottom),
     }}>
       {children}
     </div>
@@ -338,7 +338,7 @@ export default function TalentKeeperLandingPage() {
 
 
         {/* ─── STORY（素材の物語カットで、拾われるまでの流れを見せる） ─── */}
-        <section id="story" style={{ background: C.bg }} className="py-24">
+        <section id="story" style={{ background: C.bg }} className="overflow-x-clip py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
               <div className="mb-16 max-w-3xl">
@@ -1243,7 +1243,7 @@ export default function TalentKeeperLandingPage() {
                   <p className="text-xs font-semibold tracking-[0.06em]" style={{ color: C.textDim }}>採用の、その先へ。</p>
                 </div>
               </div>
-              <div className="flex gap-8">
+              <div className="flex min-w-0 max-w-full flex-wrap justify-center gap-x-8 gap-y-4">
                 {[["SERVICE", "#how"], ["VOICES", voicesHubHref], ["CASES", "#cases"], ["PRICING", "#pricing"]].map(([label, href]) => (
                   <a key={label} href={href} className="text-xs font-bold tracking-[0.08em]" style={{ color: C.textDim }}>{label}</a>
                 ))}
