@@ -16,6 +16,23 @@ function useInView(threshold = 0.12) {
   return [ref, inView];
 }
 
+/* ── 写真（public/images に WebP 3サイズを生成済み） ── */
+function Photo({ name, alt, className = '', sizes = '100vw', priority = false, style }) {
+  const url = w => `/images/${name}-${w}.webp`;
+  return (
+    <img
+      src={url(1000)}
+      srcSet={`${url(600)} 600w, ${url(1000)} 1000w, ${url(1600)} 1600w`}
+      sizes={sizes}
+      alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      className={className}
+      style={style}
+    />
+  );
+}
+
 /* ── フェードイン ラッパー ── */
 function Reveal({ children, delay = 0, from = 'bottom', className = '' }) {
   const [ref, inView] = useInView();
@@ -59,31 +76,31 @@ export default function TalentKeeperLandingPage() {
   };
 
   const C = {
-    // ライト（ナビ・ヒーロー）
-    nav:       "#ffffff",
-    // ダーク（コンタクト・フッター用）
-    darkBg:    "#0b1220",
-    darkCard:  "#1e293b",
-    cardDark:  "#0f172a",
-    text:      "#f1f5f9",
-    textMuted: "#94a3b8",
-    textDim:   "#64748b",
-    border:    "rgba(255,255,255,0.08)",
+    // ライト（ナビ・ヒーロー）: ロゴ地色のクリーム
+    nav:       "#fdf5e8",
+    // ダーク（コンタクト・フッター・動画用）: ブランドネイビー系
+    darkBg:    "#081a3c",
+    darkCard:  "#0f2a5a",
+    cardDark:  "#0b2351",
+    text:      "#f7f2e8",
+    textMuted: "#a9b7cf",
+    textDim:   "#8496b3",
+    border:    "rgba(253,245,232,0.12)",
 
     // ライト（コンテンツセクション）
     bg:        "#ffffff",
-    bgAlt:     "#f8fafc",
+    bgAlt:     "#fdf5e8",   // クリーム
     card:      "#ffffff",
-    lt:        "#0f172a",
+    lt:        "#101c33",
     ltMuted:   "#475569",
-    ltDim:     "#94a3b8",
-    ltBorder:  "rgba(15,23,42,0.08)",
+    ltDim:     "#8a93a5",
+    ltBorder:  "rgba(11,35,81,0.12)",
 
-    // ブランド: ネイビー基調 + 橙CTA
-    accent:    "#1e3a8a",   // ラベル・見出し下線・タグなど編集アクセント
-    accentDeep:"#172554",   // 強いネイビー（バッジ等）
-    cta:       "#d97706",   // CTA ボタン専用
-    ctaLight:  "#f59e0b",   // CTA hover / ホットな数字（30倍ROIなど）
+    // ブランド（ロゴ実測値）: ネイビー #0b2351 / オレンジ #fe7b01 / クリーム #fdf5e8
+    accent:    "#123566",   // ラベル・見出し下線・タグなど編集アクセント
+    accentDeep:"#0b2351",   // ロゴのネイビー（バッジ・強い面）
+    cta:       "#fe7b01",   // CTA ボタン専用（ロゴの扉のオレンジ）
+    ctaLight:  "#ff9633",   // CTA hover / ホットな数字（30倍ROIなど）
     accentRed: "#dc2626",   // フォーム必須 * とエラーのみ使用
   };
 
@@ -94,9 +111,22 @@ export default function TalentKeeperLandingPage() {
   ];
 
   const supports = [
-    { num: "01", title: "AIチャットボット", sub: "24時間 365日対応", desc: "いつでも吐き出せる場所をつくります。職場の悩みは夜や休日に増大するため、24時間体制で小さな声を受け止めます。" },
-    { num: "02", title: "事務局ウォッチ",   sub: "専門スタッフが継続監視", desc: "AIが集めた情報を専門スタッフが継続モニタリング。未解決の課題を早期に掬い上げ、必要に応じてエスカレーションします。" },
-    { num: "03", title: "専門家相談",       sub: "産業カウンセラーが対応", desc: "中立の外部機関だからこそ話せる本音があります。産業カウンセラーや人事のプロが、深い悩みに丁寧に向き合います。" },
+    { num: "01", title: "AIチャットボット", sub: "24時間 365日対応", photo: "support-1-reply",
+      alt: "夜、スマートフォンでチャットの返信を読む従業員", desc: "いつでも吐き出せる場所をつくります。職場の悩みは夜や休日に増大するため、24時間体制で小さな声を受け止めます。" },
+    { num: "02", title: "事務局ウォッチ",   sub: "専門スタッフが継続監視", photo: "support-2-night-office",
+      alt: "夜の無人のオフィス", desc: "AIが集めた情報を専門スタッフが継続モニタリング。未解決の課題を早期に掬い上げ、必要に応じてエスカレーションします。" },
+    { num: "03", title: "専門家相談",       sub: "産業カウンセラーが対応", photo: "support-3-leader",
+      alt: "施設の廊下に立つ主任", desc: "中立の外部機関だからこそ話せる本音があります。産業カウンセラーや人事のプロが、深い悩みに丁寧に向き合います。" },
+  ];
+
+  const story = [
+    { photo: "story-1-smile",       title: "「変わったことない？」「大丈夫です」",   text: "現場は忙しく、確認できる時間は限られています。本人も、心配をかけたくないと考えます。" },
+    { photo: "story-2-smile-fades", title: "背を向けた瞬間、表情が変わる",           text: "言えなかった不安は、その場では見えません。小さな違和感が、少しずつ積み重なっていきます。" },
+    { photo: "story-3-night",       title: "不安が大きくなるのは、夜",               text: "職場の悩みを考え込むのは、勤務が終わったあとや休日です。相談できる相手は、その時間にはいません。", night: true },
+    { photo: "story-4-chat",        title: "24時間の窓口に、はじめて言葉にする",     text: "上司でも人事でもない外部の窓口だから、書ける本音があります。AIチャットボットが夜でも受け止めます。", night: true },
+    { photo: "story-5-relief",      title: "受け止められて、少し軽くなる",           text: "返ってくる反応があることで、抱えていた不安が整理されます。ここで止まる離職があります。", night: true },
+    { photo: "story-6-morning",     title: "翌朝、事務局から共有が届く",             text: "専門スタッフが内容を確認し、秘匿性に配慮したうえで、会社側が動くべき論点として共有します。" },
+    { photo: "story-7-again",       title: "声のかけ方が変わる",                     text: "何に困っているのかが分かっていれば、配置・教育ペース・勤務体制を早い段階で調整できます。" },
   ];
 
   const plans = [
@@ -146,13 +176,9 @@ export default function TalentKeeperLandingPage() {
         <nav style={{ background: C.nav, borderBottom: `1px solid ${C.ltBorder}` }} className="sticky top-0 z-50">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-12">
             {/* ロゴ */}
-            <a href="#" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: C.cta }}>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-                </svg>
-              </div>
-              <span className="serif text-xl font-semibold tracking-[0.08em]" style={{ color: C.lt }}>TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
+            <a href="#" className="flex items-center" onClick={() => setMobileOpen(false)} aria-label="TalentKeeper ホーム">
+              <img src="/images/logo/tk-lockup.png" alt="TalentKeeper" width="900" height="269"
+                className="h-9 w-auto lg:h-11" />
             </a>
 
             {/* PC ナビ */}
@@ -214,7 +240,7 @@ export default function TalentKeeperLandingPage() {
               <div>
                 <Reveal>
                   <div className="mb-4 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold"
-                    style={{ background: "rgba(30,58,138,0.06)", color: C.accent, border: `1px solid rgba(30,58,138,0.18)` }}>
+                    style={{ background: "rgba(11,35,81,0.06)", color: C.accent, border: `1px solid rgba(11,35,81,0.18)` }}>
                     <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: C.accent }} />
                     新入社員の定着支援サービス
                   </div>
@@ -267,30 +293,42 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
               </div>
 
-              {/* stat card */}
+              {/* ヒーロー写真 + 実態データ */}
               <Reveal from="right" delay={0.2}>
-                <div className="border-l pl-8 py-2" style={{ borderColor: C.ltBorder }}>
-                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>実態データ</p>
-                  <p className="mt-3 text-sm" style={{ color: C.ltDim }}>パーソル総合研究所 ほか</p>
-
-                  <div className="mt-8 space-y-7">
-                    {[
-                      { label: "入社後1年で未解決の不安を抱える割合", value: "60.6", unit: "%" },
-                      { label: "最も不安のピークを迎えるタイミング", value: "入社1", unit: "ヶ月" },
-                      { label: "早期離職の採用コストロス倍率", value: "約3", unit: "倍" },
-                    ].map((s, i) => (
-                      <div key={s.label} className="flex items-baseline gap-5">
-                        <span className="font-semibold text-xs tabular-nums" style={{ color: C.ltDim, minWidth: '1.5em' }}>0{i + 1}</span>
-                        <div className="flex-1">
-                          <div className="flex items-baseline gap-1">
-                            <span className="serif text-5xl font-bold leading-none" style={{ color: C.lt }}>{s.value}</span>
-                            <span className="serif text-xl font-bold" style={{ color: C.lt }}>{s.unit}</span>
-                          </div>
-                          <p className="mt-2 text-sm leading-6" style={{ color: C.ltMuted }}>{s.label}</p>
-                        </div>
-                      </div>
-                    ))}
+                <div className="relative">
+                  <div className="overflow-hidden rounded-3xl" style={{ boxShadow: "0 30px 70px rgba(11,35,81,0.18)" }}>
+                    <Photo name="hero-greeting" priority sizes="(min-width: 1024px) 46vw, 92vw"
+                      alt="施設の廊下で、主任が新入社員に声をかけている様子"
+                      className="block w-full object-cover"
+                      style={{ aspectRatio: "4 / 3" }} />
                   </div>
+
+                  <div className="relative mx-4 -mt-14 rounded-2xl p-6 lg:mx-8 lg:-mt-16 lg:p-7"
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 20px 50px rgba(11,35,81,0.14)" }}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-[11px] font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>実態データ</p>
+                      <p className="text-[11px] font-semibold" style={{ color: C.ltDim }}>パーソル総合研究所 ほか</p>
+                    </div>
+                    <div className="mt-5 space-y-4">
+                      {[
+                        { label: "入社後1年で未解決の不安を抱える割合", value: "60.6", unit: "%" },
+                        { label: "最も不安のピークを迎えるタイミング", value: "入社1", unit: "ヶ月" },
+                        { label: "早期離職の採用コストロス倍率", value: "約3", unit: "倍" },
+                      ].map((st, i) => (
+                        <div key={st.label} className="flex items-baseline gap-4">
+                          <span className="text-[11px] font-semibold tabular-nums" style={{ color: C.ltDim, minWidth: '1.4em' }}>0{i + 1}</span>
+                          <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-4">
+                            <span className="flex items-baseline gap-1">
+                              <span className="serif text-4xl font-bold leading-none" style={{ color: C.accentDeep }}>{st.value}</span>
+                              <span className="serif text-base font-bold" style={{ color: C.accentDeep }}>{st.unit}</span>
+                            </span>
+                            <p className="text-[13px] leading-6" style={{ color: C.ltMuted }}>{st.label}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="mt-4 text-right text-[11px]" style={{ color: C.ltDim }}>※写真はイメージです</p>
                 </div>
               </Reveal>
             </div>
@@ -299,18 +337,90 @@ export default function TalentKeeperLandingPage() {
         </section>
 
 
+        {/* ─── STORY（素材の物語カットで、拾われるまでの流れを見せる） ─── */}
+        <section id="story" style={{ background: C.bg }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <div className="mb-16 max-w-3xl">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>STORY</p>
+                <h2 className="serif mt-4 text-4xl font-bold leading-snug lg:text-5xl" style={{ color: C.lt }}>
+                  「大丈夫です」の裏側で、<br />起きていること
+                </h2>
+                <p className="mt-6 text-lg leading-9" style={{ color: C.ltMuted }}>
+                  早期離職は、ある日突然決まるわけではありません。入社から定着までの間に、会社側から見えにくい時間があります。
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="relative">
+              {/* デスクトップの縦線 */}
+              <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 lg:block"
+                style={{ background: `linear-gradient(180deg, transparent, ${C.ltBorder} 8%, ${C.ltBorder} 92%, transparent)` }} />
+
+              {story.map((st, i) => (
+                <Reveal key={st.photo} delay={0.05} from={i % 2 === 0 ? 'right' : 'left'}>
+                  <div className="relative grid items-center gap-8 py-8 lg:grid-cols-2 lg:gap-16 lg:py-10">
+                    <div className={`overflow-hidden rounded-2xl ${i % 2 === 1 ? 'lg:order-2' : ''}`}
+                      style={{ boxShadow: `0 18px 44px ${st.night ? 'rgba(8,26,60,0.28)' : 'rgba(11,35,81,0.14)'}` }}>
+                      <Photo name={st.photo} alt={st.title} sizes="(min-width: 1024px) 46vw, 92vw"
+                        className="block w-full object-cover transition duration-700 hover:scale-[1.02]"
+                        style={{ aspectRatio: "16 / 10" }} />
+                    </div>
+                    <div className={i % 2 === 1 ? 'lg:pr-4' : 'lg:pl-4'}>
+                      <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.16em]"
+                        style={{ background: st.night ? C.accentDeep : "rgba(11,35,81,0.07)", color: st.night ? C.text : C.accent }}>
+                        STEP {String(i + 1).padStart(2, '0')}
+                        {st.night && <span style={{ color: C.ctaLight }}>夜</span>}
+                      </span>
+                      <h3 className="serif mt-4 text-2xl font-bold leading-snug lg:text-3xl" style={{ color: C.lt }}>{st.title}</h3>
+                      <p className="mt-4 text-base leading-8" style={{ color: C.ltMuted }}>{st.text}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={0.1}>
+              <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl p-8 lg:flex-row lg:items-center lg:justify-between lg:p-10"
+                style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}` }}>
+                <div>
+                  <p className="serif text-2xl font-bold leading-snug" style={{ color: C.lt }}>
+                    この流れを、担当者の頑張りではなく仕組みで回します。
+                  </p>
+                  <p className="mt-3 text-sm leading-7" style={{ color: C.ltMuted }}>
+                    AIチャットボット・事務局ウォッチ・専門家相談の三層で、24時間365日、声を受け止めます。
+                  </p>
+                </div>
+                <a href="#how" className="inline-flex shrink-0 items-center gap-2 rounded-full px-7 py-3.5 text-base font-bold text-white transition hover:opacity-80"
+                  style={{ background: C.cta }}>
+                  サポート体制を見る
+                  <span>→</span>
+                </a>
+              </div>
+              <p className="mt-4 text-[11px]" style={{ color: C.ltDim }}>※写真はイメージです</p>
+            </Reveal>
+          </div>
+        </section>
+
+
         {/* ─── 従業員の声（ハブ記事・個別記事への導線） ─── */}
         <section id="voices" style={{ background: C.bgAlt }} className="py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
-              <div className="mb-14">
-                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>VOICES</p>
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                  <h2 className="serif text-4xl font-bold leading-snug lg:text-5xl" style={{ color: C.lt }}>
+              <div className="relative mb-12 overflow-hidden rounded-3xl">
+                <Photo name="voices-newcomer" alt="施設の廊下に立つ入社まもない従業員"
+                  sizes="(min-width: 1024px) 90vw, 100vw"
+                  className="block w-full object-cover"
+                  style={{ aspectRatio: "16 / 7" }} />
+                <div className="absolute inset-0"
+                  style={{ background: `linear-gradient(100deg, rgba(11,35,81,0.94) 0%, rgba(11,35,81,0.82) 42%, rgba(11,35,81,0.12) 100%)` }} />
+                <div className="absolute inset-0 flex flex-col justify-center px-7 py-8 sm:px-12 lg:px-14">
+                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.ctaLight }}>VOICES</p>
+                  <h2 className="serif mt-4 max-w-2xl text-3xl font-bold leading-snug sm:text-4xl lg:text-5xl" style={{ color: C.text }}>
                     従業員から実際に<br />寄せられた声
                   </h2>
-                  <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
-                    あなたの会社では、こうした声を拾えていますか？<br />
+                  <p className="mt-5 max-w-md text-sm leading-7 sm:text-base sm:leading-8" style={{ color: "rgba(247,242,232,0.86)" }}>
+                    あなたの会社では、こうした声を拾えていますか？<br className="hidden sm:block" />
                     いずれも退職の申し出より前に寄せられた相談です。
                   </p>
                 </div>
@@ -321,10 +431,10 @@ export default function TalentKeeperLandingPage() {
               {voices.map((v, i) => (
                 <Reveal key={v.caseNo} delay={i * 0.06} className="h-full">
                   <a href={v.href} className="group flex h-full flex-col rounded-2xl p-7 transition hover:-translate-y-1"
-                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 1px 2px rgba(15,23,42,0.04)" }}>
+                    style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 1px 2px rgba(11,35,81,0.06)" }}>
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="text-[11px] font-bold tracking-[0.18em] tabular-nums" style={{ color: C.accentDeep }}>{v.caseNo}</span>
-                      <span className="rounded-full px-3 py-1 text-[11px] font-semibold" style={{ background: "rgba(30,58,138,0.07)", color: C.accent }}>{v.category}</span>
+                      <span className="rounded-full px-3 py-1 text-[11px] font-semibold" style={{ background: "rgba(11,35,81,0.07)", color: C.accent }}>{v.category}</span>
                     </div>
                     <p className="serif mt-5 text-xl font-bold leading-relaxed" style={{ color: C.lt }}>「{v.quote}」</p>
                     <p className="mt-4 flex-1 text-sm leading-7" style={{ color: C.ltMuted }}>{v.summary}</p>
@@ -352,6 +462,10 @@ export default function TalentKeeperLandingPage() {
                 </a>
               </Reveal>
             </div>
+
+            <p className="mt-6 text-[11px]" style={{ color: C.ltDim }}>
+              ※事例は守秘義務のため匿名化しています。写真はイメージです。
+            </p>
           </div>
         </section>
 
@@ -374,20 +488,21 @@ export default function TalentKeeperLandingPage() {
             </Reveal>
 
             <div>
-              {supports.map(({ num, title, sub, desc }, i) => (
+              {supports.map(({ num, title, sub, desc, photo, alt }, i) => (
                 <Reveal key={num} delay={i * 0.08}>
-                  <div className="grid gap-8 py-12 lg:py-14 lg:grid-cols-[140px_1fr_auto] lg:gap-12 items-baseline border-t"
+                  <div className="grid gap-8 border-t py-12 lg:grid-cols-[110px_1fr_320px] lg:gap-12 lg:py-14"
                     style={{ borderColor: C.ltBorder }}>
-                    <div className="serif text-6xl lg:text-7xl font-bold leading-none tabular-nums" style={{ color: C.lt }}>
+                    <div className="serif text-6xl font-bold leading-none tabular-nums lg:text-7xl" style={{ color: C.accentDeep }}>
                       {num}
                     </div>
                     <div>
-                      <h3 className="serif text-3xl lg:text-4xl font-bold leading-tight" style={{ color: C.lt }}>{title}</h3>
-                      <p className="mt-5 text-base lg:text-lg leading-8 max-w-2xl" style={{ color: C.ltMuted }}>{desc}</p>
+                      <div className="text-xs font-semibold tracking-[0.16em]" style={{ color: C.cta }}>{sub}</div>
+                      <h3 className="serif mt-3 text-3xl font-bold leading-tight lg:text-4xl" style={{ color: C.lt }}>{title}</h3>
+                      <p className="mt-5 max-w-2xl text-base leading-8 lg:text-lg" style={{ color: C.ltMuted }}>{desc}</p>
                     </div>
-                    <div className="text-xs font-semibold tracking-[0.16em] uppercase whitespace-nowrap lg:text-right lg:pt-2"
-                      style={{ color: C.accent }}>
-                      {sub}
+                    <div className="overflow-hidden rounded-2xl" style={{ boxShadow: "0 14px 36px rgba(11,35,81,0.14)" }}>
+                      <Photo name={photo} alt={alt} sizes="(min-width: 1024px) 320px, 92vw"
+                        className="block w-full object-cover" style={{ aspectRatio: "16 / 11" }} />
                     </div>
                   </div>
                 </Reveal>
@@ -396,7 +511,7 @@ export default function TalentKeeperLandingPage() {
 
             <Reveal delay={0.2}>
               <div className="mt-6 flex items-start gap-5 rounded-xl p-7"
-                style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
+                style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}` }}>
                 <svg className="h-7 w-7 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke={C.accent} strokeWidth="1.6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
@@ -408,6 +523,48 @@ export default function TalentKeeperLandingPage() {
                 </div>
               </div>
             </Reveal>
+          </div>
+        </section>
+
+
+        {/* ─── 動画（管理者向け93s / 従業員向け43s） ─── */}
+        <section id="movie" style={{ background: C.darkBg }} className="py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <Reveal>
+              <div className="mb-14 max-w-3xl">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.ctaLight }}>MOVIE</p>
+                <h2 className="serif mt-4 text-4xl font-bold leading-snug lg:text-5xl" style={{ color: C.text }}>
+                  90秒で、全体像がわかります
+                </h2>
+                <p className="mt-5 text-base leading-8" style={{ color: C.textMuted }}>
+                  導入を検討する方向けと、実際に使う従業員向けの2本をご用意しています。社内共有にもそのままお使いいただけます。
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
+              {[
+                { file: "tk-admin-93s", label: "検討中の方へ", title: "タレントキーパー 管理者向け", time: "1分33秒", main: true },
+                { file: "tk-staff-43s", label: "導入後の社内案内に", title: "スタッフサポート 従業員向け", time: "43秒" },
+              ].map(v => (
+                <Reveal key={v.file} delay={v.main ? 0 : 0.1}>
+                  <div className="overflow-hidden rounded-2xl" style={{ background: C.cardDark, border: `1px solid ${C.border}` }}>
+                    <video controls preload="none" playsInline className="block w-full"
+                      poster={`/video/${v.file}-poster.jpg`} style={{ aspectRatio: "16 / 9", background: "#000" }}>
+                      <source src={`/video/${v.file}.mp4`} type="video/mp4" />
+                      お使いのブラウザは動画の再生に対応していません。
+                    </video>
+                    <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5">
+                      <div>
+                        <p className="text-[11px] font-semibold tracking-[0.16em]" style={{ color: C.ctaLight }}>{v.label}</p>
+                        <p className="serif mt-1 text-lg font-bold" style={{ color: C.text }}>{v.title}</p>
+                      </div>
+                      <span className="text-xs font-semibold tabular-nums" style={{ color: C.textDim }}>{v.time}</span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -676,7 +833,7 @@ export default function TalentKeeperLandingPage() {
                       {badge && (
                         <span className="rounded-full px-2 py-0.5 text-xs font-bold"
                           style={{
-                            background: billing === key ? 'rgba(0,0,0,0.18)' : 'rgba(30,58,138,0.12)',
+                            background: billing === key ? 'rgba(0,0,0,0.18)' : 'rgba(11,35,81,0.12)',
                             color: billing === key ? 'white' : C.accent,
                           }}>
                           {badge}
@@ -742,7 +899,7 @@ export default function TalentKeeperLandingPage() {
                       style={{
                         background: plan.recommended ? C.accent : C.card,
                         border: plan.recommended ? `1px solid ${C.accent}` : `1px solid ${C.ltBorder}`,
-                        boxShadow: plan.recommended ? `0 12px 40px rgba(15,23,42,0.12)` : "none",
+                        boxShadow: plan.recommended ? `0 12px 40px rgba(11,35,81,0.14)` : "none",
                       }}>
                       {plan.recommended && (
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[10px] font-semibold tracking-[0.18em] text-white uppercase"
@@ -839,7 +996,7 @@ export default function TalentKeeperLandingPage() {
                           </svg>
                         ) : (
                           <span className="rounded-full px-3 py-0.5 text-xs font-bold"
-                            style={{ background: "rgba(30,58,138,0.12)", color: C.accent }}>
+                            style={{ background: "rgba(11,35,81,0.12)", color: C.accent }}>
                             {val}
                           </span>
                         )}
@@ -952,10 +1109,10 @@ export default function TalentKeeperLandingPage() {
 
               {/* 右：フォーム */}
               <Reveal from="right" delay={0.15}>
-                <div className="rounded-xl p-8 lg:p-10" style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 24px 60px rgba(15,23,42,0.25)" }}>
+                <div className="rounded-xl p-8 lg:p-10" style={{ background: C.card, border: `1px solid ${C.ltBorder}`, boxShadow: "0 24px 60px rgba(8,26,60,0.28)" }}>
                   {formStatus === 'sent' ? (
                     <div className="text-center py-10">
-                      <div className="mb-5 mx-auto flex h-14 w-14 items-center justify-center rounded-full" style={{ background: "rgba(30,58,138,0.08)" }}>
+                      <div className="mb-5 mx-auto flex h-14 w-14 items-center justify-center rounded-full" style={{ background: "rgba(11,35,81,0.08)" }}>
                         <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke={C.accent} strokeWidth="2">
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
@@ -970,7 +1127,7 @@ export default function TalentKeeperLandingPage() {
                     <div className="mb-6 flex items-center justify-between">
                       <p className="text-base font-bold" style={{ color: C.lt }}>お問い合わせフォーム</p>
                       <span className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1"
-                        style={{ background: "rgba(30,58,138,0.06)", color: C.accent }}>
+                        style={{ background: "rgba(11,35,81,0.06)", color: C.accent }}>
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
@@ -1075,16 +1232,16 @@ export default function TalentKeeperLandingPage() {
         </section>
 
         {/* Footer */}
-        <footer style={{ background: "#030712", borderTop: `1px solid ${C.border}` }} className="py-12">
+        <footer style={{ background: "#050f26", borderTop: `1px solid ${C.border}` }} className="py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: C.cta }}>
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-                  </svg>
+              <div className="flex items-center gap-4">
+                <img src="/images/logo/tk-symbol.png" alt="" width="512" height="512" aria-hidden="true"
+                  className="h-11 w-11 rounded-xl" />
+                <div>
+                  <span className="serif text-lg font-bold" style={{ color: C.text }}>TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
+                  <p className="text-xs font-semibold tracking-[0.06em]" style={{ color: C.textDim }}>採用の、その先へ。</p>
                 </div>
-                <span className="serif text-lg font-bold text-white">TalentKeeper<sup style={{ fontSize: "0.6em", letterSpacing: 0 }}>®</sup></span>
               </div>
               <div className="flex gap-8">
                 {[["SERVICE", "#how"], ["VOICES", voicesHubHref], ["CASES", "#cases"], ["PRICING", "#pricing"]].map(([label, href]) => (

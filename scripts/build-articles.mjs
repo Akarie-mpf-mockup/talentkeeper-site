@@ -92,6 +92,7 @@ function template({ article, related, isHub }) {
       '@type': 'Article',
       headline: article.h1,
       description: article.description,
+      image: `${ORIGIN}/images/og/${article.slug || 'hub'}.jpg`,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       inLanguage: 'ja',
       isPartOf: { '@type': 'WebSite', name: 'TalentKeeper', url: `${ORIGIN}/` },
@@ -116,14 +117,18 @@ function template({ article, related, isHub }) {
 <meta name="description" content="${esc(article.description)}" />
 <meta name="keywords" content="${esc(article.keywords || '')}" />
 <link rel="canonical" href="${url}" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/images/logo/favicon-32.png" />
+<link rel="apple-touch-icon" href="/images/logo/apple-touch-icon.png" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="TalentKeeper" />
 <meta property="og:title" content="${esc(article.seoTitle)}" />
 <meta property="og:description" content="${esc(article.description)}" />
 <meta property="og:url" content="${url}" />
 <meta property="og:locale" content="ja_JP" />
+<meta property="og:image" content="${ORIGIN}/images/og/${article.slug || 'hub'}.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="${ORIGIN}/images/og/${article.slug || 'hub'}.jpg" />
+<meta name="theme-color" content="#0b2351" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -133,11 +138,8 @@ function template({ article, related, isHub }) {
 <body>
 <header class="site-nav">
   <div class="nav-inner">
-    <a class="logo" href="/">
-      <span class="logo-mark" aria-hidden="true">
-        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><circle cx="9.4" cy="9.75" r="0.9" fill="white" stroke="none"/><circle cx="14.6" cy="9.75" r="0.9" fill="white" stroke="none"/></svg>
-      </span>
-      <span class="logo-text">TalentKeeper<sup>&reg;</sup></span>
+    <a class="logo" href="/" aria-label="TalentKeeper ホーム">
+      <img src="/images/logo/tk-lockup.png" alt="TalentKeeper" width="900" height="269" />
     </a>
     <nav class="nav-links">
       <a href="/#how">SERVICE</a>
@@ -164,6 +166,13 @@ function template({ article, related, isHub }) {
       ${article.caseNo ? `<p class="case-no">${esc(article.caseNo)}<span class="tag">${esc(article.category)}</span></p>` : ''}
       <h1>${esc(article.h1)}</h1>
     </header>
+    ${article.photo ? `<figure class="eyecatch">
+      <img src="/images/${article.photo}-1600.webp"
+        srcset="/images/${article.photo}-600.webp 600w, /images/${article.photo}-1000.webp 1000w, /images/${article.photo}-1600.webp 1600w"
+        sizes="(min-width: 860px) 800px, 100vw"
+        alt="${esc(article.photoAlt || '')}" width="1600" height="893" decoding="async" />
+      <figcaption>※写真はイメージです</figcaption>
+    </figure>` : ''}
     <div class="article-body wrap">
 ${article.html}
     </div>
@@ -186,8 +195,13 @@ ${article.html}
 
 <footer class="site-footer">
   <div class="wrap">
-    <p class="footer-logo">TalentKeeper<sup>&reg;</sup></p>
-    <p class="footer-text">入社後の定着を、継続的に支える。</p>
+    <div class="footer-brand">
+      <img src="/images/logo/tk-symbol.png" alt="" width="512" height="512" aria-hidden="true" />
+      <div>
+        <p class="footer-logo">TalentKeeper<sup>&reg;</sup></p>
+        <p class="footer-text">採用の、その先へ。</p>
+      </div>
+    </div>
     <p class="footer-links"><a href="/">サービストップ</a><a href="/#pricing">料金</a><a href="/#contact">お問い合わせ</a></p>
     <p class="footer-copy">&copy; ${new Date().getFullYear()} TalentKeeper</p>
   </div>
@@ -200,9 +214,10 @@ ${article.html}
 
 /* ── 共通CSS（LPのトーン: ネイビー + 橙CTA / Noto Sans JP・Noto Serif JP） ── */
 const CSS = `:root{
-  --navy:#1e3a8a; --navy-deep:#172554; --cta:#d97706; --cta-light:#f59e0b;
-  --text:#0f172a; --muted:#475569; --dim:#94a3b8;
-  --bg:#ffffff; --bg-alt:#f8fafc; --border:rgba(15,23,42,0.08); --dark:#0b1220;
+  /* ロゴ実測値: ネイビー #0b2351 / オレンジ #fe7b01 / クリーム #fdf5e8 */
+  --navy:#123566; --navy-deep:#0b2351; --cta:#fe7b01; --cta-light:#ff9633;
+  --text:#101c33; --muted:#475569; --dim:#8a93a5;
+  --bg:#ffffff; --bg-alt:#fdf5e8; --cream:#fdf5e8; --border:rgba(11,35,81,0.12); --dark:#081a3c;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -211,9 +226,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",
 a{color:var(--navy)}
 sup{font-size:.6em;letter-spacing:0}
 
-.site-nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border)}
+.site-nav{position:sticky;top:0;z-index:50;background:var(--cream);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo{display:flex;align-items:center;text-decoration:none}
+.logo img{display:block;height:40px;width:auto}
 .logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9999px;background:var(--cta)}
 .logo-text{font-family:"Noto Serif JP",serif;font-size:20px;font-weight:600;letter-spacing:.08em;color:var(--text)}
 .nav-links{display:flex;align-items:center;gap:24px}
@@ -223,7 +239,7 @@ sup{font-size:.6em;letter-spacing:0}
 .nav-cta:hover{background:var(--cta-light)}
 @media(max-width:767px){.nav-links a:not(.nav-cta){display:none}}
 
-.breadcrumb{background:var(--bg-alt);border-bottom:1px solid var(--border);font-size:12px;color:var(--dim)}
+.breadcrumb{background:#fff;border-bottom:1px solid var(--border);font-size:12px;color:var(--dim)}
 .breadcrumb .wrap{padding-top:12px;padding-bottom:12px}
 .breadcrumb a{color:var(--muted);text-decoration:none}
 .breadcrumb a:hover{color:var(--navy)}
@@ -232,22 +248,26 @@ sup{font-size:.6em;letter-spacing:0}
 .article-head{padding:64px 24px 8px}
 .kicker{margin:0;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--navy)}
 .case-no{margin:16px 0 0;font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--navy-deep)}
-.case-no .tag{display:inline-block;margin-left:12px;padding:4px 12px;border-radius:9999px;background:rgba(30,58,138,.08);font-size:11px;font-weight:600;letter-spacing:.06em}
+.case-no .tag{display:inline-block;margin-left:12px;padding:4px 12px;border-radius:9999px;background:rgba(11,35,81,.08);font-size:11px;font-weight:600;letter-spacing:.06em}
 .article-head h1{margin:20px 0 0;font-family:"Noto Serif JP",serif;font-size:clamp(26px,4vw,38px);font-weight:700;line-height:1.55;letter-spacing:.01em}
+
+.eyecatch{margin:32px auto 0;max-width:1000px;padding:0 24px}
+.eyecatch img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:16px;box-shadow:0 18px 44px rgba(11,35,81,.14)}
+.eyecatch figcaption{margin-top:8px;text-align:right;font-size:11px;color:var(--dim)}
 
 .article-body{padding:32px 24px 24px}
 .article-body>p:first-child{color:var(--muted)}
 .article-body h2{margin:64px 0 20px;padding-left:16px;border-left:4px solid var(--navy);font-family:"Noto Serif JP",serif;font-size:clamp(21px,3vw,27px);font-weight:700;line-height:1.6}
 .article-body h3{margin:48px 0 16px;font-family:"Noto Serif JP",serif;font-size:19px;font-weight:700;color:var(--navy-deep)}
 .article-body p{margin:0 0 24px}
-.article-body ul{margin:0 0 28px;padding:24px 28px;list-style:none;background:var(--bg-alt);border:1px solid var(--border);border-radius:12px}
+.article-body ul{margin:0 0 28px;padding:24px 28px;list-style:none;background:var(--cream);border:1px solid var(--border);border-radius:12px}
 .article-body li{position:relative;padding-left:22px;margin:10px 0;color:var(--muted)}
 .article-body li::before{content:"";position:absolute;left:0;top:.75em;width:8px;height:8px;border-radius:2px;background:var(--cta)}
-.article-body a{font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(30,58,138,.35)}
+.article-body a{font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(11,35,81,.35)}
 .article-body a:hover{color:var(--cta)}
 .article-body strong{font-weight:700;color:var(--text)}
 
-.cta{margin:56px 0;padding:32px;border-radius:16px;background:linear-gradient(180deg,#f8fafc,#eef2f9);border:1px solid rgba(30,58,138,.12)}
+.cta{margin:56px 0;padding:32px;border-radius:16px;background:linear-gradient(180deg,#fefaf3,var(--cream));border:1px solid rgba(11,35,81,.14)}
 .cta-title{margin:0;font-family:"Noto Serif JP",serif;font-size:20px;font-weight:700;line-height:1.6;color:var(--navy-deep)}
 .cta-body{margin:12px 0 0;font-size:14px;color:var(--muted)}
 .cta-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:24px}
@@ -259,15 +279,17 @@ sup{font-size:.6em;letter-spacing:0}
 .related h2{margin:0 0 24px;font-family:"Noto Serif JP",serif;font-size:22px;font-weight:700}
 .related-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
 .related-list a{display:block;padding:20px 24px;border:1px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
-.related-list a:hover{border-color:rgba(30,58,138,.35);box-shadow:0 6px 20px rgba(15,23,42,.06)}
+.related-list a:hover{border-color:rgba(11,35,81,.35);box-shadow:0 6px 20px rgba(15,23,42,.06)}
 .related-tag{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--navy)}
 .related-quote{display:block;margin-top:8px;font-family:"Noto Serif JP",serif;font-size:17px;font-weight:700;line-height:1.6;color:var(--text)}
 .related-summary{display:block;margin-top:8px;font-size:13px;line-height:1.8;color:var(--muted)}
-.related-hub a{background:var(--bg-alt);font-size:14px;font-weight:700;color:var(--navy)}
+.related-hub a{background:var(--cream);font-size:14px;font-weight:700;color:var(--navy)}
 
-.site-footer{background:var(--dark);color:#f1f5f9;padding:56px 0}
+.site-footer{background:var(--dark);color:#f7f2e8;padding:56px 0}
+.footer-brand{display:flex;align-items:center;gap:16px}
+.footer-brand img{display:block;width:44px;height:44px;border-radius:12px}
 .footer-logo{margin:0;font-family:"Noto Serif JP",serif;font-size:18px;font-weight:600;letter-spacing:.08em}
-.footer-text{margin:8px 0 0;font-size:13px;color:#94a3b8}
+.footer-text{margin:4px 0 0;font-size:12px;font-weight:600;letter-spacing:.06em;color:#a9b7cf}
 .footer-links{margin:24px 0 0;display:flex;flex-wrap:wrap;gap:20px}
 .footer-links a{font-size:13px;color:#cbd5e1;text-decoration:none}
 .footer-links a:hover{color:#fff}
@@ -278,7 +300,9 @@ sup{font-size:.6em;letter-spacing:0}
 @media print{
   @page{margin:14mm}
   body{font-size:10.5pt;line-height:1.75}
-  .site-nav,.breadcrumb,.related,.site-footer,.cta-actions{display:none!important}
+  .site-nav,.breadcrumb,.related,.site-footer,.cta-actions,.eyecatch figcaption{display:none!important}
+  .eyecatch{margin:0;padding:0}
+  .eyecatch img{max-height:52mm;border-radius:4pt;box-shadow:none}
   .wrap{max-width:none;padding:0}
   .article-head{padding:0 0 8px}
   .article-head h1{font-size:18pt}
