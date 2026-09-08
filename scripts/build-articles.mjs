@@ -188,7 +188,7 @@ ${article.html}
           <span class="related-summary">${esc(r.cardSummary)}</span>
         </a>
       </li>`).join('\n      ')}
-      ${isHub ? '' : `<li class="related-hub"><a href="${SECTION_PATH}">5つの声をまとめて読む（ハブ記事）</a></li>`}
+      ${isHub ? '' : `<li class="related-hub"><a href="${SECTION_PATH}">5つの声をまとめて読む</a></li>`}
     </ul>
   </section>
 </main>

@@ -100,7 +100,7 @@ export default function TalentKeeperLandingPage() {
     accent:    "#123566",   // ラベル・見出し下線・タグなど編集アクセント
     accentDeep:"#0b2351",   // ロゴのネイビー（バッジ・強い面）
     cta:       "#fe7b01",   // CTA ボタン専用（ロゴの扉のオレンジ）
-    ctaLight:  "#ff9633",   // CTA hover / ホットな数字（30倍ROIなど）
+    ctaLight:  "#ff9633",   // CTA hover / ホットな数字（月額料金の30倍など）
     accentRed: "#dc2626",   // フォーム必須 * とエラーのみ使用
   };
 
@@ -123,7 +123,7 @@ export default function TalentKeeperLandingPage() {
     { photo: "story-1-smile",       title: "「変わったことない？」「大丈夫です」",   text: "現場は忙しく、確認できる時間は限られています。本人も、心配をかけたくないと考えます。" },
     { photo: "story-2-smile-fades", title: "背を向けた瞬間、表情が変わる",           text: "言えなかった不安は、その場では見えません。小さな違和感が、少しずつ積み重なっていきます。" },
     { photo: "story-3-night",       title: "不安が大きくなるのは、夜",               text: "職場の悩みを考え込むのは、勤務が終わったあとや休日です。相談できる相手は、その時間にはいません。", night: true },
-    { photo: "story-4-chat",        title: "24時間の窓口に、はじめて言葉にする",     text: "上司でも人事でもない外部の窓口だから、書ける本音があります。AIチャットボットが夜でも受け止めます。", night: true },
+    { photo: "story-4-chat",        title: "24時間対応の窓口で、はじめて不安を言葉にする",     text: "上司でも人事でもない外部の窓口だから、書ける本音があります。AIチャットボットが夜でも受け止めます。", night: true },
     { photo: "story-5-relief",      title: "受け止められて、少し軽くなる",           text: "返ってくる反応があることで、抱えていた不安が整理されます。ここで止まる離職があります。", night: true },
     { photo: "story-6-morning",     title: "翌朝、事務局から共有が届く",             text: "専門スタッフが内容を確認し、秘匿性に配慮したうえで、会社側が動くべき論点として共有します。" },
     { photo: "story-7-again",       title: "声のかけ方が変わる",                     text: "何に困っているのかが分かっていれば、配置・教育ペース・勤務体制を早い段階で調整できます。" },
@@ -131,7 +131,7 @@ export default function TalentKeeperLandingPage() {
 
   const plans = [
     {
-      name: "スタンダード", nameEn: "BASIC",
+      name: "スタンダード", nameEn: "STANDARD",
       priceAnnual: "50,000", totalAnnual: "600,000",
       priceMonthly: "75,000",
       maxFollow: "30名まで",
@@ -283,7 +283,7 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
                 <Reveal delay={0.4}>
                   <div className="mt-12 flex flex-wrap gap-8 border-t pt-8" style={{ borderColor: C.ltBorder }}>
-                    {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"], ["30×", "ROI試算"]].map(([v, l]) => (
+                    {[["3週間〜", "最短導入期間"], ["24 / 365", "サポート対応"], ["3層", "サポート体制"], ["30×", "離職コスト／月額料金"]].map(([v, l]) => (
                       <div key={l}>
                         <div className="serif text-3xl font-bold" style={{ color: C.accent }}>{v}</div>
                         <div className="mt-0.5 text-sm font-bold" style={{ color: C.ltDim }}>{l}</div>
@@ -312,7 +312,7 @@ export default function TalentKeeperLandingPage() {
                     <div className="mt-5 space-y-4">
                       {[
                         { label: "入社後1年で未解決の不安を抱える割合", value: "60.6", unit: "%" },
-                        { label: "最も不安のピークを迎えるタイミング", value: "入社1", unit: "ヶ月" },
+                        { label: "不安がピークを迎えるタイミング", value: "入社1", unit: "ヶ月" },
                         { label: "早期離職の採用コストロス倍率", value: "約3", unit: "倍" },
                       ].map((st, i) => (
                         <div key={st.label} className="flex items-baseline gap-4">
@@ -579,7 +579,7 @@ export default function TalentKeeperLandingPage() {
                   他の手段と、<br />何が違うのか
                 </h2>
                 <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
-                  従業員の「孤独な夜」に寄り添えるのは、24時間有人対応だけです
+                  夜間の不安もAIが受け止め、専門スタッフがフォローにつなげます
                 </p>
               </div>
             </Reveal>
@@ -591,7 +591,7 @@ export default function TalentKeeperLandingPage() {
                     <tr style={{ background: C.bg }}>
                       <th className="p-5 text-left font-bold" style={{ color: C.ltDim, width: "24%" }}>手段</th>
                       {[
-                        ["24h即応", "緊急・夜間の対応"],
+                        ["24時間受付", "夜間・休日の相談"],
                         ["本音が出やすい", "心理的安全性"],
                         ["個別対応", "一人ひとりに寄り添う"],
                         ["継続フォロー", "解決まで伴走"],
@@ -632,7 +632,7 @@ export default function TalentKeeperLandingPage() {
                       {
                         name: "TalentKeeper®",
                         vals: ["◎", "◎", "◎", "◎"],
-                        note: "営業時間外（7〜8割）も有人即応。専門家＋人事で解決まで伴走",
+                        note: "AIが24時間相談を受付。専門スタッフが確認し、必要な対応につなげます",
                         tk: true,
                       },
                     ].map((row, i) => (
@@ -677,8 +677,8 @@ export default function TalentKeeperLandingPage() {
                 style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
                 <div className="shrink-0 mt-1 w-0.5 h-12 rounded-full" style={{ background: C.accent }} />
                 <p className="text-base leading-8" style={{ color: C.ltMuted }}>
-                  <strong style={{ color: C.lt }}>AI任せではなく、専任スタッフが常時対応。</strong>
-                  従業員の相談は7〜8割が営業時間外に発生します。その瞬間に寄り添える仕組みが、定着率を変えます。
+                  <strong style={{ color: C.lt }}>AIチャットが24時間365日、従業員の相談を受け付けます。</strong>
+                  専門スタッフが相談内容を確認し、必要に応じて専門家相談や企業側の対応につなげます。従業員の相談は7〜8割が営業時間外に発生します。
                 </p>
               </div>
             </Reveal>
@@ -798,13 +798,13 @@ export default function TalentKeeperLandingPage() {
                 style={{ background: "#f8fafc", border: `1px solid ${C.ltBorder}` }}>
                 <div className="shrink-0 self-stretch w-0.5 rounded-full hidden sm:block" style={{ background: C.accent }} />
                 <div>
-                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>ROI</p>
+                  <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>COST COMPARISON</p>
                   <p className="mt-2 text-base font-bold leading-7" style={{ color: C.lt }}>
                     1名の早期離職コスト ＝ 約<span className="text-2xl">150万円</span><span className="text-sm font-medium" style={{ color: C.ltMuted }}>（採用費・教育費・引き継ぎコストの合計）</span>
                   </p>
                   <p className="mt-2 text-base leading-7" style={{ color: C.ltMuted }}>
-                    月額5万円〜。その損失を1件防ぐだけで <strong style={{ color: C.cta }}>30倍のROI</strong>。
-                    離職を「コスト」ではなく「投資対効果」で考える企業が選んでいます。
+                    1名の早期離職による約150万円の損失は、<strong style={{ color: C.cta }}>月額料金5万円の30倍</strong>に相当します。
+                    スタンダードの年次契約は年間60万円（月額換算5万円・税別）。離職コストと利用料金を比較する際の目安です。
                   </p>
                 </div>
               </div>
@@ -894,7 +894,7 @@ export default function TalentKeeperLandingPage() {
                       </a>
                     </div>
                   ) : (
-                    /* Basic / Premium カード */
+                    /* Standard / Premium カード */
                     <div className="relative rounded-xl p-8 h-full flex flex-col transition hover:-translate-y-0.5"
                       style={{
                         background: plan.recommended ? C.accent : C.card,
@@ -904,7 +904,7 @@ export default function TalentKeeperLandingPage() {
                       {plan.recommended && (
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[10px] font-semibold tracking-[0.18em] text-white uppercase"
                           style={{ background: C.cta }}>
-                          {billing === 'annual' ? 'Most Popular — 20% OFF' : 'Most Popular'}
+                          {billing === 'annual' ? 'Most Popular — 33% OFF' : 'Most Popular'}
                         </div>
                       )}
                       <div className="text-xs font-semibold tracking-[0.14em] mb-2"
@@ -1012,7 +1012,7 @@ export default function TalentKeeperLandingPage() {
               <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-bold" style={{ color: C.ltDim }}>
                 {[
                   billing === 'annual' ? "✓ 年次一括払い（33%お得）" : "✓ 月次契約・いつでも解約可",
-                  "✓ 初月無料トライアルあり",
+                  "✓ 最大3ヶ月のトライアルあり",
                   "✓ クレジットカード不要",
                   "✓ 即日ご対応",
                 ].map((t) => (
@@ -1039,11 +1039,11 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   q: "契約期間はどう選べばいいですか？",
-                  a: "月次契約と年次契約の2種類からお選びいただけます。年次契約（一括払い）は月次契約より33%お得です（例：Basicプランなら月次¥75,000→年次¥50,000）。初月無料トライアル終了後にどちらかを選んでいただく流れです。離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
+                  a: "月次契約と年次契約の2種類からお選びいただけます。年次契約（一括払い）は月次契約より33%お得です（例：スタンダードプランは月次契約で月額75,000円、年次契約で月額換算50,000円・いずれも税別）。最大3ヶ月のトライアルをご用意しています。離職防止の効果は6〜12ヶ月で実感いただけることが多いため、年次契約でじっくり取り組まれる企業が多数です。",
                 },
                 {
                   q: "従業員の相談内容は会社に筒抜けになりますか？",
-                  a: "なりません。個人を特定できる情報は厳しく管理し、会社には集計・傾向レポートのみを共有します。「会社に知られるかも」という恐怖があると従業員が使わなくなるため、中立性と守秘義務の担保を最優先にしています。",
+                  a: "相談内容の秘匿性に配慮し、会社には組織の傾向や改善すべき課題を共有します。個別の対応が必要な場合は、ご本人と共有範囲を確認したうえで、必要な担当者につなぎます。",
                 },
                 {
                   q: "導入までどれくらいかかりますか？",
@@ -1093,7 +1093,7 @@ export default function TalentKeeperLandingPage() {
                 <ul className="mt-8 space-y-4">
                   {[
                     "返信は通常1〜2営業日以内",
-                    "3ヶ月トライアルからでもOK",
+                    "最大3ヶ月のトライアルをご用意",
                     "初期費用なし・クレジットカード不要",
                     "効果が見込みにくい場合は率直にお伝えします",
                   ].map(t => (
