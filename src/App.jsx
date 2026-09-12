@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { voices, voicesHubHref } from './data/voices';
+import { companyCases } from './data/companyCases';
 
 /* ── スクロール表示フック ── */
 function useInView(threshold = 0.12) {
@@ -38,10 +39,10 @@ function Reveal({ children, delay = 0, from = 'bottom', className = '' }) {
   const [ref, inView] = useInView();
   const transforms = { bottom: 'translateY(40px)', left: 'translateX(-40px)', right: 'translateX(40px)' };
   return (
-    <div ref={ref} className={className} style={{
+    <div ref={ref} className={`reveal ${className}`} data-reveal-from={from} style={{
       transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
       opacity: inView ? 1 : 0,
-      transform: inView ? 'none' : (transforms[from] || transforms.bottom),
+      '--reveal-transform': inView ? 'none' : (transforms[from] || transforms.bottom),
     }}>
       {children}
     </div>
@@ -103,12 +104,6 @@ export default function TalentKeeperLandingPage() {
     ctaLight:  "#ff9633",   // CTA hover / ホットな数字（月額料金の30倍など）
     accentRed: "#dc2626",   // フォーム必須 * とエラーのみ使用
   };
-
-  const features = [
-    { num: "01", title: "入社後フォロー継続支援", text: "入社直後から定着まで、継続的な接点を設計。担当者任せになりがちなフォローを、仕組みとして回しやすくします。" },
-    { num: "02", title: "離職予兆の早期把握", text: "大きな問題になる前の小さな違和感を拾い、早い段階で把握。手遅れになる前の対応につなげます。" },
-    { num: "03", title: "エンゲージメント可視化", text: "入社者ごとの状態変化を見える化し、どこに支援が必要かを整理。現場と人事が同じ景色を見やすくします。" },
-  ];
 
   const supports = [
     { num: "01", title: "AIチャットボット", sub: "24時間 365日対応", photo: "support-1-reply",
@@ -338,7 +333,7 @@ export default function TalentKeeperLandingPage() {
 
 
         {/* ─── STORY（素材の物語カットで、拾われるまでの流れを見せる） ─── */}
-        <section id="story" style={{ background: C.bg }} className="py-24">
+        <section id="story" style={{ background: C.bg }} className="overflow-x-clip py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <Reveal>
               <div className="mb-16 max-w-3xl">
@@ -692,12 +687,49 @@ export default function TalentKeeperLandingPage() {
               <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>CASE STUDIES</p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <h2 className="serif text-4xl font-bold lg:text-5xl" style={{ color: C.lt }}>
-                  早期離職を防いだ<br />4社の選択
+                  導入企業に聞く、<br />現場の声とフォローの実践
                 </h2>
                 <p className="max-w-sm text-base sm:text-right" style={{ color: C.ltMuted }}>
-                  実際の導入企業における、課題・取り組み・成果
+                  従業員の声をどう拾い、どのような対応につなげているのか。導入企業の具体的な取り組みをご紹介します。
                 </p>
               </div>
+            </Reveal>
+
+            <div className="mt-14 grid gap-6 md:grid-cols-2" data-company-cases>
+              {companyCases.map((c, i) => (
+                <Reveal key={c.href} delay={i * 0.1} className="h-full">
+                  <a href={c.href} className={`company-story company-story--${c.brand}`}>
+                    <div className="company-story-brand">
+                      <div className="company-story-meta">
+                        <span>{c.category}</span>
+                        <span>導入事例 {String(i + 1).padStart(2, '0')}</span>
+                      </div>
+                      <div className="company-story-logo">
+                        <img src={c.logo} alt={`${c.company}のロゴ`} width="320" height="172"
+                          loading="lazy" decoding="async" />
+                      </div>
+                      <p className="company-story-name">{c.company}</p>
+                    </div>
+                    <div className="company-story-content">
+                      <h3 className="company-story-title">{c.title.split('、').map((line, index, lines) => (
+                        <span key={index} className="block">{line}{index < lines.length - 1 ? '、' : ''}</span>
+                      ))}</h3>
+                      <p className="company-story-summary">{c.summary}</p>
+                      <div className="company-story-point">
+                        <span>取り組みのポイント</span>
+                        <p>{c.point}</p>
+                      </div>
+                      <div className="company-story-link">
+                        <span>導入事例を読む</span><span className="company-story-arrow" aria-hidden="true">↗</span>
+                      </div>
+                    </div>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal>
+              <h3 className="serif mt-16 text-2xl font-bold" style={{ color: C.lt }}>匿名でご紹介する導入事例</h3>
             </Reveal>
 
             <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -1243,7 +1275,7 @@ export default function TalentKeeperLandingPage() {
                   <p className="text-xs font-semibold tracking-[0.06em]" style={{ color: C.textDim }}>採用の、その先へ。</p>
                 </div>
               </div>
-              <div className="flex gap-8">
+              <div className="flex min-w-0 max-w-full flex-wrap justify-center gap-x-8 gap-y-4">
                 {[["SERVICE", "#how"], ["VOICES", voicesHubHref], ["CASES", "#cases"], ["PRICING", "#pricing"]].map(([label, href]) => (
                   <a key={label} href={href} className="text-xs font-bold tracking-[0.08em]" style={{ color: C.textDim }}>{label}</a>
                 ))}
@@ -1254,7 +1286,7 @@ export default function TalentKeeperLandingPage() {
             </div>
             <div className="mt-8 border-t pt-6" style={{ borderColor: C.border }}>
               <p className="text-xs leading-6" style={{ color: C.textDim }}>
-                ※1 パーソル総合研究所「新入社員の定着実態調査」より。各社事例は守秘義務のため社名を匿名化しています。
+                ※1 パーソル総合研究所「新入社員の定着実態調査」より。一部の導入事例は守秘義務のため社名を匿名化しています。
               </p>
             </div>
           </div>

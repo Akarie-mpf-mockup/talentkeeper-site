@@ -56,3 +56,33 @@ body {
   33%      { transform: translate(40px, -30px) scale(1.05); }
   66%      { transform: translate(-20px, 20px) scale(0.95); }
 }
+
+/* Company stories: original logos on white, brand accents in the editorial panel. */
+.company-story{--brand:#086a38;--tint:#f0f6f1;--line:#d6e5da;display:flex;flex-direction:column;height:100%;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:#fff;color:#17271e;text-decoration:none;box-shadow:0 8px 28px rgba(11,35,81,.045);transition:box-shadow .25s,transform .25s}
+.company-story--wellcare{--brand:#b41e30;--tint:#fbf2f2;--line:#ecdadd;color:#302023}
+.company-story:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(11,35,81,.1)}
+.company-story:focus-visible{outline:3px solid var(--brand);outline-offset:5px}
+.company-story-brand{padding:25px 36px 24px;border-top:4px solid var(--brand)}
+.company-story-meta{display:flex;justify-content:space-between;gap:16px;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--brand)}
+.company-story-meta span:last-child{color:#69746e;white-space:nowrap;font-size:10px;letter-spacing:.12em}
+.company-story-logo{display:flex;align-items:center;justify-content:center;height:172px;margin:10px 0 8px}
+.company-story-logo img{display:block;width:100%;height:100%;max-width:320px;object-fit:contain}
+.company-story--wellcare .company-story-logo img{max-width:190px;height:156px}
+.company-story-name{margin:0;text-align:center;font-size:13px;font-weight:600;letter-spacing:.03em}
+.company-story-content{display:flex;flex:1;flex-direction:column;padding:32px 36px 26px;background:var(--tint);border-top:1px solid var(--line)}
+.company-story-title{margin:0;font-family:'Noto Serif JP',serif;font-size:clamp(24px,2.2vw,30px);font-weight:700;line-height:1.65;letter-spacing:.02em}
+.company-story-summary{margin:18px 0 26px;font-size:14px;line-height:2;color:#52605a}
+.company-story--wellcare .company-story-summary{color:#63575a}
+.company-story-point{margin-top:auto;padding:0 0 0 14px;border-left:2px solid var(--brand)}
+.company-story-point>span{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--brand)}
+.company-story-point p{margin:5px 0 0;font-size:13px;font-weight:600;line-height:1.8}
+.company-story-link{display:flex;align-items:center;justify-content:space-between;margin-top:26px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;font-weight:700;color:var(--brand)}
+.company-story-arrow{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--brand);color:#fff;font-size:22px;transition:transform .25s}
+.company-story:hover .company-story-arrow{transform:translate(2px,-2px)}
+@media(max-width:600px){.company-story-brand{padding:20px 22px}.company-story-content{padding:26px 24px 22px}.company-story-logo{height:152px}.company-story--wellcare .company-story-logo img{height:140px}.company-story-title{font-size:25px}.company-story-summary{font-size:13px}.company-story-meta{font-size:10px;gap:8px}}
+@media(prefers-reduced-motion:reduce){.company-story,.company-story-arrow{transition:none}.company-story:hover,.company-story:hover .company-story-arrow{transform:none}}
+
+.reveal { transform: var(--reveal-transform, none); }
+@media (width < 1024px) {
+  .reveal[data-reveal-from="left"], .reveal[data-reveal-from="right"] { transform: none; }
+}
