@@ -79,11 +79,15 @@ function ctaHtml(cta) {
 }
 
 /* ── ページテンプレート ── */
-function template({ article, related, isHub }) {
-  const url = ORIGIN + (article.slug ? `${SECTION_PATH}${article.slug}/` : SECTION_PATH);
+function template({ article, related, isHub, companyCase = false }) {
+  const sectionPath = companyCase ? '/case/' : SECTION_PATH;
+  const sectionTitle = companyCase ? '企業導入事例' : SECTION_TITLE;
+  const sectionHome = companyCase ? '/#cases' : SECTION_PATH;
+  const ogImage = companyCase ? 'home' : (article.slug || 'hub');
+  const url = ORIGIN + (article.slug ? `${sectionPath}${article.slug}/` : sectionPath);
   const crumbs = [
     { name: 'HOME', url: `${ORIGIN}/` },
-    { name: SECTION_TITLE, url: ORIGIN + SECTION_PATH },
+    { name: sectionTitle, url: ORIGIN + sectionHome },
     ...(isHub ? [] : [{ name: article.category || article.h1, url }]),
   ];
   const jsonLd = [
@@ -92,7 +96,7 @@ function template({ article, related, isHub }) {
       '@type': 'Article',
       headline: article.h1,
       description: article.description,
-      image: `${ORIGIN}/images/og/${article.slug || 'hub'}.jpg`,
+      image: `${ORIGIN}/images/og/${ogImage}.jpg`,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       inLanguage: 'ja',
       isPartOf: { '@type': 'WebSite', name: 'TalentKeeper', url: `${ORIGIN}/` },
@@ -125,9 +129,9 @@ function template({ article, related, isHub }) {
 <meta property="og:description" content="${esc(article.description)}" />
 <meta property="og:url" content="${url}" />
 <meta property="og:locale" content="ja_JP" />
-<meta property="og:image" content="${ORIGIN}/images/og/${article.slug || 'hub'}.jpg" />
+<meta property="og:image" content="${ORIGIN}/images/og/${ogImage}.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="${ORIGIN}/images/og/${article.slug || 'hub'}.jpg" />
+<meta name="twitter:image" content="${ORIGIN}/images/og/${ogImage}.jpg" />
 <meta name="theme-color" content="#0b2351" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -161,8 +165,9 @@ function template({ article, related, isHub }) {
 
 <main>
   <article>
-    <header class="article-head wrap">
+    <header class="article-head wrap${companyCase ? ` company-article company-article--${esc(article.brand)}` : ''}">
       <p class="kicker">${esc(article.kicker || SECTION_TITLE)}</p>
+      ${companyCase && article.logo ? `<div class="company-identity"><div class="company-logo"><img src="${esc(article.logo)}" alt="${esc(article.company)}のロゴ" width="${esc(article.logoWidth)}" height="${esc(article.logoHeight)}" decoding="async" /></div><div class="company-identity-text"><p>${esc(article.category)}</p><p>${esc(article.company)}</p></div></div>` : ''}
       ${article.caseNo ? `<p class="case-no">${esc(article.caseNo)}<span class="tag">${esc(article.category)}</span></p>` : ''}
       <h1>${esc(article.h1)}</h1>
     </header>
@@ -182,13 +187,13 @@ ${article.html}
     <h2>${isHub ? '5つの事例を個別に読む' : '関連する事例'}</h2>
     <ul class="related-list">
       ${related.map(r => `<li>
-        <a href="${SECTION_PATH}${r.slug}/">
+        <a href="${sectionPath}${r.slug}/">
           <span class="related-tag">${esc(r.category)}</span>
-          <span class="related-quote">「${esc(r.cardQuote)}」</span>
+          <span class="related-quote">${companyCase ? esc(r.cardQuote) : `「${esc(r.cardQuote)}」`}</span>
           <span class="related-summary">${esc(r.cardSummary)}</span>
         </a>
       </li>`).join('\n      ')}
-      ${isHub ? '' : `<li class="related-hub"><a href="${SECTION_PATH}">5つの声をまとめて読む</a></li>`}
+      ${isHub ? '' : `<li class="related-hub"><a href="${sectionHome}">${companyCase ? '企業導入事例に戻る' : '5つの声をまとめて読む'}</a></li>`}
     </ul>
   </section>
 </main>
@@ -246,6 +251,15 @@ sup{font-size:.6em;letter-spacing:0}
 .breadcrumb .sep{margin:0 8px;color:var(--dim)}
 
 .article-head{padding:64px 24px 8px}
+.company-article{--company-accent:#086a38;--company-tint:#f0f6f1}
+.company-article--wellcare{--company-accent:#b41e30;--company-tint:#fbf2f2}
+.company-identity{display:flex;align-items:center;gap:32px;margin:28px 0 32px;padding:28px 0;border-top:3px solid var(--company-accent);border-bottom:1px solid var(--border)}
+.company-logo{display:flex;align-items:center;justify-content:center;flex:0 0 220px;height:140px;background:#fff}
+.company-logo img{display:block;width:100%;height:100%;object-fit:contain}
+.company-identity-text p{margin:8px 0;font-size:15px;font-weight:600;line-height:1.8}
+.company-identity-text p:first-child{font-size:11px;letter-spacing:.08em;color:var(--company-accent)}
+.company-article h1{padding:28px;background:var(--company-tint);border-radius:4px}
+@media(max-width:600px){.company-identity{gap:20px;flex-direction:column;align-items:flex-start}.company-logo{flex-basis:auto;width:240px;max-width:100%;height:140px}.company-identity-text p{margin:4px 0}.company-article h1{padding:22px 18px}}
 .kicker{margin:0;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--navy)}
 .case-no{margin:16px 0 0;font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--navy-deep)}
 .case-no .tag{display:inline-block;margin-left:12px;padding:4px 12px;border-radius:9999px;background:rgba(11,35,81,.08);font-size:11px;font-weight:600;letter-spacing:.06em}
@@ -317,11 +331,12 @@ sup{font-size:.6em;letter-spacing:0}
 `;
 
 /* ── 読み込み ── */
-const articles = fs.readdirSync(CONTENT_DIR)
+function readArticles(directory) {
+return fs.readdirSync(directory)
   .filter(f => f.endsWith('.md'))
   .sort()
   .map(file => {
-    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8');
+    const raw = fs.readFileSync(path.join(directory, file), 'utf8');
     const { data, body } = parseFrontMatter(raw);
     const { body: stripped, ctas } = extractCtas(body);
     let html = md.render(stripped);
@@ -330,6 +345,10 @@ const articles = fs.readdirSync(CONTENT_DIR)
     });
     return { ...data, file, html };
   });
+}
+const articles = readArticles(CONTENT_DIR);
+const companyCases = readArticles(path.join(ROOT, 'content/case'))
+  .sort((a, b) => Number(a.order) - Number(b.order));
 
 const hub = articles.find(a => a.type === 'hub');
 const cases = articles.filter(a => a.type === 'case').sort((a, b) => Number(a.order) - Number(b.order));
@@ -348,6 +367,14 @@ export const voices = ${JSON.stringify(cards, null, 2)};
 `;
   fs.mkdirSync(path.join(ROOT, 'src/data'), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'src/data/voices.js'), out);
+  const companyCards = companyCases.map(c => ({
+    company: c.company, category: c.category, title: c.cardQuote,
+    brand: c.brand, point: c.cardPoint,
+    logo: c.logo, logoWidth: c.logoWidth, logoHeight: c.logoHeight,
+    summary: c.cardSummary, href: `/case/${c.slug}/`,
+  }));
+  fs.writeFileSync(path.join(ROOT, 'src/data/companyCases.js'),
+    `// 自動生成ファイル — 生成元: content/case/*.md\nexport const companyCases = ${JSON.stringify(companyCards, null, 2)};\n`);
   console.log(`[voices] src/data/voices.js を生成（${cards.length}件）`);
 
   // 商談用トークスクリプト（非公開・deployされない docs/ に出力）
@@ -378,6 +405,10 @@ function writeHtml() {
   fs.writeFileSync(path.join(outDir, 'article.css'), CSS);
 
   const pages = [
+    ...companyCases.map(c => ({
+      article: c, related: companyCases.filter(o => o.slug !== c.slug),
+      isHub: false, companyCase: true, dir: path.join(DIST, 'case', c.slug),
+    })),
     { article: hub, related: cases, isHub: true, dir: outDir },
     ...cases.map(c => ({
       article: c,
@@ -393,7 +424,8 @@ function writeHtml() {
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  const urls = [`${ORIGIN}/`, ORIGIN + SECTION_PATH, ...cases.map(c => `${ORIGIN}${SECTION_PATH}${c.slug}/`)];
+  const urls = [`${ORIGIN}/`, ORIGIN + SECTION_PATH, ...cases.map(c => `${ORIGIN}${SECTION_PATH}${c.slug}/`),
+    ...companyCases.map(c => `${ORIGIN}/case/${c.slug}/`)];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${u === `${ORIGIN}/` ? '1.0' : '0.8'}</priority></url>`).join('\n')}
