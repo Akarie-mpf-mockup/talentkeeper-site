@@ -71,6 +71,12 @@ export default function TalentKeeperLandingPage() {
         body: JSON.stringify({ ...formData, _subject: `【TalentKeeper】${formData.company} ${formData.name}様よりお問い合わせ` }),
       });
       setFormStatus(res.ok ? 'sent' : 'error');
+      if (res.ok) {
+        // Record acceptance only; entered personal data is never sent to Analytics.
+        try {
+          window.gtag?.('event', 'generate_lead', { request_type: 'contact' });
+        } catch { /* Analytics must not affect the accepted form's success state. */ }
+      }
     } catch {
       setFormStatus('error');
     }

@@ -116,6 +116,7 @@ function template({ article, related, isHub, companyCase = false }) {
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
+<script defer src="/analytics.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${esc(article.seoTitle)}</title>
 <meta name="description" content="${esc(article.description)}" />
