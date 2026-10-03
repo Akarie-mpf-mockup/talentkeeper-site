@@ -26,7 +26,7 @@ salesTalk:
 title: 重要人材のキャリア希望を早めに把握したい方へ
 body: 退職意向が明確になる前の状態変化をどう拾うのか、サポート体制の全体像をご覧いただけます。
 primary: タレントキーパーの仕組みを見る|/#how
-secondary: 人材定着について相談する|/#contact
+secondary: 人材定着について相談する|/#consultation
 :::
 
 ## こんなこと、ありませんか？
@@ -60,5 +60,5 @@ secondary: 人材定着について相談する|/#contact
 title: 退職意向になる前のキャリア希望を把握する
 body: 代替しにくい人材の希望を、どこにどう蓄積するか。貴社の配置検討の流れに合わせてご説明します。
 primary: 人材定着の仕組みを見る|/#how
-secondary: 配置・定着課題について相談する|/#contact
+secondary: 配置・定着課題について相談する|/#consultation
 :::

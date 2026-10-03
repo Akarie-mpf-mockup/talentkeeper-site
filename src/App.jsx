@@ -53,10 +53,27 @@ function Reveal({ children, delay = 0, from = 'bottom', className = '' }) {
 export default function TalentKeeperLandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [billing, setBilling] = useState('annual'); // 'annual' | 'monthly'
-  const [formData, setFormData] = useState({ company: '', name: '', email: '', size: '', message: '' });
+  const [formData, setFormData] = useState({ company: '', name: '', email: '', size: '', message: '', requestType: window.location.hash === '#consultation' ? '導入相談' : '資料請求' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | sending | sent | error
 
   const navLinks = [["SERVICE", "#how"], ["VOICES", "#voices"], ["CASES", "#cases"], ["PRICING", "#pricing"], ["CONTACT", "#contact"]];
+
+  useEffect(() => {
+    const syncContactType = () => {
+      if (['#contact', '#consultation'].includes(window.location.hash)) {
+        setFormData(prev => ({ ...prev, requestType: window.location.hash === '#consultation' ? '導入相談' : '資料請求' }));
+        setFormStatus('idle');
+      }
+    };
+    window.addEventListener('hashchange', syncContactType);
+    return () => window.removeEventListener('hashchange', syncContactType);
+  }, []);
+
+  const selectContactType = requestType => {
+    setFormData(prev => ({ ...prev, requestType }));
+    setFormStatus('idle');
+    setMobileOpen(false);
+  };
 
   const handleFormChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -68,13 +85,15 @@ export default function TalentKeeperLandingPage() {
       const res = await fetch('https://formspree.io/f/xdapojqn', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...formData, _subject: `【TalentKeeper】${formData.company} ${formData.name}様よりお問い合わせ` }),
+        body: JSON.stringify({ ...formData, _subject: `【TalentKeeper／${formData.requestType}】${formData.company} ${formData.name}様よりお問い合わせ` }),
       });
       setFormStatus(res.ok ? 'sent' : 'error');
       if (res.ok) {
-        // Record acceptance only; entered personal data is never sent to Analytics.
+        // Only successful acceptance is a lead; never send entered personal data.
         try {
-          window.gtag?.('event', 'generate_lead', { request_type: 'contact' });
+          window.gtag?.('event', 'generate_lead', {
+            request_type: formData.requestType === '導入相談' ? 'consultation' : 'document_request',
+          });
         } catch { /* Analytics must not affect the accepted form's success state. */ }
       }
     } catch {
@@ -195,9 +214,9 @@ export default function TalentKeeperLandingPage() {
             </div>
 
             {/* PC CTA */}
-            <a href="#contact" className="hidden md:inline-flex rounded-full px-6 py-2.5 text-base font-bold text-white transition hover:opacity-80"
+            <a href="#contact" onClick={() => selectContactType('資料請求')} className="hidden md:inline-flex rounded-full px-6 py-2.5 text-base font-bold text-white transition hover:opacity-80"
               style={{ background: C.cta }}>
-              お問い合わせ
+              資料請求
             </a>
 
             {/* モバイル ハンバーガー */}
@@ -224,11 +243,10 @@ export default function TalentKeeperLandingPage() {
                   {label}
                 </a>
               ))}
-              <a href="#contact"
+              <a href="#contact" onClick={() => selectContactType('資料請求')}
                 className="mt-2 rounded-full px-6 py-3 text-base font-bold text-white text-center transition hover:opacity-80"
-                style={{ background: C.cta }}
-                onClick={() => setMobileOpen(false)}>
-                無料でお問い合わせ
+                style={{ background: C.cta }}>
+                資料を請求する
               </a>
             </div>
           </div>
@@ -267,18 +285,18 @@ export default function TalentKeeperLandingPage() {
                 </Reveal>
                 <Reveal delay={0.3}>
                   <div className="mt-10 flex flex-wrap gap-4">
-                    <a href="#contact"
+                    <a href="#contact" onClick={() => selectContactType('資料請求')}
                       className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:opacity-80"
                       style={{ background: C.cta }}>
-                      無料デモを予約する
+                      資料を請求する
                       <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                       </svg>
                     </a>
-                    <a href="#how"
+                    <a href="#consultation" onClick={() => selectContactType('導入相談')}
                       className="rounded-full border px-8 py-4 text-lg font-bold transition hover:opacity-80"
                       style={{ borderColor: C.ltBorder, color: C.ltMuted }}>
-                      サービスを見る
+                      導入について相談する
                     </a>
                   </div>
                 </Reveal>
@@ -922,7 +940,7 @@ export default function TalentKeeperLandingPage() {
                         ))}
                       </ul>
 
-                      <a href="#contact"
+                      <a href="#consultation" onClick={() => selectContactType('導入相談')}
                         className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-bold transition hover:opacity-80"
                         style={{ background: "transparent", color: C.lt, border: `1.5px solid ${C.lt}` }}>
                         内容を相談する
@@ -991,10 +1009,10 @@ export default function TalentKeeperLandingPage() {
                         ))}
                       </ul>
 
-                      <a href="#contact"
+                      <a href="#consultation" onClick={() => selectContactType('導入相談')}
                         className="mt-6 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-bold transition hover:opacity-80"
                         style={{ background: C.cta, color: "white" }}>
-                        無料デモを予約する
+                        導入について相談する
                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                         </svg>
@@ -1089,7 +1107,7 @@ export default function TalentKeeperLandingPage() {
                 },
                 {
                   q: "効果が出なかった場合はどうなりますか？",
-                  a: "効果が見込みにくい場合は、デモの段階で率直にお伝えしています。導入後も定期レポートで状況を共有し、活用が進んでいない場合は改善提案を行います。成果が出ない場合のリスクを最小化できるよう、トライアル期間を設けています。",
+                  a: "効果が見込みにくい場合は、導入相談の段階で率直にお伝えしています。導入後も定期レポートで状況を共有し、活用が進んでいない場合は改善提案を行います。成果が出ない場合のリスクを最小化できるよう、トライアル期間を設けています。",
                 },
               ].map((item, i) => (
                 <Reveal key={i} delay={i * 0.05}>
@@ -1115,6 +1133,7 @@ export default function TalentKeeperLandingPage() {
 
         {/* ─── Contact ─── */}
         <section id="contact" style={{ background: C.darkBg, position: 'relative', overflow: 'hidden' }} className="py-24">
+          <span id="consultation" className="absolute top-0" aria-hidden="true" />
           <div className="hero-orb hero-orb-contact" />
           <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
             <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr] items-start">
@@ -1123,10 +1142,10 @@ export default function TalentKeeperLandingPage() {
               <Reveal>
                 <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: C.accent }}>06 — CONTACT</p>
                 <h2 className="serif mt-5 text-4xl font-bold text-white lg:text-5xl">
-                  まずは、<br />無料デモを予約する
+                  まずは、<br />資料をご覧ください
                 </h2>
                 <p className="mt-6 text-lg leading-9" style={{ color: C.textMuted }}>
-                  どのタイミングの離職・定着に課題があるのかを伺いながら、活用イメージを一緒に整理します。
+                  サービス内容や料金、導入事例について、資料をご案内します。自社での活用について具体的にお話ししたい方は、導入相談をお選びください。
                 </p>
                 <ul className="mt-8 space-y-4">
                   {[
@@ -1155,15 +1174,16 @@ export default function TalentKeeperLandingPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                       </div>
-                      <h3 className="serif text-2xl font-bold" style={{ color: C.lt }}>送信しました</h3>
+                      <h3 className="serif text-2xl font-bold" style={{ color: C.lt }}>{formData.requestType === '資料請求' ? '資料請求を受け付けました' : '導入相談を受け付けました'}</h3>
                       <p className="mt-3 text-base" style={{ color: C.ltMuted }}>
-                        1〜2営業日以内にご連絡いたします。
+                        {formData.requestType === '資料請求' ? 'ご入力のメールアドレスへ、通常1〜2営業日以内に資料をご案内します。' : '通常1〜2営業日以内に、担当者より日程やご相談内容についてご連絡します。'}
                       </p>
+                      <button type="button" onClick={() => setFormStatus('idle')} className="mt-6 text-sm underline" style={{ color: C.accent }}>別の用件を送る</button>
                     </div>
                   ) : (
                     <>
-                    <div className="mb-6 flex items-center justify-between">
-                      <p className="text-base font-bold" style={{ color: C.lt }}>お問い合わせフォーム</p>
+                    <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                      <p className="text-base font-bold" style={{ color: C.lt }}>資料請求・導入相談</p>
                       <span className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1"
                         style={{ background: "rgba(11,35,81,0.06)", color: C.accent }}>
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
@@ -1173,93 +1193,106 @@ export default function TalentKeeperLandingPage() {
                       </span>
                     </div>
                     <form onSubmit={handleFormSubmit} className="space-y-5">
-                      <div className="grid gap-5 sm:grid-cols-2">
-                        {/* 会社名 */}
+                      <fieldset disabled={formStatus === 'sending'} className="space-y-5 disabled:opacity-70">
+                        <div>
+                          <label htmlFor="request-type" className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>ご希望の内容 <span style={{ color: C.accentRed }}>*</span></label>
+                          <select id="request-type" name="requestType" required value={formData.requestType} onChange={handleFormChange}
+                            className="w-full rounded-xl px-4 py-3 text-base outline-none" style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}>
+                            <option value="資料請求">資料請求</option>
+                            <option value="導入相談">導入について相談する</option>
+                          </select>
+                          <p className="mt-2 text-sm leading-6" style={{ color: C.ltMuted }}>
+                            {formData.requestType === '資料請求' ? '資料はメールでご案内します。デモや商談の予約は不要です。' : '自社の定着課題や活用方法についてご相談いただけます。'}
+                          </p>
+                        </div>
+                        <div className="grid gap-5 sm:grid-cols-2">
+                          {/* 会社名 */}
+                          <div>
+                            <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
+                              会社名 <span style={{ color: C.accentRed }}>*</span>
+                            </label>
+                            <input type="text" name="company" required value={formData.company} onChange={handleFormChange}
+                              placeholder="株式会社〇〇"
+                              className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
+                              style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
+                              onFocus={e => e.target.style.borderColor = C.accent}
+                              onBlur={e => e.target.style.borderColor = C.ltBorder} />
+                          </div>
+                          {/* お名前 */}
+                          <div>
+                            <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
+                              お名前 <span style={{ color: C.accentRed }}>*</span>
+                            </label>
+                            <input type="text" name="name" required value={formData.name} onChange={handleFormChange}
+                              placeholder="山田 太郎"
+                              className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
+                              style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
+                              onFocus={e => e.target.style.borderColor = C.accent}
+                              onBlur={e => e.target.style.borderColor = C.ltBorder} />
+                          </div>
+                        </div>
+
+                        {/* メールアドレス */}
                         <div>
                           <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
-                            会社名 <span style={{ color: C.accentRed }}>*</span>
+                            メールアドレス <span style={{ color: C.accentRed }}>*</span>
                           </label>
-                          <input type="text" name="company" required value={formData.company} onChange={handleFormChange}
-                            placeholder="株式会社〇〇"
+                          <input type="email" name="email" required value={formData.email} onChange={handleFormChange}
+                            placeholder="taro@company.co.jp"
                             className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
                             style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                             onFocus={e => e.target.style.borderColor = C.accent}
                             onBlur={e => e.target.style.borderColor = C.ltBorder} />
                         </div>
-                        {/* お名前 */}
+
+                        {/* 従業員規模 */}
                         <div>
                           <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
-                            お名前 <span style={{ color: C.accentRed }}>*</span>
+                            年間採用人数（目安）
                           </label>
-                          <input type="text" name="name" required value={formData.name} onChange={handleFormChange}
-                            placeholder="山田 太郎"
+                          <select name="size" value={formData.size} onChange={handleFormChange}
                             className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
+                            style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: formData.size ? C.lt : C.ltDim }}>
+                            <option value="">選択してください</option>
+                            <option value="〜5名">〜5名</option>
+                            <option value="6〜15名">6〜15名</option>
+                            <option value="16〜30名">16〜30名</option>
+                            <option value="31〜60名">31〜60名</option>
+                            <option value="61名以上">61名以上</option>
+                          </select>
+                        </div>
+
+                        {/* お問い合わせ内容 */}
+                        <div>
+                          <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
+                            お問い合わせ内容
+                          </label>
+                          <textarea name="message" rows={4} value={formData.message} onChange={handleFormChange}
+                            placeholder="課題や気になる点をご記入ください（任意）"
+                            className="w-full rounded-xl px-4 py-3 text-base outline-none transition resize-none"
                             style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
                             onFocus={e => e.target.style.borderColor = C.accent}
                             onBlur={e => e.target.style.borderColor = C.ltBorder} />
                         </div>
-                      </div>
 
-                      {/* メールアドレス */}
-                      <div>
-                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
-                          メールアドレス <span style={{ color: C.accentRed }}>*</span>
-                        </label>
-                        <input type="email" name="email" required value={formData.email} onChange={handleFormChange}
-                          placeholder="taro@company.co.jp"
-                          className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
-                          onFocus={e => e.target.style.borderColor = C.accent}
-                          onBlur={e => e.target.style.borderColor = C.ltBorder} />
-                      </div>
+                        {/* エラー */}
+                        {formStatus === 'error' && (
+                          <p className="text-sm font-bold" style={{ color: C.accentRed }}>
+                            送信に失敗しました。時間をおいて再度お試しください。
+                          </p>
+                        )}
 
-                      {/* 従業員規模 */}
-                      <div>
-                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
-                          年間採用人数（目安）
-                        </label>
-                        <select name="size" value={formData.size} onChange={handleFormChange}
-                          className="w-full rounded-xl px-4 py-3 text-base outline-none transition"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: formData.size ? C.lt : C.ltDim }}>
-                          <option value="">選択してください</option>
-                          <option value="〜5名">〜5名</option>
-                          <option value="6〜15名">6〜15名</option>
-                          <option value="16〜30名">16〜30名</option>
-                          <option value="31〜60名">31〜60名</option>
-                          <option value="61名以上">61名以上</option>
-                        </select>
-                      </div>
+                        {/* 送信ボタン */}
+                        <button type="submit" disabled={formStatus === 'sending'}
+                          className="w-full rounded-full py-4 text-lg font-bold text-white transition hover:opacity-80 disabled:opacity-50"
+                          style={{ background: C.cta }}>
+                          {formStatus === 'sending' ? '送信中...' : formData.requestType === '資料請求' ? '資料を請求する →' : '導入について相談する →'}
+                        </button>
 
-                      {/* お問い合わせ内容 */}
-                      <div>
-                        <label className="block text-sm font-semibold mb-2" style={{ color: C.textMuted }}>
-                          お問い合わせ内容
-                        </label>
-                        <textarea name="message" rows={4} value={formData.message} onChange={handleFormChange}
-                          placeholder="課題や気になる点をご記入ください（任意）"
-                          className="w-full rounded-xl px-4 py-3 text-base outline-none transition resize-none"
-                          style={{ background: C.bgAlt, border: `1px solid ${C.ltBorder}`, color: C.lt }}
-                          onFocus={e => e.target.style.borderColor = C.accent}
-                          onBlur={e => e.target.style.borderColor = C.ltBorder} />
-                      </div>
-
-                      {/* エラー */}
-                      {formStatus === 'error' && (
-                        <p className="text-sm font-bold" style={{ color: C.accentRed }}>
-                          送信に失敗しました。時間をおいて再度お試しください。
+                        <p className="text-center text-xs font-bold" style={{ color: C.textDim }}>
+                          {formData.requestType === '資料請求' ? '通常1〜2営業日以内に、メールで資料をご案内します' : '通常1〜2営業日以内にご返信します'}
                         </p>
-                      )}
-
-                      {/* 送信ボタン */}
-                      <button type="submit" disabled={formStatus === 'sending'}
-                        className="w-full rounded-full py-4 text-lg font-bold text-white transition hover:opacity-80 disabled:opacity-50"
-                        style={{ background: C.cta }}>
-                        {formStatus === 'sending' ? '送信中...' : '無料デモを予約する →'}
-                      </button>
-
-                      <p className="text-center text-xs font-bold" style={{ color: C.textDim }}>
-                        送信後、1〜2営業日以内にご返信します
-                      </p>
+                      </fieldset>
                     </form>
                     </>
                   )}

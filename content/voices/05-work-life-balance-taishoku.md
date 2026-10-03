@@ -26,7 +26,7 @@ salesTalk:
 title: 退職の兆候を早めに把握したい方へ
 body: 上司には言いにくい悩みをどこで受け止めるのか、3層のサポート体制をご覧いただけます。
 primary: タレントキーパーの仕組みを見る|/#how
-secondary: 離職防止について相談する|/#contact
+secondary: 離職防止について相談する|/#consultation
 :::
 
 ## こんなこと、ありませんか？
@@ -58,5 +58,5 @@ secondary: 離職防止について相談する|/#contact
 title: 「辞める」と言われる前に、フォローすべき人を把握する
 body: 中立の外部窓口だからこそ届く声があります。貴社の現状に合わせて活用イメージを整理します。
 primary: 離職防止の仕組みを見る|/#how
-secondary: 自社の定着課題について相談する|/#contact
+secondary: 自社の定着課題について相談する|/#consultation
 :::

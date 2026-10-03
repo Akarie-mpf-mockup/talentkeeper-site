@@ -26,7 +26,7 @@ salesTalk:
 title: 新入社員の早期離職を防ぎたい方へ
 body: 入社直後から定着までの接点をどう設計するのか、サポート体制の全体像をご覧いただけます。
 primary: タレントキーパーの仕組みを見る|/#how
-secondary: 入社後フォローについて相談する|/#contact
+secondary: 入社後フォローについて相談する|/#consultation
 :::
 
 ## こんなこと、ありませんか？
@@ -62,5 +62,5 @@ secondary: 入社後フォローについて相談する|/#contact
 title: 新入社員の「見えにくい不安」を早めに把握する
 body: 自社ではどのタイミングで不安が拾えていないのか、現状の入社後フォローを一緒に整理します。
 primary: 入社後フォローの方法を見る|/#how
-secondary: 自社の定着課題について相談する|/#contact
+secondary: 自社の定着課題について相談する|/#consultation
 :::

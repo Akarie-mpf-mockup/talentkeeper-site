@@ -50,7 +50,7 @@ test('mobile story fades without horizontal movement; table and menu remain usab
   expect(await table.evaluate(e => { e.scrollLeft = 100; return e.scrollLeft; })).toBeGreaterThan(0);
   expect(await page.evaluate(() => scrollX)).toBe(0);
   await page.getByRole('button', { name: 'メニュー', exact: true }).click();
-  await expect(page.getByRole('link', { name: '無料でお問い合わせ', exact: true })).toBeVisible();
+  await expect(page.locator('nav').getByRole('link', { name: '資料を請求する', exact: true })).toBeVisible();
   await expect(page.locator('nav [style*="max-height"]')).toHaveCSS('max-height', '400px');
   await page.getByRole('button', { name: 'メニュー', exact: true }).click();
   await expect(page.locator('nav [style*="max-height"]')).toHaveCSS('max-height', '0px');

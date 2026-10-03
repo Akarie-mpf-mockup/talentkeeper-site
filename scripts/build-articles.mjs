@@ -151,7 +151,7 @@ function template({ article, related, isHub, companyCase = false }) {
       <a href="${SECTION_PATH}">VOICES</a>
       <a href="/#cases">CASES</a>
       <a href="/#pricing">PRICING</a>
-      <a class="nav-cta" href="/#contact">無料で相談する</a>
+      <a class="nav-cta" href="/#contact">資料を請求する</a>
     </nav>
   </div>
 </header>

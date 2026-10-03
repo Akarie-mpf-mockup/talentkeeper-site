@@ -25,8 +25,10 @@ test('production pages initialize once, track CTAs and accepted leads without pe
     expect(await page.locator('script[src*="googletagmanager.com/gtag/js"]').count()).toBe(1);
   }
   await page.goto('https://www.talentkeeper.jp/');
-  await page.locator('section').first().locator('a[href="#contact"]').click();
-  expect((await events(page)).filter(e => e[1] === 'cta_click')).toHaveLength(1);
+  await page.locator('section').first().getByRole('link', { name: '導入について相談する' }).click();
+  expect((await events(page)).filter(e => e[1] === 'cta_click')).toEqual([
+    ['event', 'cta_click', { cta_location: 'landing_section', request_type: 'consultation' }],
+  ]);
   let attempts = 0;
   await page.route('https://formspree.io/f/xdapojqn', async route => {
     attempts++;
@@ -40,9 +42,17 @@ test('production pages initialize once, track CTAs and accepted leads without pe
   await expect(page.getByText('送信に失敗しました。時間をおいて再度お試しください。')).toBeVisible();
   expect((await events(page)).filter(e => e[1] === 'generate_lead')).toEqual([]);
   await submit.click();
-  await expect(page.getByRole('heading', { name: '送信しました' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '導入相談を受け付けました' })).toBeVisible();
   expect((await events(page)).filter(e => e[1] === 'generate_lead')).toEqual([
-    ['event', 'generate_lead', { request_type: 'contact' }],
+    ['event', 'generate_lead', { request_type: 'consultation' }],
+  ]);
+  await page.getByRole('button', { name: '別の用件を送る' }).click();
+  await page.locator('#request-type').selectOption('資料請求');
+  await page.locator('button[type="submit"]').click();
+  await expect(page.getByRole('heading', { name: '資料請求を受け付けました' })).toBeVisible();
+  expect((await events(page)).filter(e => e[1] === 'generate_lead')).toEqual([
+    ['event', 'generate_lead', { request_type: 'consultation' }],
+    ['event', 'generate_lead', { request_type: 'document_request' }],
   ]);
   expect(JSON.stringify(await events(page))).not.toMatch(/PRIVATE_|private@example/);
 });

@@ -26,7 +26,7 @@ salesTalk:
 title: 新入社員のOJT・教育体制に課題を感じている方へ
 body: 制度と現場運用のズレをどう把握するのか、タレントキーパーのサポート体制をご覧いただけます。
 primary: タレントキーパーの仕組みを見る|/#how
-secondary: 新人定着について相談する|/#contact
+secondary: 新人定着について相談する|/#consultation
 :::
 
 ## こんなこと、ありませんか？
@@ -62,5 +62,5 @@ secondary: 新人定着について相談する|/#contact
 title: OJTの不安を、退職理由になる前に把握する
 body: 拠点ごとの教育品質の差をどう可視化するか、貴社の体制に合わせてご説明します。
 primary: 新人フォローの仕組みを見る|/#how
-secondary: 教育・定着課題について相談する|/#contact
+secondary: 教育・定着課題について相談する|/#consultation
 :::
