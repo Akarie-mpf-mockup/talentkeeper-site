@@ -20,8 +20,9 @@
     const target = new URL(link.href, window.location.href);
     if (target.origin !== window.location.origin || target.pathname !== '/') return;
     if (!['#contact', '#consultation'].includes(target.hash)) return;
+    const section = link.closest('section');
     window.gtag('event', 'cta_click', {
-      cta_location: link.closest('section')?.id || (link.closest('nav, header') ? 'navigation' : link.closest('footer') ? 'footer' : 'article'),
+      cta_location: section?.id || (section ? 'landing_section' : link.closest('nav, header') ? 'navigation' : link.closest('footer') ? 'footer' : 'article'),
       request_type: target.hash === '#consultation' ? 'consultation' : 'contact',
     });
   });
